@@ -93,7 +93,7 @@
                 </form>
             </div>
             <div class="showTicketsForm">
-                <button class="buttonShow" onclick="location.href='controller?command=showtickets'">Show My Tickets</button>
+                <button class="buttonShow" onclick="location.href='servlet?command=showtickets'">Show My Tickets</button>
             </div>
             <!--USER TYPE-->
             <div class="userTypeElement">

@@ -15,14 +15,12 @@ public class User extends BaseEntity implements Serializable {
     private String login;
     private String password;
     private UserType userType;
-    private boolean addActivityRequest = false;
-    private boolean removeActivityRequest = false;
 
     public User() {
     }
 
-    public User(Integer userId, String firstName, String surName, String login,
-                String password, UserType userType) {
+    public User(Integer userId, String firstName, String surName,
+                String login, String password, UserType userType) {
         this.userId = userId;
         this.firstName = firstName;
         this.surName = surName;
@@ -31,28 +29,12 @@ public class User extends BaseEntity implements Serializable {
         this.userType = userType;
     }
 
-    public boolean isAddActivityRequest() {
-        return addActivityRequest;
-    }
-
-    public void setAddActivityRequest(boolean addActivityRequest) {
-        this.addActivityRequest = addActivityRequest;
-    }
-
-    public boolean isRemoveActivityRequest() {
-        return removeActivityRequest;
-    }
-
-    public void setRemoveActivityRequest(boolean removeActivityRequest) {
-        this.removeActivityRequest = removeActivityRequest;
-    }
-
     public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userid) {
-        this.userId = userid;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getFirstName() {
@@ -67,8 +49,8 @@ public class User extends BaseEntity implements Serializable {
         return surName;
     }
 
-    public void setSurName(String surname) {
-        this.surName = surname;
+    public void setSurName(String surName) {
+        this.surName = surName;
     }
 
     public String getLogin() {
@@ -124,9 +106,9 @@ public class User extends BaseEntity implements Serializable {
     @Override
     public String toString() {
         return "User{" +
-                "userid=" + userId +
+                "userId=" + userId +
                 ", firstName='" + firstName + '\'' +
-                ", surname='" + surName + '\'' +
+                ", surName='" + surName + '\'' +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", userType=" + userType +

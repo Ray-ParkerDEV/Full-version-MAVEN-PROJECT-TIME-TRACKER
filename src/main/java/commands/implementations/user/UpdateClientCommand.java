@@ -7,7 +7,7 @@ import constants.PathPageConstants;
 import dao.services.UserService;
 import entities.User;
 import manager.ConfigManagerPages;
-import utils.controllerUtils.RequestParameterIdentifier;
+import servlet.RequestParameterIdentifier;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;

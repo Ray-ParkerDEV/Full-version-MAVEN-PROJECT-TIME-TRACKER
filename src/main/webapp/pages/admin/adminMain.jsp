@@ -100,7 +100,7 @@
                             <div class="wrapperButtons">
                                 <input class="buttonElement" type="submit" value="Update"/>
                                 <input class="buttonElement" type="reset" value="Reset"/>
-                                <input class="buttonElement" type="button" value="Delete" onclick='location.href="controller?command=deleteluggage"'/>
+                                <input class="buttonElement" type="button" value="Delete" onclick='location.href="servlet?command=deleteluggage"'/>
                             </div>
                         </fieldset>
                         <!--2-->

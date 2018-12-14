@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 public interface BasicCommand {
 
     /**
-     * The basic method for all mySQL_DAOImpl of the interface.
+     * The basic method for all mysqldaoimpl of the interface.
      *
      * @param request       - request which will be processed.
      * @return              - a page which user will be directed to.

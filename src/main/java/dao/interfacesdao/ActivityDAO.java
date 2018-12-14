@@ -1,4 +1,4 @@
-package dao.interfacesDAO;
+package dao.interfacesdao;
 
 import entities.Activity;
 import exceptions.DAOException;

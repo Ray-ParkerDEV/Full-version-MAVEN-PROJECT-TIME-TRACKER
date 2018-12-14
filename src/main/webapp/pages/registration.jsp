@@ -33,7 +33,7 @@
                         <input class="buttonElement" type="submit" value="Register"/>
                         <input class="buttonElement" type="reset" value="Reset"/>
                         ${pageContext.session.setAttribute("backpage", "login")}
-                        <input type="button" value="Back" onclick='location.href="controller?command=back"'/>
+                        <input type="button" value="Back" onclick='location.href="servlet?command=back"'/>
                     </div>
                 </fieldset>
                 <div class="operationMessageElement">

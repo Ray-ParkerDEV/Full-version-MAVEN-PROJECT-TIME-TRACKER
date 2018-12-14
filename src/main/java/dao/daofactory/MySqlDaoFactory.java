@@ -1,9 +1,9 @@
-package dao.daoFactory;
+package dao.daofactory;
 
-import dao.interfacesDAO.ActivityDAO;
-import dao.interfacesDAO.TrackingDAO;
-import dao.interfacesDAO.UserDAO;
-import dao.mySQL_DAOImpl.UserDAOImpl;
+import dao.interfacesdao.ActivityDAO;
+import dao.interfacesdao.TrackingDAO;
+import dao.interfacesdao.UserDAO;
+import dao.mysqldaoimpl.UserDAOImpl;
 
 public class MySqlDaoFactory extends DaoFactory {
 

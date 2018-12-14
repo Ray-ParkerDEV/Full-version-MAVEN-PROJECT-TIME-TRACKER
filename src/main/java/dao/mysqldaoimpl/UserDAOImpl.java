@@ -1,9 +1,9 @@
-package dao.mySQL_DAOImpl;
+package dao.mysqldaoimpl;
 
 import constants.MessageConstants;
 import constants.Parameters;
 import constants.QueriesDB;
-import dao.interfacesDAO.UserDAO;
+import dao.interfacesdao.UserDAO;
 import entities.User;
 import entities.UserType;
 import exceptions.DAOException;

@@ -1,9 +1,9 @@
-package dao.daoFactory;
+package dao.daofactory;
 
 
-import dao.interfacesDAO.ActivityDAO;
-import dao.interfacesDAO.TrackingDAO;
-import dao.interfacesDAO.UserDAO;
+import dao.interfacesdao.ActivityDAO;
+import dao.interfacesdao.TrackingDAO;
+import dao.interfacesdao.UserDAO;
 
 /**
  * Description: This abstract class allowed to work with different type of databases,

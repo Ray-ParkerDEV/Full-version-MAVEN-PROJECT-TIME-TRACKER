@@ -1,4 +1,4 @@
-package utils.controllerUtils;
+package servlet;
 
 import commands.factory.CommandType;
 import constants.Parameters;
