@@ -1,5 +1,6 @@
 package dao.mysqldaoimpl;
 
+import connection.ConnectionPool;
 import constants.MessageConstants;
 import constants.Parameters;
 import constants.QueriesDB;
@@ -7,7 +8,6 @@ import dao.interfacesdao.UserDAO;
 import entities.User;
 import entities.UserType;
 import exceptions.DAOException;
-import utils.ConnectorDB;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -67,7 +67,7 @@ public class UserDAOImpl implements UserDAO {
             logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
             throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
         } finally {
-            ConnectorDB.closeStatement(statement);
+            ConnectionPool.closeStatement(statement);
         }
     }
 
@@ -98,8 +98,8 @@ public class UserDAOImpl implements UserDAO {
             logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
             throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
         } finally {
-            ConnectorDB.closeResultSet(resultSet);
-            ConnectorDB.closeStatement(statement);
+            ConnectionPool.closeResultSet(resultSet);
+            ConnectionPool.closeStatement(statement);
         }
         return isLogined;
     }
@@ -126,7 +126,7 @@ public class UserDAOImpl implements UserDAO {
             logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
             throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
         } finally {
-            ConnectorDB.closeStatement(statement);
+            ConnectionPool.closeStatement(statement);
         }
     }
 
@@ -147,7 +147,7 @@ public class UserDAOImpl implements UserDAO {
             logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
             throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
         } finally {
-            ConnectorDB.closeStatement(statement);
+            ConnectionPool.closeStatement(statement);
         }
     }
 
@@ -174,8 +174,8 @@ public class UserDAOImpl implements UserDAO {
             logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
             throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
         } finally {
-            ConnectorDB.closeResultSet(resultSet);
-            ConnectorDB.closeStatement(statement);
+            ConnectionPool.closeResultSet(resultSet);
+            ConnectionPool.closeStatement(statement);
         }
         return user;
     }
@@ -203,8 +203,8 @@ public class UserDAOImpl implements UserDAO {
             logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
             throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
         } finally {
-            ConnectorDB.closeResultSet(resultSet);
-            ConnectorDB.closeStatement(statement);
+            ConnectionPool.closeResultSet(resultSet);
+            ConnectionPool.closeStatement(statement);
         }
         return user;
     }
@@ -230,8 +230,8 @@ public class UserDAOImpl implements UserDAO {
             logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
             throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
         } finally {
-            ConnectorDB.closeResultSet(resultSet);
-            ConnectorDB.closeStatement(statement);
+            ConnectionPool.closeResultSet(resultSet);
+            ConnectionPool.closeStatement(statement);
         }
         return users;
     }
@@ -286,8 +286,8 @@ public class UserDAOImpl implements UserDAO {
             logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
             throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
         } finally {
-            ConnectorDB.closeResultSet(resultSet);
-            ConnectorDB.closeStatement(statement);
+            ConnectionPool.closeResultSet(resultSet);
+            ConnectionPool.closeStatement(statement);
         }
         return isUniqueUser;
     }

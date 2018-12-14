@@ -1,4 +1,4 @@
-package dao.services;
+package services;
 
 import connection.ConnectionPool;
 import constants.MessageConstants;
@@ -8,7 +8,6 @@ import dao.interfacesdao.UserDAO;
 import entities.User;
 import exceptions.DAOException;
 import org.apache.log4j.Logger;
-import utils.ConnectorDB;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Connection;
@@ -87,7 +86,7 @@ public class UserService {
         User user = null;
         Connection connection = null;
         try {
-            connection = ConnectorDB.getConnection();
+            connection = ConnectionPool.getInstance().getConnection();
             connection.setAutoCommit(false);
             user = mySqlUserDao.getByLogin(login, connection);
             connection.commit();
@@ -99,7 +98,7 @@ public class UserService {
             logger.error(MessageConstants.TRANSACTION_FAILED);
             throw new SQLException(e);
         } finally {
-            ConnectorDB.closeConnection(connection);
+            ConnectionPool.getInstance().closeConnection(connection);
         }
         return user;
     }
@@ -113,7 +112,7 @@ public class UserService {
     public void updateUser(User user) throws SQLException {
         Connection connection = null;
         try {
-            connection = ConnectorDB.getConnection();
+            connection = ConnectionPool.getInstance().getConnection();
             connection.setAutoCommit(false);
             mySqlUserDao.update(user, connection);
             connection.commit();
@@ -125,7 +124,7 @@ public class UserService {
             logger.error(MessageConstants.TRANSACTION_FAILED);
             throw new SQLException(e);
         } finally {
-            ConnectorDB.closeConnection(connection);
+            ConnectionPool.getInstance().closeConnection(connection);
         }
     }
 
@@ -140,7 +139,7 @@ public class UserService {
         boolean isUnique = false;
         Connection connection = null;
         try {
-            connection = ConnectorDB.getConnection();
+            connection = ConnectionPool.getInstance().getConnection();
             connection.setAutoCommit(false);
             if (mySqlUserDao.checkUniqueUser(user.getLogin(), connection)) {
                 isUnique = true;
@@ -154,7 +153,7 @@ public class UserService {
             logger.error(MessageConstants.TRANSACTION_FAILED);
             throw new SQLException(e);
         } finally {
-            ConnectorDB.closeConnection(connection);
+            ConnectionPool.getInstance().closeConnection(connection);
         }
         return isUnique;
     }
@@ -168,7 +167,7 @@ public class UserService {
     public void registerUser(User user) throws SQLException {
         Connection connection = null;
         try {
-            connection = ConnectorDB.getConnection();
+            connection = ConnectionPool.getInstance().getConnection();
             connection.setAutoCommit(false);
             mySqlUserDao.add(user, connection);
             connection.commit();
@@ -180,7 +179,7 @@ public class UserService {
             logger.error(MessageConstants.TRANSACTION_FAILED);
             throw new SQLException(e);
         } finally {
-            ConnectorDB.closeConnection(connection);
+            ConnectionPool.getInstance().closeConnection(connection);
         }
     }
 
@@ -193,14 +192,5 @@ public class UserService {
     public void setParamToSession(User user, HttpSession session) {
         session.setAttribute(Parameters.USER, user);
         session.setAttribute(Parameters.USER_TYPE, String.valueOf(user.getUserType()));
-        switch (user.getUserType()) {
-            case CLIENT:
-                //code...
-                break;
-            case ADMIN:
-                break;
-            default:
-                break;
-        }
     }
 }

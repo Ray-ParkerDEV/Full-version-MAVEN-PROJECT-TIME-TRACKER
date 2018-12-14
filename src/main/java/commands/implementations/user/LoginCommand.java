@@ -4,10 +4,10 @@ import commands.BasicCommand;
 import constants.MessageConstants;
 import constants.Parameters;
 import constants.PathPageConstants;
-import dao.services.UserService;
+import services.UserService;
 import entities.User;
 import manager.ConfigManagerPages;
-import servlet.RequestParameterIdentifier;
+import utils.RequestParameterIdentifier;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;

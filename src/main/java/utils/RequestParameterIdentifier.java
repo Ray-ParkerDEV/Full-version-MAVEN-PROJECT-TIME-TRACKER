@@ -1,4 +1,4 @@
-package servlet;
+package utils;
 
 import commands.factory.CommandType;
 import constants.Parameters;

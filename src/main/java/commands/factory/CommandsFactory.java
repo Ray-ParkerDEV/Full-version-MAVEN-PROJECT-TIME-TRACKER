@@ -2,7 +2,7 @@ package commands.factory;
 
 import commands.BasicCommand;
 import constants.MessageConstants;
-import servlet.RequestParameterIdentifier;
+import utils.RequestParameterIdentifier;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;

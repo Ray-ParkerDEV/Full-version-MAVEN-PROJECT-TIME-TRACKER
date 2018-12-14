@@ -4,7 +4,7 @@ import commands.BasicCommand;
 import constants.Parameters;
 import constants.PathPageConstants;
 import manager.ConfigManagerPages;
-import servlet.RequestParameterIdentifier;
+import utils.RequestParameterIdentifier;
 
 import javax.servlet.http.HttpServletRequest;
 

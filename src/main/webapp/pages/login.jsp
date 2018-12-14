@@ -14,7 +14,7 @@
 					Login:<br/><input class="inputElement" type="text" name="login" value=""/><br/>
 					Password:<br/><input class="inputElement" type="password" name="password" value=""/><br/><br/>
 					<input type="submit" value="Log In"/>
-					<input type="button" value="Registration" onclick='location.href="servlet?command=gotoregistration"'/>
+					<input type="button" value="Registration" onclick='location.href="controller?command=gotoregistration"'/>
 				</fieldset>
 				<div class="errorMessage">
 					</br>${errorLoginOrPassword}

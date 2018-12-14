@@ -5,8 +5,6 @@
     <head>
         <title>Clients account page</title>
         <link rel="stylesheet" type="text/css" href="/css/clientMain.css"/>
-        <link rel="stylesheet" type="text/css" href="/css/tcal.css"/>
-        <script type="text/javascript" src="/js/tcal_en.js"></script>
     </head>
     <body>
         <div class="wrapperWelcomeInfo">
