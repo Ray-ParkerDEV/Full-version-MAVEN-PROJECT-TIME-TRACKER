@@ -9,7 +9,7 @@
     <body>
         <div class="wrapperWelcomeInfo">
             <div class="welcomeElement">
-                Administration service of Airline Company.
+                Administration service of TIMETRACKER.
                 <%--<br/>Administrator <i>${user.getFirstName()} ${user.getSurname()}</i>.--%>
             </div>
         </div>

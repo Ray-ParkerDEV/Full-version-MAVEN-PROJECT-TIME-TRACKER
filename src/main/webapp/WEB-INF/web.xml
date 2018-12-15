@@ -15,7 +15,9 @@
         <url-pattern>/controller</url-pattern>
     </servlet-mapping>
     <!--Servlet description end-->
-
+    <session-config>
+        <session-timeout>1</session-timeout>
+    </session-config>
     <!--Filter descripption start-->
     <filter>
         <filter-name>EncodingFilter</filter-name>

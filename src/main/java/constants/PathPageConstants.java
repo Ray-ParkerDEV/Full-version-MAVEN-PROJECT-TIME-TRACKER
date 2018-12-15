@@ -7,6 +7,7 @@ package constants;
  */
 public class PathPageConstants {
     public static final String INDEX_PAGE_PATH = "path.page.index";
+    public static final String SESSION_PAGE_PATH = "path.page.session";
     public static final String LOGIN_PAGE_PATH = "path.page.login";
     public static final String CLIENT_PAGE_PATH = "path.page.client";
     public static final String ADMIN_PAGE_PATH = "path.page.admin";

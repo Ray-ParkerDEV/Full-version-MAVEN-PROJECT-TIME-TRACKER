@@ -4,11 +4,11 @@ import commands.BasicCommand;
 import constants.MessageConstants;
 import constants.Parameters;
 import constants.PathPageConstants;
-import services.UserService;
 import entities.User;
 import manager.ConfigManagerPages;
-import utils.RequestParameterIdentifier;
 import org.apache.log4j.Logger;
+import services.UserService;
+import utils.RequestParameterIdentifier;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -38,11 +38,11 @@ public class LoginCommand implements BasicCommand {
     public String execute(HttpServletRequest request) {
         String page = null;
         User user = RequestParameterIdentifier.getUserLoginPasswordFromRequest(request);
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
         try {
             if (UserService.getInstance().checkUserAuthorization(user.getLogin(), user.getPassword())) {
                 user = UserService.getInstance().getUserByLogin(user.getLogin());
-                UserService.getInstance().setParamToSession(user, session);
+                UserService.getInstance().setAttributeToSession(user, session);
                 switch (user.getUserType()) {
                     case ADMIN:
                         page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH);

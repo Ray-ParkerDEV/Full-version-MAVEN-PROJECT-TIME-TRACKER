@@ -189,7 +189,7 @@ public class UserService {
      *
      * @param session - an object of the current session.
      */
-    public void setParamToSession(User user, HttpSession session) {
+    public void setAttributeToSession(User user, HttpSession session) {
         session.setAttribute(Parameters.USER, user);
         session.setAttribute(Parameters.USER_TYPE, String.valueOf(user.getUserType()));
     }

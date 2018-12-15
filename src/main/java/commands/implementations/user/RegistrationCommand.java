@@ -7,6 +7,7 @@ import constants.PathPageConstants;
 import services.UserService;
 import entities.User;
 import manager.ConfigManagerPages;
+import servlet.Controller;
 import utils.RequestParameterIdentifier;
 import org.apache.log4j.Logger;
 
@@ -15,7 +16,7 @@ import java.sql.SQLException;
 
 /**
  * Description: This describes actions of registration new user.
- *
+ * <p>
  * Created by Yaroslav Bodyak on 11.12.2018.
  */
 public class RegistrationCommand implements BasicCommand {
@@ -24,8 +25,8 @@ public class RegistrationCommand implements BasicCommand {
     /**
      * This method describes the registration logic. The method uses methods of the RequestParameterIdentifier and UserService.
      *
-     * @param request   - request which will be processed.
-     * @return          - a page which user will be directed to.
+     * @param request - request which will be processed.
+     * @return - a page which user will be directed to.
      */
     @Override
     public String execute(HttpServletRequest request) {
@@ -38,6 +39,7 @@ public class RegistrationCommand implements BasicCommand {
                     request.setAttribute(Parameters.SUCCESS_REGISTRATION, MessageConstants.SUCCESS_REGISTRATION);
                     page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.LOGIN_PAGE_PATH);
                     logger.info(MessageConstants.SUCCESS_REGISTRATION);
+                    Controller.flag = true;
                 } else {
                     request.setAttribute(Parameters.USER_UNIQUE_ERROR, MessageConstants.USER_EXISTS);
                     page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.REGISTRATION_PAGE_PATH);

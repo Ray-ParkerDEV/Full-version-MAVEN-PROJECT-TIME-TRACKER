@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
@@ -19,6 +20,7 @@ import java.io.IOException;
  * Created by Yaroslav Bodyak on 11.12.2018.
  */
 public class Controller extends HttpServlet {
+    public static boolean flag = true;
 
     public Controller() {
     }
@@ -44,19 +46,36 @@ public class Controller extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       // SessionLogic.print(request, response);
-        CommandsFactory factory = CommandsFactory.getInstance();
-        BasicCommand command = factory.defineCommand(request);
-        String page = command.execute(request);
-        if (page != null) {
+        HttpSession session = null;
+
+        if (flag) {
+            session = request.getSession();
+            int timeLive = 5;
+            session.setMaxInactiveInterval(timeLive);
+            flag = false;
+        }else {
+            session = request.getSession(false);
+        }
+        if (session==null) {
+            String page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.SESSION_PAGE_PATH);
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
             dispatcher.forward(request, response);
-//            RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher(page);
-//            dispatcher.forward(request, response);
+            //flag = true;
         } else {
-            page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.INDEX_PAGE_PATH);
-            response.sendRedirect(request.getContextPath() + page);
+            CommandsFactory factory = CommandsFactory.getInstance();
+            BasicCommand command = factory.defineCommand(request);
+            String page = command.execute(request);
+            if (page != null) {
+                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
+                dispatcher.forward(request, response);
+            } else {
+                page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.INDEX_PAGE_PATH);
+                response.sendRedirect(request.getContextPath() + page);
+                flag = true;
+            }
         }
+
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

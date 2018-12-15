@@ -7,10 +7,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 
-/**
- *
- * @author Artem
- */
 public class SessionLogic {
 
     public static void print(HttpServletRequest request, HttpServletResponse response) {
@@ -23,10 +19,10 @@ public class SessionLogic {
             out.write("<br/> Time" + new Date(session.getCreationTime()));
             out.write("</br> Last access" + new Date(session.getLastAccessedTime()));
             out.write("<br> Seesin Id" + session.getId());
-            
-            int interval = 10;//60*30;
+
+            int interval = 10;//60*30; // timeLive, sec
             session.setMaxInactiveInterval(interval);
-            
+            out.write("<br>Set max inactive interval : " + interval + "sec");
             out.flush();
             out.close();
         } catch (IOException ex) {
@@ -35,7 +31,7 @@ public class SessionLogic {
         }
     }
 
-    private static int sessionCounter(HttpSession session) {
+    public static Integer sessionCounter(HttpSession session) {
         Integer counter = (Integer) session.getAttribute("counter");
         if (counter == null) {
             session.setAttribute("counter", 1);
@@ -55,14 +51,14 @@ public class SessionLogic {
             out.write("<br> Session alive");
             out.flush();
             out.close();
-        } catch (NullPointerException e){
-            if (out!= null){
+        } catch (NullPointerException e) {
+            if (out != null) {
                 out.print("Session disable");
             }
         } catch (IOException ex) {
             ex.printStackTrace();
             throw new RuntimeException("error i/o:" + ex);
         }
-        
+
     }
 }
