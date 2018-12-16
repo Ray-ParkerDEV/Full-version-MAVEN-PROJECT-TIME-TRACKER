@@ -163,6 +163,7 @@ public class UserDAOImpl implements UserDAO {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         User user = new User();
+       // UserType userType = new UserType();
         try {
             statement = connection.prepareStatement(QueriesDB.GET_USER_BY_LOGIN);
             statement.setString(1, login);
@@ -251,14 +252,8 @@ public class UserDAOImpl implements UserDAO {
         user.setSurName(resultSet.getString(Parameters.SURNAME));
         user.setLogin(resultSet.getString(Parameters.LOGIN));
         user.setPassword(resultSet.getString(Parameters.PASSWORD));
-        switch (resultSet.getString(Parameters.USER_TYPE)) {
-            case Parameters.CLIENT:
-                user.setUserType(UserType.CLIENT);
-                break;
-            case Parameters.ADMIN:
-                user.setUserType(UserType.ADMIN);
-                break;
-        }
+        user.setUserType(new UserType(resultSet.getInt(Parameters.USER_TYPE_ID)
+                ,resultSet.getString(Parameters.USER_TYPE)));
         return user;
     }
 

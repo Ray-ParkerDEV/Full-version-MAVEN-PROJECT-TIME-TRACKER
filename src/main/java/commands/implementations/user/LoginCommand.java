@@ -43,11 +43,11 @@ public class LoginCommand implements BasicCommand {
             if (UserService.getInstance().checkUserAuthorization(user.getLogin(), user.getPassword())) {
                 user = UserService.getInstance().getUserByLogin(user.getLogin());
                 UserService.getInstance().setAttributeToSession(user, session);
-                switch (user.getUserType()) {
-                    case ADMIN:
+                switch (user.getUserType().getUserType()) {
+                    case "admin":
                         page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH);
                         break;
-                    case CLIENT:
+                    case "client":
                         page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.CLIENT_PAGE_PATH);
                         break;
                     default:

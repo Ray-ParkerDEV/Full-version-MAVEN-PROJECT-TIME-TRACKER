@@ -2,7 +2,7 @@ package entities;
 
 /**
  * Description: This class contains constants which describe different types of users.
- *
+ * <p>
  * Created by Yaroslav Bodyak on 11.12.2018.
  */
 public class UserType {
@@ -10,10 +10,10 @@ public class UserType {
     private Integer userTypeId;
     private String userType;
 
-    UserType() {
+    public UserType() {
     }
 
-    UserType(Integer userTypeId, String userType) {
+    public UserType(Integer userTypeId, String userType) {
         this.userTypeId = userTypeId;
         this.userType = userType;
     }

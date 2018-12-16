@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * Description: This class identifies request parameters.
- *
+ * <p>
  * Created by Yaroslav Bodyak on 11.12.2018.
  */
 public class RequestParameterIdentifier {
@@ -17,8 +17,8 @@ public class RequestParameterIdentifier {
     /**
      * This method identifies a type command from request.
      *
-     * @param request   - object of request.
-     * @return          - type of command that will be executed.
+     * @param request - object of request.
+     * @return - type of command that will be executed.
      */
     public static CommandType getCommandFromRequest(HttpServletRequest request) {
         CommandType commandType = CommandType.DEFAULT;
@@ -32,23 +32,21 @@ public class RequestParameterIdentifier {
     /**
      * This method defines user type from request.
      *
-     * @param request   - object of request.
-     * @return          - user type; it can be client or admin.
+     * @param request - object of request.
+     * @return - user type; it can be client or admin.
      */
     public static UserType getUserTypeFromRequest(HttpServletRequest request) {
-        String userType = String.valueOf(request.getSession().getAttribute(Parameters.USER_TYPE));
-        if (!userType.isEmpty() && userType.equals(Parameters.CLIENT)) {
-            return UserType.CLIENT;
-        }
-        return UserType.ADMIN;
+        Integer userTypeID = Integer.valueOf(request.getSession().getAttribute(Parameters.USER_TYPE_ID).toString());
+        String userType = request.getSession().getAttribute(Parameters.USER_TYPE).toString();
+        return new UserType(userTypeID, userType);
     }
 
     /**
      * This method receives users login and password from an object of request
      * and constructs an user with the corresponding fields.
      *
-     * @param request   - object of request.
-     * @return          - an user with the following fields: login and password.
+     * @param request - object of request.
+     * @return - an user with the following fields: login and password.
      */
     public static User getUserLoginPasswordFromRequest(HttpServletRequest request) {
         User user = new User();
@@ -69,15 +67,15 @@ public class RequestParameterIdentifier {
      * and sets this values to the corresponding fields of the user which is passed
      * to the method as parameter.
      *
-     * @param user      - user, which fields will be updated.
-     * @param request   - request object with necessaries parameters.
-     * @return          - user object with updated fields.
+     * @param user    - user, which fields will be updated.
+     * @param request - request object with necessaries parameters.
+     * @return - user object with updated fields.
      */
     public static User updateUserFromRequest(User user, HttpServletRequest request) {
         String firstName = request.getParameter(Parameters.FIRST_NAME);
         String surname = request.getParameter(Parameters.SURNAME);
         String login = request.getParameter(Parameters.LOGIN);
-        if ( (firstName != null && !firstName.isEmpty())
+        if ((firstName != null && !firstName.isEmpty())
                 & (surname != null && !surname.isEmpty())
                 & (login != null && !login.isEmpty())) {
             user.setFirstName(firstName);
@@ -91,8 +89,8 @@ public class RequestParameterIdentifier {
      * This method receives first name, surname, login and password from request
      * and sets this values to the corresponding fields of the user.
      *
-     * @param request   - an object of request with necessary parameters.
-     * @return          - user object with updated fields.
+     * @param request - an object of request with necessary parameters.
+     * @return - user object with updated fields.
      */
     public static User getUserFromRequest(HttpServletRequest request) {
         User user = new User();
@@ -100,15 +98,17 @@ public class RequestParameterIdentifier {
         String surname = request.getParameter(Parameters.SURNAME);
         String login = request.getParameter(Parameters.LOGIN);
         String password = request.getParameter(Parameters.PASSWORD);
-        if ( (firstName != null && !firstName.isEmpty())
+        if ((firstName != null && !firstName.isEmpty())
                 & (surname != null && !surname.isEmpty())
                 & (login != null && !login.isEmpty())
-                & (password != null && !password.isEmpty()) ) {
+                & (password != null && !password.isEmpty())) {
             user.setFirstName(firstName);
             user.setSurName(surname);
             user.setLogin(login);
             user.setPassword(password);
-            user.setUserType(UserType.CLIENT);
+            Integer userTypeID = Integer.valueOf((String)request.getSession().getAttribute(Parameters.USER_TYPE_ID));
+            String userType = request.getSession().getAttribute(Parameters.USER_TYPE).toString();
+            user.setUserType(new UserType(userTypeID, userType));
         }
         return user;
     }
@@ -116,8 +116,8 @@ public class RequestParameterIdentifier {
     /**
      * This method receives a name of the page from the request.
      *
-     * @param request   - request object with necessaries parameters.
-     * @return          - a name of the page from request.
+     * @param request - request object with necessaries parameters.
+     * @return - a name of the page from request.
      */
     public static String getPageFromRequest(HttpServletRequest request) {
         String pageFromRequest = request.getSession().getAttribute(Parameters.BACK_PAGE).toString();
@@ -132,11 +132,11 @@ public class RequestParameterIdentifier {
     /**
      * This method checks if the fields of the form are filled.
      *
-     * @param request   - an object of request with necessary parameters.
-     * @return          - boolean value of the condition.
+     * @param request - an object of request with necessary parameters.
+     * @return - boolean value of the condition.
      */
     public static boolean areFieldsFilled(HttpServletRequest request) {
-        if ( !request.getParameter(Parameters.LOGIN).isEmpty()
+        if (!request.getParameter(Parameters.LOGIN).isEmpty()
                 && !request.getParameter(Parameters.PASSWORD).isEmpty()
                 && !request.getParameter(Parameters.FIRST_NAME).isEmpty()
                 && !request.getParameter(Parameters.SURNAME).isEmpty()) {
@@ -150,8 +150,8 @@ public class RequestParameterIdentifier {
      * This method receives an user object from the session object retrieved from the request instance.
      * An user object was passed into the session object while the login operation has been executing.
      *
-     * @param request   - an object of request.
-     * @return          - an user object.
+     * @param request - an object of request.
+     * @return - an user object.
      */
     public static User getUserFromSession(HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute(Parameters.USER);
