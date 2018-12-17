@@ -5,7 +5,6 @@ import dao.interfacesdao.UserDAO;
 import entities.User;
 import entities.UserType;
 import exceptions.DAOException;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Connection;
@@ -24,14 +23,14 @@ public class UserServiceTest {
     private UserDAO userDAOMock;
     private ConnectionPool connectionPoolMock;
 
-    @Before
-    public void setUp() {
-        userDAOMock = mock(UserDAO.class);
-        userService = UserService.getInstance();
-        userService.setUserDao(userDAOMock);
-        connectionPoolMock = mock(ConnectionPool.class);
-        userService.setConnectionPool(connectionPoolMock);
-    }
+//    @Before
+//    public void setUp() {
+//        userDAOMock = mock(UserDAO.class);
+//        userService = UserService.getInstance();
+//        userService.setUserDao(userDAOMock);
+//        connectionPoolMock = mock(ConnectionPool.class);
+//        userService.setConnectionPool(connectionPoolMock);
+//    }
 
     @Test
     public void checkUserAuthorizationSuccess() throws SQLException, DAOException {
@@ -52,7 +51,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void getUserByLoginSuccess() throws SQLException, DAOException {
+    public void getUserByLoginSuccess() throws Exception {
         Connection connectionMock = mock(Connection.class);
         User user = new User(3, "Ievgen", "Kopachev", "admin", "admin",
                 new UserType(5, "admin"));
@@ -64,7 +63,7 @@ public class UserServiceTest {
     }
 
     @Test (expected = SQLException.class)
-    public void getUserByLoginFailed() throws SQLException, DAOException {
+    public void getUserByLoginFailed() throws Exception {
         Connection connectionMock = mock(Connection.class);
         when(connectionPoolMock.getConnection()).thenReturn(connectionMock);
         when(userDAOMock.getByLogin(eq("admin"), eq(connectionMock)))

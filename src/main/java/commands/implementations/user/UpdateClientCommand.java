@@ -4,12 +4,11 @@ import commands.BasicCommand;
 import constants.MessageConstants;
 import constants.Parameters;
 import constants.PathPageConstants;
-import services.ServiceFactory;
-import services.UserService;
 import entities.User;
 import manager.ConfigManagerPages;
-import utils.RequestParameterIdentifier;
 import org.apache.log4j.Logger;
+import services.UserService;
+import utils.RequestParameterIdentifier;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
@@ -21,13 +20,8 @@ import java.sql.SQLException;
  */
 public class UpdateClientCommand implements BasicCommand {
     private final static Logger logger = Logger.getLogger(UpdateClientCommand.class);
-    private UserService userService;
 
-    public UpdateClientCommand() {
-        userService = (UserService) ServiceFactory.getInstance().getService("userService");
-    }
-
-    /**
+     /**
      * This method describes actions of update information about user.
      *
      * @param request - request which will be processed.
@@ -38,9 +32,9 @@ public class UpdateClientCommand implements BasicCommand {
         String page = null;
         User user = RequestParameterIdentifier.getUserLoginPasswordFromRequest(request);
         try {
-            user = userService.getUserByLogin(user.getLogin());
+            user =  UserService.getInstance().getUserByLogin(user.getLogin());
             user = RequestParameterIdentifier.updateUserFromRequest(user, request);
-            userService.updateUser(user);
+            UserService.getInstance().updateUser(user);
             request.getSession().setAttribute(Parameters.SUCCESS_UPDATE, Parameters.TRUE);
             page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.CLIENT_PAGE_PATH);
         } catch (SQLException e) {

@@ -7,7 +7,6 @@ import constants.PathPageConstants;
 import entities.User;
 import manager.ConfigManagerPages;
 import org.apache.log4j.Logger;
-import services.ServiceFactory;
 import services.UserService;
 import utils.RequestParameterIdentifier;
 
@@ -22,11 +21,6 @@ import java.sql.SQLException;
  */
 public class LoginCommand implements BasicCommand {
     private final static Logger logger = Logger.getLogger(LoginCommand.class);
-    private UserService userService;
-
-    public LoginCommand() {
-        userService = (UserService) ServiceFactory.getInstance().getService("userService");
-    }
 
     /**
      * This method describes the logon logic. The method uses methods of the RequestParameterIdentifier and UserService
@@ -46,9 +40,9 @@ public class LoginCommand implements BasicCommand {
         User user = RequestParameterIdentifier.getUserLoginPasswordFromRequest(request);
         HttpSession session = request.getSession(false);
         try {
-            if (userService.checkUserAuthorization(user.getLogin(), user.getPassword())) {
-                user = userService.getUserByLogin(user.getLogin());
-                userService.setAttributeToSession(user, session);
+            if ( UserService.getInstance().checkUserAuthorization(user.getLogin(), user.getPassword())) {
+                user =  UserService.getInstance().getUserByLogin(user.getLogin());
+                UserService.getInstance().setAttributeToSession(user, session);
                 switch (user.getUserType().getUserType()) {
                     case "admin":
                         page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH);

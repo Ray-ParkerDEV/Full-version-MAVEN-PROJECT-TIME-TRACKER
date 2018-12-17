@@ -1,15 +1,13 @@
 package services;
 
-import connection.ConnectionPool;
-import constants.MessageConstants;
+import connection.TransactionHandler;
 import constants.Parameters;
+import dao.daofactory.DaoFactory;
 import dao.interfacesdao.UserDAO;
 import entities.User;
-import exceptions.DAOException;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
-import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
@@ -22,10 +20,12 @@ public class UserService {
 
     private final static Logger logger = Logger.getLogger(UserService.class);
     private volatile static UserService instance;
-    private UserDAO userDao;
-    private ConnectionPool connectionPool;
+    private DaoFactory mySqlFactory;
+    private UserDAO userDAO;
 
     private UserService() {
+        mySqlFactory = DaoFactory.getDaoFactory(DaoFactory.MYSQL);
+        userDAO = mySqlFactory.getUserDao();
     }
 
     /**
@@ -44,14 +44,6 @@ public class UserService {
         return instance;
     }
 
-    public void setUserDao(UserDAO userDao) {
-        this.userDao = userDao;
-    }
-
-    public void setConnectionPool(ConnectionPool connectionPool) {
-        this.connectionPool = connectionPool;
-    }
-
     /**
      * This method checks if the user's login and password are correct. This method implements work with transaction support.
      *
@@ -61,26 +53,11 @@ public class UserService {
      * @throws SQLException
      */
     public boolean checkUserAuthorization(String login, String password) throws SQLException {
-        boolean isAuthorized = false;
-        Connection connection = null;
-        try {
-            //connection = ConnectorDB.getConnection();
-            connection = connectionPool.getConnection();
-            connection.setAutoCommit(false);
-            isAuthorized = userDao.isAuthorized(login, password, connection);
-            connection.commit();
-            logger.info(MessageConstants.TRANSACTION_SUCCEEDED);
-        } catch (SQLException | DAOException e) {
-            if (connection != null) {
-                connection.rollback();
-            }
-            logger.error(MessageConstants.TRANSACTION_FAILED, e);
-            throw new SQLException(e);
-        } finally {
-            //ConnectorDB.closeConnection(connection);
-            connectionPool.closeConnection(connection);
-        }
-        return isAuthorized;
+        final boolean [] isAuthorized = new boolean[1];
+        TransactionHandler.runInTransaction(connection ->
+                isAuthorized[0] = userDAO.isAuthorized(login, password, connection)
+        );
+        return isAuthorized[0];
     }
 
     /**
@@ -90,24 +67,11 @@ public class UserService {
      * @return - User object.
      */
     public User getUserByLogin(String login) throws SQLException {
-        User user = null;
-        Connection connection = null;
-        try {
-            connection = connectionPool.getConnection();
-            connection.setAutoCommit(false);
-            user = userDao.getByLogin(login, connection);
-            connection.commit();
-            logger.info(MessageConstants.TRANSACTION_SUCCEEDED);
-        } catch (SQLException | DAOException e) {
-            if (connection != null) {
-                connection.rollback();
-            }
-            logger.error(MessageConstants.TRANSACTION_FAILED);
-            throw new SQLException(e);
-        } finally {
-            connectionPool.closeConnection(connection);
-        }
-        return user;
+        final User[] user = new User[1];
+        TransactionHandler.runInTransaction(connection ->
+            user[0] = userDAO.getByLogin(login,connection)
+        );
+        return user[0];
     }
 
     /**
@@ -117,22 +81,9 @@ public class UserService {
      * @throws SQLException
      */
     public void updateUser(User user) throws SQLException {
-        Connection connection = null;
-        try {
-            connection = connectionPool.getConnection();
-            connection.setAutoCommit(false);
-            userDao.update(user, connection);
-            connection.commit();
-            logger.info(MessageConstants.TRANSACTION_SUCCEEDED);
-        } catch (SQLException | DAOException e) {
-            if (connection != null) {
-                connection.rollback();
-            }
-            logger.error(MessageConstants.TRANSACTION_FAILED);
-            throw new SQLException(e);
-        } finally {
-            connectionPool.closeConnection(connection);
-        }
+        TransactionHandler.runInTransaction(connection ->
+                userDAO.update(user, connection)
+        );
     }
 
     /**
@@ -143,26 +94,11 @@ public class UserService {
      * @throws SQLException
      */
     public boolean isUniqueUser(User user) throws SQLException {
-        boolean isUnique = false;
-        Connection connection = null;
-        try {
-            connection = connectionPool.getConnection();
-            connection.setAutoCommit(false);
-            if (userDao.checkUniqueUser(user.getLogin(), connection)) {
-                isUnique = true;
-            }
-            connection.commit();
-            logger.info(MessageConstants.TRANSACTION_SUCCEEDED);
-        } catch (SQLException | DAOException e) {
-            if (connection != null) {
-                connection.rollback();
-            }
-            logger.error(MessageConstants.TRANSACTION_FAILED);
-            throw new SQLException(e);
-        } finally {
-            connectionPool.closeConnection(connection);
-        }
-        return isUnique;
+        final boolean [] isUnique = new boolean[1];
+        TransactionHandler.runInTransaction(connection ->
+                isUnique[0] = userDAO.checkUniqueUser(user.getLogin(), connection)
+        );
+        return isUnique[0];
     }
 
     /**
@@ -172,22 +108,9 @@ public class UserService {
      * @throws SQLException
      */
     public void registerUser(User user) throws SQLException {
-        Connection connection = null;
-        try {
-            connection = connectionPool.getConnection();
-            connection.setAutoCommit(false);
-            userDao.add(user, connection);
-            connection.commit();
-            logger.info(MessageConstants.TRANSACTION_SUCCEEDED);
-        } catch (SQLException | DAOException e) {
-            if (connection != null) {
-                connection.rollback();
-            }
-            logger.error(MessageConstants.TRANSACTION_FAILED);
-            throw new SQLException(e);
-        } finally {
-            connectionPool.closeConnection(connection);
-        }
+        TransactionHandler.runInTransaction(connection ->
+                userDAO.add(user, connection)
+        );
     }
 
     /**
