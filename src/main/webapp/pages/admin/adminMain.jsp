@@ -255,7 +255,7 @@
 <!------------------------------------------------------------------------------------------------------------------->
             <!--USER TYPE-->
             <div class="userTypeElement">
-                </br>${String.valueOf(user.getUserType())}
+                </br>${user.getUserType().getUserType()}
                 <%--<spec:if test="${sessionScope.flightRegisterSuccess eq 'true'}">--%>
                     <%--<i> : MESSAGE : Flight has been created.</i>--%>
                 <%--</spec:if>--%>

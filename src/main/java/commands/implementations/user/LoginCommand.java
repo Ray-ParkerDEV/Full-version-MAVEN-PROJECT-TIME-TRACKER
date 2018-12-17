@@ -7,6 +7,7 @@ import constants.PathPageConstants;
 import entities.User;
 import manager.ConfigManagerPages;
 import org.apache.log4j.Logger;
+import services.ServiceFactory;
 import services.UserService;
 import utils.RequestParameterIdentifier;
 
@@ -16,23 +17,28 @@ import java.sql.SQLException;
 
 /**
  * Description: This class describes actions of logon logic.
- *
+ * <p>
  * Created by Yaroslav Bodyak on 11.12.2018.
  */
 public class LoginCommand implements BasicCommand {
     private final static Logger logger = Logger.getLogger(LoginCommand.class);
+    private UserService userService;
+
+    public LoginCommand() {
+        userService = (UserService) ServiceFactory.getInstance().getService("userService");
+    }
 
     /**
      * This method describes the logon logic. The method uses methods of the RequestParameterIdentifier and UserService
      * classes and works according to the following steps:
-     *      - getting an user object from request object using login and password saved in the corresponding request
-     *      object using the <i>getUserLoginPasswordFromRequest(...)<i/> method;
-     *      - checking user's authorization using the <i>checkUserAuthorization(...)</i> method;
-     *      - if the user is authorized the user's are created using the <i>getUserByLogin(...)<i/> method;
-     *      - generating the page according to the user's type (client or admin).
+     * - getting an user object from request object using login and password saved in the corresponding request
+     * object using the <i>getUserLoginPasswordFromRequest(...)<i/> method;
+     * - checking user's authorization using the <i>checkUserAuthorization(...)</i> method;
+     * - if the user is authorized the user's are created using the <i>getUserByLogin(...)<i/> method;
+     * - generating the page according to the user's type (client or admin).
      *
-     * @param request   - request which will be processed.
-     * @return          - a page which user will be directed to.
+     * @param request - request which will be processed.
+     * @return - a page which user will be directed to.
      */
     @Override
     public String execute(HttpServletRequest request) {
@@ -40,9 +46,9 @@ public class LoginCommand implements BasicCommand {
         User user = RequestParameterIdentifier.getUserLoginPasswordFromRequest(request);
         HttpSession session = request.getSession(false);
         try {
-            if (UserService.getInstance().checkUserAuthorization(user.getLogin(), user.getPassword())) {
-                user = UserService.getInstance().getUserByLogin(user.getLogin());
-                UserService.getInstance().setAttributeToSession(user, session);
+            if (userService.checkUserAuthorization(user.getLogin(), user.getPassword())) {
+                user = userService.getUserByLogin(user.getLogin());
+                userService.setAttributeToSession(user, session);
                 switch (user.getUserType().getUserType()) {
                     case "admin":
                         page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH);

@@ -50,7 +50,7 @@ public class Controller extends HttpServlet {
 
         if (flag) {
             session = request.getSession();
-            int timeLive = 5;
+            int timeLive = 60;
             session.setMaxInactiveInterval(timeLive);
             flag = false;
         }else {

@@ -4,6 +4,7 @@ import commands.BasicCommand;
 import constants.MessageConstants;
 import constants.Parameters;
 import constants.PathPageConstants;
+import services.ServiceFactory;
 import services.UserService;
 import entities.User;
 import manager.ConfigManagerPages;
@@ -20,6 +21,11 @@ import java.sql.SQLException;
  */
 public class UpdateClientCommand implements BasicCommand {
     private final static Logger logger = Logger.getLogger(UpdateClientCommand.class);
+    private UserService userService;
+
+    public UpdateClientCommand() {
+        userService = (UserService) ServiceFactory.getInstance().getService("userService");
+    }
 
     /**
      * This method describes actions of update information about user.
@@ -32,9 +38,9 @@ public class UpdateClientCommand implements BasicCommand {
         String page = null;
         User user = RequestParameterIdentifier.getUserLoginPasswordFromRequest(request);
         try {
-            user = UserService.getInstance().getUserByLogin(user.getLogin());
+            user = userService.getUserByLogin(user.getLogin());
             user = RequestParameterIdentifier.updateUserFromRequest(user, request);
-            UserService.getInstance().updateUser(user);
+            userService.updateUser(user);
             request.getSession().setAttribute(Parameters.SUCCESS_UPDATE, Parameters.TRUE);
             page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.CLIENT_PAGE_PATH);
         } catch (SQLException e) {

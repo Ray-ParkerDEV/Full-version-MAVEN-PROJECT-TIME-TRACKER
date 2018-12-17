@@ -3,7 +3,6 @@ package services;
 import connection.ConnectionPool;
 import constants.MessageConstants;
 import constants.Parameters;
-import dao.daofactory.DaoFactory;
 import dao.interfacesdao.UserDAO;
 import entities.User;
 import exceptions.DAOException;
@@ -23,10 +22,10 @@ public class UserService {
 
     private final static Logger logger = Logger.getLogger(UserService.class);
     private volatile static UserService instance;
-    private DaoFactory mySqlFactory = DaoFactory.getDaoFactory(DaoFactory.MYSQL);
-    private UserDAO mySqlUserDao = mySqlFactory.getUserDao();
+    private UserDAO userDao;
+    private ConnectionPool connectionPool;
 
-    public UserService() {
+    private UserService() {
     }
 
     /**
@@ -45,6 +44,14 @@ public class UserService {
         return instance;
     }
 
+    public void setUserDao(UserDAO userDao) {
+        this.userDao = userDao;
+    }
+
+    public void setConnectionPool(ConnectionPool connectionPool) {
+        this.connectionPool = connectionPool;
+    }
+
     /**
      * This method checks if the user's login and password are correct. This method implements work with transaction support.
      *
@@ -58,9 +65,9 @@ public class UserService {
         Connection connection = null;
         try {
             //connection = ConnectorDB.getConnection();
-            connection = ConnectionPool.getInstance().getConnection();
+            connection = connectionPool.getConnection();
             connection.setAutoCommit(false);
-            isAuthorized = mySqlUserDao.isAuthorized(login, password, connection);
+            isAuthorized = userDao.isAuthorized(login, password, connection);
             connection.commit();
             logger.info(MessageConstants.TRANSACTION_SUCCEEDED);
         } catch (SQLException | DAOException e) {
@@ -71,7 +78,7 @@ public class UserService {
             throw new SQLException(e);
         } finally {
             //ConnectorDB.closeConnection(connection);
-            ConnectionPool.getInstance().closeConnection(connection);
+            connectionPool.closeConnection(connection);
         }
         return isAuthorized;
     }
@@ -86,9 +93,9 @@ public class UserService {
         User user = null;
         Connection connection = null;
         try {
-            connection = ConnectionPool.getInstance().getConnection();
+            connection = connectionPool.getConnection();
             connection.setAutoCommit(false);
-            user = mySqlUserDao.getByLogin(login, connection);
+            user = userDao.getByLogin(login, connection);
             connection.commit();
             logger.info(MessageConstants.TRANSACTION_SUCCEEDED);
         } catch (SQLException | DAOException e) {
@@ -98,7 +105,7 @@ public class UserService {
             logger.error(MessageConstants.TRANSACTION_FAILED);
             throw new SQLException(e);
         } finally {
-            ConnectionPool.getInstance().closeConnection(connection);
+            connectionPool.closeConnection(connection);
         }
         return user;
     }
@@ -112,9 +119,9 @@ public class UserService {
     public void updateUser(User user) throws SQLException {
         Connection connection = null;
         try {
-            connection = ConnectionPool.getInstance().getConnection();
+            connection = connectionPool.getConnection();
             connection.setAutoCommit(false);
-            mySqlUserDao.update(user, connection);
+            userDao.update(user, connection);
             connection.commit();
             logger.info(MessageConstants.TRANSACTION_SUCCEEDED);
         } catch (SQLException | DAOException e) {
@@ -124,7 +131,7 @@ public class UserService {
             logger.error(MessageConstants.TRANSACTION_FAILED);
             throw new SQLException(e);
         } finally {
-            ConnectionPool.getInstance().closeConnection(connection);
+            connectionPool.closeConnection(connection);
         }
     }
 
@@ -139,9 +146,9 @@ public class UserService {
         boolean isUnique = false;
         Connection connection = null;
         try {
-            connection = ConnectionPool.getInstance().getConnection();
+            connection = connectionPool.getConnection();
             connection.setAutoCommit(false);
-            if (mySqlUserDao.checkUniqueUser(user.getLogin(), connection)) {
+            if (userDao.checkUniqueUser(user.getLogin(), connection)) {
                 isUnique = true;
             }
             connection.commit();
@@ -153,7 +160,7 @@ public class UserService {
             logger.error(MessageConstants.TRANSACTION_FAILED);
             throw new SQLException(e);
         } finally {
-            ConnectionPool.getInstance().closeConnection(connection);
+            connectionPool.closeConnection(connection);
         }
         return isUnique;
     }
@@ -167,9 +174,9 @@ public class UserService {
     public void registerUser(User user) throws SQLException {
         Connection connection = null;
         try {
-            connection = ConnectionPool.getInstance().getConnection();
+            connection = connectionPool.getConnection();
             connection.setAutoCommit(false);
-            mySqlUserDao.add(user, connection);
+            userDao.add(user, connection);
             connection.commit();
             logger.info(MessageConstants.TRANSACTION_SUCCEEDED);
         } catch (SQLException | DAOException e) {
@@ -179,7 +186,7 @@ public class UserService {
             logger.error(MessageConstants.TRANSACTION_FAILED);
             throw new SQLException(e);
         } finally {
-            ConnectionPool.getInstance().closeConnection(connection);
+            connectionPool.closeConnection(connection);
         }
     }
 
@@ -193,4 +200,5 @@ public class UserService {
         session.setAttribute(Parameters.USER, user);
         session.setAttribute(Parameters.USER_TYPE, String.valueOf(user.getUserType()));
     }
+
 }

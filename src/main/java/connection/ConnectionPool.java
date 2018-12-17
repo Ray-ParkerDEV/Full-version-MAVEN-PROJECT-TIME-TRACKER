@@ -44,7 +44,8 @@ public class ConnectionPool {
     }
     
     public synchronized Connection getConnection() throws SQLException{
-        return pool.getConnection();
+        Connection connection = pool.getConnection();
+        return connection;
     }
     
     public void closeConnection(Connection connection){
