@@ -34,7 +34,7 @@ public class RegistrationCommand implements BasicCommand {
         User user = RequestParameterIdentifier.getUserFromRequest(request);
         try {
             if (RequestParameterIdentifier.areFieldsFilled(request)) {
-                if ( UserService.getInstance().isUniqueUser(user)) {
+                if (UserService.getInstance().isUniqueUser(user)) {
                     UserService.getInstance().registerUser(user);
                     request.setAttribute(Parameters.SUCCESS_REGISTRATION, MessageConstants.SUCCESS_REGISTRATION);
                     page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.LOGIN_PAGE_PATH);

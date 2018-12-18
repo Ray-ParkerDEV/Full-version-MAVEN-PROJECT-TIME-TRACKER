@@ -5,7 +5,7 @@ package entities;
  * <p>
  * Created by Yaroslav Bodyak on 11.12.2018.
  */
-public class UserType {
+public class UserType extends BaseEntity {
 
     private Integer userTypeId;
     private String userType;

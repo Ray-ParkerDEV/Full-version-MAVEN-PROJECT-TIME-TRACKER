@@ -4,6 +4,7 @@ import commands.BasicCommand;
 import commands.factory.CommandsFactory;
 import constants.PathPageConstants;
 import manager.ConfigManagerPages;
+import session.SessionLogic;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -46,21 +47,11 @@ public class Controller extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = null;
-
-        if (flag) {
-            session = request.getSession();
-            int timeLive = 60;
-            session.setMaxInactiveInterval(timeLive);
-            flag = false;
-        }else {
-            session = request.getSession(false);
-        }
-        if (session==null) {
+        HttpSession session = SessionLogic.getSession(request);
+        if (!SessionLogic.isSessionAlive(session)) {
             String page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.SESSION_PAGE_PATH);
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
             dispatcher.forward(request, response);
-            //flag = true;
         } else {
             CommandsFactory factory = CommandsFactory.getInstance();
             BasicCommand command = factory.defineCommand(request);
