@@ -61,7 +61,7 @@ public class UserDAOImpl implements UserDAO {
             statement.setString(2, user.getSurName());
             statement.setString(3, user.getLogin());
             statement.setString(4, user.getPassword());
-            statement.setString(5, String.valueOf(user.getUserType()));
+            statement.setString(5, String.valueOf(2));
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);

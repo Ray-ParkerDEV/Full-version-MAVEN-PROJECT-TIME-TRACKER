@@ -11,7 +11,7 @@ public class SessionLogic {
         HttpSession session = null;
         if (Controller.flag) {
             session = request.getSession();
-            int timeLive = 60;
+            int timeLive = 15*60;
             session.setMaxInactiveInterval(timeLive);
             Controller.flag = false;
         } else {

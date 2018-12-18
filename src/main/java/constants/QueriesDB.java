@@ -24,6 +24,8 @@ public class QueriesDB {
     public static final String DELETE_USER_TYPE_BY_ID = "DELETE FROM userType WHERE userTypeId = ?";
     public static final String GET_USER_TYPE_BY_ID = "SELECT * FROM userType WHERE userTypeId = ?";
     public static final String GET_ALL_USERS_TYPE = "SELECT * FROM userType";
+    public static final String GET_USER_TYPE_BY_TYPE = "SELECT * FROM userType WHERE userType = ?";
+
     /*Queries to work with activity database table.*/
     public static final String ADD_ACTIVITY = "INSERT INTO activity (activity) VALUES (?);";
     public static final String UPDATE_ACTIVITY_BY_ID = "UPDATE activity SET activity=? WHERE activityId=?;";

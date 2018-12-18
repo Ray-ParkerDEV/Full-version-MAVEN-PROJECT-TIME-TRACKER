@@ -95,20 +95,18 @@ public class RequestParameterIdentifier {
     public static User getUserFromRequest(HttpServletRequest request) {
         User user = new User();
         String firstName = request.getParameter(Parameters.FIRST_NAME);
-        String surname = request.getParameter(Parameters.SURNAME);
+        String surName = request.getParameter(Parameters.SURNAME);
         String login = request.getParameter(Parameters.LOGIN);
         String password = request.getParameter(Parameters.PASSWORD);
         if ((firstName != null && !firstName.isEmpty())
-                & (surname != null && !surname.isEmpty())
+                & (surName != null && !surName.isEmpty())
                 & (login != null && !login.isEmpty())
                 & (password != null && !password.isEmpty())) {
             user.setFirstName(firstName);
-            user.setSurName(surname);
+            user.setSurName(surName);
             user.setLogin(login);
             user.setPassword(password);
-            Integer userTypeID = Integer.valueOf((String)request.getSession().getAttribute(Parameters.USER_TYPE_ID));
-            String userType = request.getSession().getAttribute(Parameters.USER_TYPE).toString();
-            user.setUserType(new UserType(userTypeID, userType));
+            //user.setUserType(getByType);
         }
         return user;
     }
