@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Description: This class contains implementation of interface methods which works with <i>users</i> database table.
+ * Description: This class contains implementation of interface methods which works with <i>usertype</i> database table.
  * <p>
  * Created by Yaroslav Bodyak on 11.12.2018.
  */
@@ -167,7 +167,7 @@ public class UserTypeDAOImpl implements UserTypeDAO {
 
     /**
      * An additional method.
-     * This method creates entity of User class from data received from ResultSet.
+     * This method creates entity of UserType class from data received from ResultSet.
      *
      * @param resultSet - a database result "row" with required values.
      * @param userType  - the entity of User with "null" value for setting corresponding values.

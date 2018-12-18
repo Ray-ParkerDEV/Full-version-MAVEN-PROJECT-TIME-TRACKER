@@ -8,13 +8,24 @@ package constants;
  */
 public class Parameters {
     public static final String USER_ID = "userId";
+    public static final String TRACKING_ID = "trackingId";
     public static final String USER_TYPE = "userType";
+    public static final String ACTIVITY = "activity";
     public static final String USER_TYPE_ID = "userTypeId";
+    public static final String ACTIVITY_ID = "activityId";
     public static final String COMMAND = "command";
     public static final String LOGIN = "login";
+    public static final String STATUS = "status";
+    public static final String STATUS_ID = "statusId";
     public static final String PASSWORD = "password";
+    public static final String TIME = "time";
     public static final String USER = "user";
     public static final String CLIENT = "client";
+    public static final String NEW_ACTIVITY = "new";
+    public static final String IN_PROGRESS = "in progress";
+    public static final String PAUSE = "pause";
+    public static final String FINISHED = "finished";
+    public static final String STOP = "stop";
     public static final String ADMIN = "admin";
     public static final String ERROR_LOGIN_PASSWORD = "errorLoginOrPassword";
     public static final String ERROR_DATABASE = "errorDataBase";

@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Description: This class contains implementation of interface methods which works with <i>users</i> database table.
+ * Description: This class contains implementation of interface methods which works with <i>user</i> database table.
  * <p>
  * Created by Yaroslav Bodyak on 11.12.2018.
  */
@@ -163,7 +163,6 @@ public class UserDAOImpl implements UserDAO {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         User user = new User();
-       // UserType userType = new UserType();
         try {
             statement = connection.prepareStatement(QueriesDB.GET_USER_BY_LOGIN);
             statement.setString(1, login);
@@ -246,7 +245,7 @@ public class UserDAOImpl implements UserDAO {
      * @return - created user with fields.
      * @throws SQLException
      */
-    private User createUser(ResultSet resultSet, User user) throws SQLException {
+    public User createUser(ResultSet resultSet, User user) throws SQLException {
         user.setUserId(resultSet.getInt(Parameters.USER_ID));
         user.setFirstName(resultSet.getString(Parameters.FIRST_NAME));
         user.setSurName(resultSet.getString(Parameters.SURNAME));

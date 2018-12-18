@@ -11,22 +11,27 @@ public class Tracking extends BaseEntity implements Serializable {
     private Integer trackingId;
     private User user;
     private Activity activity;
+    private ActivityStatus status;
+    private Integer time;
 
     public Tracking() {
     }
 
-    public Tracking(Integer trackingId, User user, Activity activity) {
+    public Tracking(Integer trackingId, User user, Activity activity,
+                    ActivityStatus status, Integer time) {
         this.trackingId = trackingId;
         this.user = user;
         this.activity = activity;
+        this.status = status;
+        this.time = time;
     }
 
-    public Integer getId() {
+    public Integer getTrackingId() {
         return trackingId;
     }
 
-    public void setId(Integer id) {
-        this.trackingId = id;
+    public void setTrackingId(Integer trackingId) {
+        this.trackingId = trackingId;
     }
 
     public User getUser() {
@@ -45,6 +50,22 @@ public class Tracking extends BaseEntity implements Serializable {
         this.activity = activity;
     }
 
+    public ActivityStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ActivityStatus status) {
+        this.status = status;
+    }
+
+    public Integer getTime() {
+        return time;
+    }
+
+    public void setTime(Integer time) {
+        this.time = time;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -54,7 +75,9 @@ public class Tracking extends BaseEntity implements Serializable {
 
         if (trackingId != null ? !trackingId.equals(tracking.trackingId) : tracking.trackingId != null) return false;
         if (user != null ? !user.equals(tracking.user) : tracking.user != null) return false;
-        return activity != null ? activity.equals(tracking.activity) : tracking.activity == null;
+        if (activity != null ? !activity.equals(tracking.activity) : tracking.activity != null) return false;
+        if (status != tracking.status) return false;
+        return time != null ? time.equals(tracking.time) : tracking.time == null;
     }
 
     @Override
@@ -62,15 +85,19 @@ public class Tracking extends BaseEntity implements Serializable {
         int result = trackingId != null ? trackingId.hashCode() : 0;
         result = 31 * result + (user != null ? user.hashCode() : 0);
         result = 31 * result + (activity != null ? activity.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (time != null ? time.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "Tracking{" +
-                "id=" + trackingId +
+                "trackingId=" + trackingId +
                 ", user=" + user +
                 ", activity=" + activity +
+                ", status=" + status +
+                ", time=" + time +
                 '}';
     }
 }
