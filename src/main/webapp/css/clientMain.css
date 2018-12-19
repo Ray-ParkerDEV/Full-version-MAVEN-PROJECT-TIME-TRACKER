@@ -5,9 +5,6 @@ body {
     background: url("/images/clock.jpg") no-repeat center center fixed;
     background-size: cover;
 }
-select {
-    width: 100%;
-}
 fieldset {
     padding-bottom: 5px; padding-right: 5px; padding-left: 5px;
 }
@@ -20,16 +17,11 @@ fieldset {
 }
 .wrapperPageData {
     position: absolute;
-    left: 10px; top: 50px;
+    left: 20px; top: 50px;
 }
-.updateUserElement {
-    position: absolute;
-}
-.wrapperButtons {
-    display: flex;
-    justify-content: space-between;
-    text-align: justify;
-    text-align-last: justify;
+.trackingTable {
+    /*position: absolute;*/
+    /*left:20px; top:50px;*/
 }
 .buttonElement {
     display: inline-block;
@@ -51,38 +43,37 @@ fieldset {
     position: fixed;
     right: 10px; top: 10px;
 }
-.luggageForm {
-    position: absolute;
-    top: 200px; left: 100px;
-}
-.flightInfoForm {
+.activityInfoForm {
     background-color: whitesmoke;
     opacity: 0.75;
 }
-.flightsFindForm {
-    position: absolute;
-    top: 200px;
-    width: 460px;
-    margin-left: 6px;
-}
-.showTicketsForm {
-    position: absolute;
-    top: 320px;
-    left: 10px;
-    width: 120px;
-}
-.buttonShow {
-    height: 30px;
-    width: 120px;
-}
-.wrapperButtonsSearchFlight {
+.wrapperButtons {
     position: relative;
     display: flex;
     justify-content: flex-end;
     text-align: justify;
     text-align-last: justify;
-    padding-top: 8px;
+}
+input[type=button] {
+    padding:5px 15px;
+    background:#ccc;
+    border:0 none;
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+.colorButtons {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    text-align: justify;
+    text-align-last: justify;
 }
 .buttonElement {
     display: inline-block;
+    height:20px; width:70px
+}
+.formElement {
+    margin: 0;
+    text-align: center
 }
