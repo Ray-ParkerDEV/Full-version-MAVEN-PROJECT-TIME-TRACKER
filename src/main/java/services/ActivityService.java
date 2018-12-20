@@ -3,8 +3,8 @@ package services;
 import connection.TransactionHandler;
 import constants.Parameters;
 import dao.daofactory.DaoFactory;
-import dao.interfacesdao.UserDAO;
-import entities.User;
+import dao.interfacesdao.ActivityDAO;
+import entities.Activity;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
@@ -21,11 +21,11 @@ public class ActivityService {
     private final static Logger logger = Logger.getLogger(UserService.class);
     private volatile static ActivityService instance;
     private DaoFactory mySqlFactory;
-    private UserDAO userDAO;
+    private ActivityDAO activityDAO;
 
     private ActivityService() {
         mySqlFactory = DaoFactory.getDaoFactory(DaoFactory.MYSQL);
-        userDAO = mySqlFactory.getUserDao();
+        activityDAO = mySqlFactory.getActivityDao();
     }
 
     /**
@@ -45,55 +45,40 @@ public class ActivityService {
     }
 
     /**
+     * This method add new activity in DB. This method implements work with transaction support.
+     *
+     * @param activity - a new user which will be registered.
+     * @throws SQLException
+     */
+    public void createActivityDB(Activity activity) throws SQLException {
+        TransactionHandler.runInTransaction(connection ->
+                activityDAO.add(activity, connection)
+        );
+    }
+
+    /**
      * This method receives user object. This method implements work with transaction support.
      *
-     * @param login - entered login.
+     * @param name - entered login.
      * @return - User object.
      */
-    public User getUserByLogin(String login) throws SQLException {
-        final User[] user = new User[1];
+    public Activity getActivityBaName(String name) throws SQLException {
+        final Activity[] activity = new Activity[1];
         TransactionHandler.runInTransaction(connection ->
-                user[0] = userDAO.getByLogin(login,connection)
+                activity[0] = activityDAO.getByName(name, connection)
         );
-        return user[0];
+        return activity[0];
     }
 
     /**
      * This method updates user object. This method implements work with transaction support.
      *
-     * @param user - an user which fields will be updated.
+     * @param activity - an user which fields will be updated.
      * @throws SQLException
      */
-    public void updateUser(User user) throws SQLException {
+    public void updateActivity(Activity activity) throws SQLException {
         TransactionHandler.runInTransaction(connection ->
-                userDAO.update(user, connection)
-        );
-    }
-
-    /**
-     * This method checks the uniqueness of the user. This method implements work with transaction support.
-     *
-     * @param user - an user object with fields will be checked.
-     * @return - boolean value of the condition.
-     * @throws SQLException
-     */
-    public boolean isUniqueUser(User user) throws SQLException {
-        final boolean [] isUnique = new boolean[1];
-        TransactionHandler.runInTransaction(connection ->
-                isUnique[0] = userDAO.checkUniqueUser(user.getLogin(), connection)
-        );
-        return isUnique[0];
-    }
-
-    /**
-     * This method registers new user of application. This method implements work with transaction support.
-     *
-     * @param user - a new user which will be registered.
-     * @throws SQLException
-     */
-    public void registerUser(User user) throws SQLException {
-        TransactionHandler.runInTransaction(connection ->
-                userDAO.add(user, connection)
+                activityDAO.update(activity, connection)
         );
     }
 
@@ -103,9 +88,8 @@ public class ActivityService {
      *
      * @param session - an object of the current session.
      */
-    public void setAttributeToSession(User user, HttpSession session) {
-        session.setAttribute(Parameters.USER, user);
-        session.setAttribute(Parameters.USER_TYPE, String.valueOf(user.getUserType()));
+    public void setAttributeToSession(Activity activity, HttpSession session) {
+        session.setAttribute(Parameters.ACTIVITY, activity);
     }
 
 }

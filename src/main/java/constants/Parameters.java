@@ -36,6 +36,7 @@ public class Parameters {
     public static final String TRUE = "true";
     public static final String USER_UNIQUE_ERROR = "uniqueUserError";
     public static final String SUCCESS_REGISTRATION = "registrationSuccess";
+    public static final String SUCCESS_CREATING = "creatingSuccess";
     public static final String OPERATION_MESSAGE = "operationMessage";
     public static final String BACK_PAGE = "backpage";
     /* parameters for DB*/

@@ -31,6 +31,7 @@ public class QueriesDB {
     public static final String UPDATE_ACTIVITY_BY_ID = "UPDATE activity SET name=? WHERE id=?;";
     public static final String DELETE_ACTIVITY_BY_ID = "DELETE FROM activity WHERE id = ?";
     public static final String GET_ACTIVITY_BY_ID = "SELECT * FROM activity WHERE id = ?";
+    public static final String GET_ACTIVITY_BY_NAME = "SELECT * FROM activity WHERE name = ?";
     public static final String GET_ALL_ACTIVITIES = "SELECT * FROM activity";
     /*Queries to work with tracking database table.*/
     public static final String DELETE_TRACKING_BY_USER_ID = "DELETE FROM tracking WHERE use_id = ?";

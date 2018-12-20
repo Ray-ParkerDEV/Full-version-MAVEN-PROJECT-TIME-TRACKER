@@ -48,11 +48,5 @@ public abstract class DaoFactory {
                 return null;
         }
     }
-
-//    /**
-//     * The concrete factories will have to implement this method
-//     * for getting connection.
-//     */
-//    public abstract Connection createConnection() throws SQLException;
 }
 

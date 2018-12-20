@@ -10,6 +10,7 @@ public class MessageConstants {
     public static final String SUCCESS_LOGIN = "Login operation has been executed successfully.";
     public static final String SUCCESS_LOGOUT = "Logout operation has been executed successfully";
     public static final String SUCCESS_REGISTRATION = "Registration has been executed successfully.";
+    public static final String SUCCESS_CREATION = "Creation has been executed successfully.";
     public static final String PAGE_NOT_FOUND = "Page not found. Business logic error was occurred.";
     public static final String WRONG_COMMAND = "An invalid command was sent to the servlet.";
     public static final String TRANSACTION_SUCCEEDED = "Transaction succeeded.";
