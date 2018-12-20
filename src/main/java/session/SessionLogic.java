@@ -6,12 +6,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 public class SessionLogic {
+    private static final int timeLive = 30 * 60;
 
     public static HttpSession getSession(HttpServletRequest request) {
         HttpSession session = null;
         if (Controller.flag) {
             session = request.getSession();
-            int timeLive = 15*60;
             session.setMaxInactiveInterval(timeLive);
             Controller.flag = false;
         } else {

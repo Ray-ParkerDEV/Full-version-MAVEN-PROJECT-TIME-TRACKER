@@ -1,6 +1,7 @@
 <%--Created by Yaroslav Bodyak on 11.12.2018--%>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="spec" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
 <head>
     <title>Clients account page</title>
@@ -15,7 +16,7 @@
 <div class="wrapperPageData">
     <div class="trackingTable">
         <fieldset>
-            <legend align="left">YOUR ACTIVITIES TRACKING</legend>
+            <legend align="center">YOUR ACTIVITIES TRACKING</legend>
             <div class="activityInfoForm">
                 <table>
                     <col width="150">

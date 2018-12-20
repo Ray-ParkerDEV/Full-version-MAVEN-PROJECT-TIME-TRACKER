@@ -13,17 +13,19 @@ public class Tracking extends BaseEntity implements Serializable {
     private Activity activity;
     private ActivityStatus status;
     private Integer time;
+    private UserRequest userRequest;
 
     public Tracking() {
     }
 
     public Tracking(Integer trackingId, User user, Activity activity,
-                    ActivityStatus status, Integer time) {
+                    ActivityStatus status, Integer time, UserRequest requestUser) {
         this.trackingId = trackingId;
         this.user = user;
         this.activity = activity;
         this.status = status;
         this.time = time;
+        this.userRequest = requestUser;
     }
 
     public Integer getTrackingId() {
@@ -66,6 +68,14 @@ public class Tracking extends BaseEntity implements Serializable {
         this.time = time;
     }
 
+    public UserRequest getUserRequest() {
+        return userRequest;
+    }
+
+    public void setUserRequest(UserRequest userRequest) {
+        this.userRequest = userRequest;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -77,7 +87,8 @@ public class Tracking extends BaseEntity implements Serializable {
         if (user != null ? !user.equals(tracking.user) : tracking.user != null) return false;
         if (activity != null ? !activity.equals(tracking.activity) : tracking.activity != null) return false;
         if (status != tracking.status) return false;
-        return time != null ? time.equals(tracking.time) : tracking.time == null;
+        if (time != null ? !time.equals(tracking.time) : tracking.time != null) return false;
+        return userRequest == tracking.userRequest;
     }
 
     @Override
@@ -87,6 +98,7 @@ public class Tracking extends BaseEntity implements Serializable {
         result = 31 * result + (activity != null ? activity.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
         result = 31 * result + (time != null ? time.hashCode() : 0);
+        result = 31 * result + (userRequest != null ? userRequest.hashCode() : 0);
         return result;
     }
 
@@ -98,6 +110,7 @@ public class Tracking extends BaseEntity implements Serializable {
                 ", activity=" + activity +
                 ", status=" + status +
                 ", time=" + time +
+                ", userRequest=" + userRequest +
                 '}';
     }
 }
