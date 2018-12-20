@@ -246,13 +246,13 @@ public class UserDAOImpl implements UserDAO {
      * @throws SQLException
      */
     public User createUser(ResultSet resultSet, User user) throws SQLException {
-        user.setUserId(resultSet.getInt(Parameters.USER_ID));
-        user.setFirstName(resultSet.getString(Parameters.FIRST_NAME));
-        user.setSurName(resultSet.getString(Parameters.SURNAME));
+        user.setUserId(resultSet.getInt(Parameters.ID_DB));
+        user.setFirstName(resultSet.getString(Parameters.FIRST_NAME_DB));
+        user.setSurName(resultSet.getString(Parameters.SURNAME_DB));
         user.setLogin(resultSet.getString(Parameters.LOGIN));
         user.setPassword(resultSet.getString(Parameters.PASSWORD));
-        user.setUserType(new UserType(resultSet.getInt(Parameters.USER_TYPE_ID)
-                ,resultSet.getString(Parameters.USER_TYPE)));
+        user.setUserType(new UserType(resultSet.getInt(Parameters.USER_TYPE_ID_DB)
+                ,resultSet.getString(Parameters.NAME_DB)));
         return user;
     }
 

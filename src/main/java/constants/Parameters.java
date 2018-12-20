@@ -11,6 +11,7 @@ public class Parameters {
     public static final String TRACKING_ID = "trackingId";
     public static final String USER_TYPE = "userType";
     public static final String ACTIVITY = "activity";
+    public static final String ACTIVITY_NAME = "activityName";
     public static final String USER_TYPE_ID = "userTypeId";
     public static final String ACTIVITY_ID = "activityId";
     public static final String COMMAND = "command";
@@ -37,5 +38,16 @@ public class Parameters {
     public static final String SUCCESS_REGISTRATION = "registrationSuccess";
     public static final String OPERATION_MESSAGE = "operationMessage";
     public static final String BACK_PAGE = "backpage";
+    /* parameters for DB*/
+    public static final String NAME_DB = "name";
+    public static final String ID_DB = "id";
+    public static final String USER_ID_DB = "user_id";
+    public static final String TRACKING_ID_DB = "tracking_id";
+    public static final String USER_TYPE_DB = "user_type";
+    public static final String USER_TYPE_ID_DB = "user_type_id";
+    public static final String ACTIVITY_ID_DB = "activity_id";
+    public static final String STATUS_ID_DB = "status_id";
+    public static final String FIRST_NAME_DB = "first_name";
+    public static final String SURNAME_DB = "sur_name";
 
 }

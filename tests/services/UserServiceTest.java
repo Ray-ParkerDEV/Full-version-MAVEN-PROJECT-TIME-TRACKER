@@ -26,7 +26,7 @@ public class UserServiceTest {
 //    @Before
 //    public void setUp() {
 //        userDAOMock = mock(UserDAO.class);
-//        userService = UserService.getInstance();
+//        userService = AdminService.getInstance();
 //        userService.setUserDao(userDAOMock);
 //        connectionPoolMock = mock(ConnectionPool.class);
 //        userService.setConnectionPool(connectionPoolMock);

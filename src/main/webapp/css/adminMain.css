@@ -19,6 +19,10 @@ fieldset {
     position: absolute;
     left: 20px; top: 50px;
 }
+.wrapperTableActivity {
+    position: absolute;
+    left: 870px; top: 0px;
+}
 .wrapperUserData {
     position: absolute;
     left: 20px; top: 250px;

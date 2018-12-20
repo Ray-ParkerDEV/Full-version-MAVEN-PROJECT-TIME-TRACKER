@@ -1,4 +1,4 @@
-package commands.implementations.user;
+package commands.implementations.admin;
 
 import commands.BasicCommand;
 import constants.MessageConstants;
@@ -19,11 +19,12 @@ import java.sql.SQLException;
  * <p>
  * Created by Yaroslav Bodyak on 11.12.2018.
  */
-public class RegistrationCommand implements BasicCommand {
-    private static final Logger logger = Logger.getLogger(RegistrationCommand.class);
+public class CreateActivityCommand implements BasicCommand {
+    private static final Logger logger = Logger.getLogger(CreateActivityCommand.class);
 
     /**
-     * This method describes the registration logic. The method uses methods of the RequestParameterIdentifier and AdminService.
+     * This method describes the adding new activities logic.
+     * The method uses methods of the RequestParameterIdentifier and AdminService.
      *
      * @param request - request which will be processed.
      * @return - a page which user will be directed to.

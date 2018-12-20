@@ -23,7 +23,7 @@ public class LoginCommand implements BasicCommand {
     private final static Logger logger = Logger.getLogger(LoginCommand.class);
 
     /**
-     * This method describes the logon logic. The method uses methods of the RequestParameterIdentifier and UserService
+     * This method describes the logon logic. The method uses methods of the RequestParameterIdentifier and AdminService
      * classes and works according to the following steps:
      * - getting an user object from request object using login and password saved in the corresponding request
      * object using the <i>getUserLoginPasswordFromRequest(...)<i/> method;

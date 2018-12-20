@@ -19,11 +19,11 @@
             <legend align="center">YOUR ACTIVITIES TRACKING</legend>
             <div class="activityInfoForm">
                 <table>
+                    <col width="320">
                     <col width="150">
-                    <col width="100">
                     <col>
                     <col width="100">
-                    <col width="200">
+                    <col width="300">
                     <tr>
                         <th align="left">ACTIVITIES</th>
                         <th align="left">STATUS</th>
@@ -85,174 +85,6 @@
                         </td>
                         <td>
                             <%--info...--%>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            activity2
-                        </td>
-                        <td>
-                            in progress
-                        </td>
-                        <td>
-                            <table>
-                                <tr>
-                                    <td>
-                                        <form class="formElement" name="actionForm" method="POST"
-                                              action="controller">
-                                            <div class="wrapperButtons">
-                                                <input type="hidden" name="command" value="actionStart"/>
-                                                <input class="buttonElement" type="submit" value="start"/>
-                                            </div>
-                                        </form>
-                                    </td>
-                                    <td>
-                                        <form class="formElement" name="actionForm" method="POST"
-                                              action="controller">
-                                            <div class="wrapperButtons">
-                                                <input type="hidden" name="command" value="actionStop"/>
-                                                <input class="buttonElement" type="submit" value="stop"/>
-                                            </div>
-                                        </form>
-                                    </td>
-                                    <td align="center">
-                                        <form class="formElement" name="finishForm" method="POST"
-                                              action="controller">
-                                            <div class="wrapperButtons">
-                                                <input type="hidden" name="command" value="finish"/>
-                                                <input class="buttonElement" type="submit" value="finish"/>
-                                            </div>
-                                        </form>
-                                    </td>
-                                    <td align="center">
-                                        <form class="formElement" name="finishForm" method="POST"
-                                              action="controller">
-                                            <div class="wrapperButtons">
-                                                <input type="hidden" name="command" value="remove"/>
-                                                <input class="buttonElement" type="submit" value="remove"/>
-                                            </div>
-                                        </form>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                        <td>
-                            01:52:42
-                        </td>
-                        <td>
-                            <%--info...--%>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            activity3
-                        </td>
-                        <td>
-                            pause
-                        </td>
-                        <td>
-                            <table>
-                                <tr>
-                                    <td>
-                                        <form class="formElement" name="actionForm" method="POST"
-                                              action="controller">
-                                            <div class="wrapperButtons">
-                                                <input type="hidden" name="command" value="actionStart"/>
-                                                <input class="buttonElement" type="submit" value="start"/>
-                                            </div>
-                                        </form>
-                                    </td>
-                                    <td>
-                                        <form class="formElement" name="actionForm" method="POST"
-                                              action="controller">
-                                            <div class="wrapperButtons">
-                                                <input type="hidden" name="command" value="actionStop"/>
-                                                <input class="buttonElement" type="submit" value="stop"/>
-                                            </div>
-                                        </form>
-                                    </td>
-                                    <td align="center">
-                                        <form class="formElement" name="finishForm" method="POST"
-                                              action="controller">
-                                            <div class="wrapperButtons">
-                                                <input type="hidden" name="command" value="finish"/>
-                                                <input class="buttonElement" type="submit" value="finish"/>
-                                            </div>
-                                        </form>
-                                    </td>
-                                    <td align="center">
-                                        <form class="formElement" name="finishForm" method="POST"
-                                              action="controller">
-                                            <div class="wrapperButtons">
-                                                <input type="hidden" name="command" value="remove"/>
-                                                <input class="buttonElement" type="submit" value="remove"/>
-                                            </div>
-                                        </form>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                        <td>
-                            04:45:02
-                        </td>
-                        <td>
-                            <%--info...--%>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            activity4
-                        </td>
-                        <td>
-                            finished
-                        </td>
-                        <td>
-                            <table>
-                                <tr>
-                                    <td>
-                                        <form class="formElement" name="actionForm" method="POST"
-                                              action="controller">
-                                            <div class="wrapperButtons">
-                                                <input type="hidden" name="command" value="actionStart"/>
-                                                <input class="buttonElement" type="submit" value="start"/>
-                                            </div>
-                                        </form>
-                                    </td>
-                                    <td>
-                                        <form class="formElement" name="actionForm" method="POST"
-                                              action="controller">
-                                            <div class="wrapperButtons">
-                                                <input type="hidden" name="command" value="actionStop"/>
-                                                <input class="buttonElement" type="submit" value="stop"/>
-                                            </div>
-                                        </form>
-                                    </td>
-                                    <td align="center">
-                                        <form class="formElement" name="finishForm" method="POST"
-                                              action="controller">
-                                            <div class="wrapperButtons">
-                                                <input type="hidden" name="command" value="finish"/>
-                                                <input class="buttonElement" type="submit" value="finish"/>
-                                            </div>
-                                        </form>
-                                    </td>
-                                    <td align="center">
-                                        <form class="formElement" name="finishForm" method="POST"
-                                              action="controller">
-                                            <div class="wrapperButtons">
-                                                <input type="hidden" name="command" value="remove"/>
-                                                <input class="buttonElement" type="submit" value="remove"/>
-                                            </div>
-                                        </form>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                        <td>
-                            22:04:36
-                        </td>
-                        <td>
-                            waiting for admin response
                         </td>
                     </tr>
                 </table>
