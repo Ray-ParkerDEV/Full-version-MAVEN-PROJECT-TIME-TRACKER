@@ -4,28 +4,26 @@ import connection.TransactionHandler;
 import constants.Parameters;
 import dao.daofactory.DaoFactory;
 import dao.interfacesdao.UserDAO;
-import entities.Activity;
 import entities.User;
 import org.apache.log4j.Logger;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 
 /**
- * Description: This class describes actions that admin performs.
+ * Description: This class describes actions on the user object.
  * This class contains methods that implement work with transaction support.
  * <p>
  * Created by Yaroslav Bodyak on 11.12.2018.
  */
-public class AdminService {
+public class ActivityService {
 
-    private final static Logger logger = Logger.getLogger(AdminService.class);
-    private volatile static AdminService instance;
+    private final static Logger logger = Logger.getLogger(UserService.class);
+    private volatile static ActivityService instance;
     private DaoFactory mySqlFactory;
     private UserDAO userDAO;
 
-    private AdminService() {
+    private ActivityService() {
         mySqlFactory = DaoFactory.getDaoFactory(DaoFactory.MYSQL);
         userDAO = mySqlFactory.getUserDao();
     }
@@ -35,46 +33,15 @@ public class AdminService {
      *
      * @return - an instance of the class.
      */
-    public static AdminService getInstance() {
+    public static ActivityService getInstance() {
         if (instance == null) {
-            synchronized (AdminService.class) {
+            synchronized (ActivityService.class) {
                 if (instance == null) {
-                    return instance = new AdminService();
+                    return instance = new ActivityService();
                 }
             }
         }
         return instance;
-    }
-
-    /**
-     * This method creates a new activity caused by admin action on admin page.
-     * This method receives activity name from request
-     * and sets this values to the corresponding fields of the activity.
-     *
-     * @param request - an object of request with necessary parameters.
-     * @return - user object with updated fields.
-     */
-    public Activity geActivityFromRequest(HttpServletRequest request) {
-        Activity activity = new Activity();
-        String activityName = request.getParameter(Parameters.ACTIVITY_NAME);
-        if (activityName != null && !activityName.isEmpty()) {
-            activity.setActivityName(activityName);
-        }
-        return activity;
-    }
-
-    /**
-     * This method checks if the fields of the form are filled.
-     *
-     * @param request - an object of request with necessary parameters.
-     * @return - boolean value of the condition.
-     */
-    public boolean areFieldsFilled(HttpServletRequest request) {
-        if (!request.getParameter(Parameters.ACTIVITY_NAME).isEmpty()) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     /**
@@ -86,7 +53,7 @@ public class AdminService {
     public User getUserByLogin(String login) throws SQLException {
         final User[] user = new User[1];
         TransactionHandler.runInTransaction(connection ->
-                user[0] = userDAO.getByLogin(login, connection)
+                user[0] = userDAO.getByLogin(login,connection)
         );
         return user[0];
     }
@@ -111,7 +78,7 @@ public class AdminService {
      * @throws SQLException
      */
     public boolean isUniqueUser(User user) throws SQLException {
-        final boolean[] isUnique = new boolean[1];
+        final boolean [] isUnique = new boolean[1];
         TransactionHandler.runInTransaction(connection ->
                 isUnique[0] = userDAO.checkUniqueUser(user.getLogin(), connection)
         );

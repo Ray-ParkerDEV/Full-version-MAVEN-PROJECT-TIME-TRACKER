@@ -4,9 +4,11 @@ import commands.BasicCommand;
 import constants.MessageConstants;
 import constants.Parameters;
 import constants.PathPageConstants;
+import entities.Activity;
 import entities.User;
 import manager.ConfigManagerPages;
 import org.apache.log4j.Logger;
+import services.AdminService;
 import services.UserService;
 import servlet.Controller;
 import utils.RequestParameterIdentifier;
@@ -32,9 +34,9 @@ public class CreateActivityCommand implements BasicCommand {
     @Override
     public String execute(HttpServletRequest request) {
         String page = null;
-        User user = RequestParameterIdentifier.getUserFromRequest(request);
+       Activity activity = AdminService.getInstance().geActivityFromRequest(request);
         try {
-            if (RequestParameterIdentifier.areFieldsFilled(request)) {
+            if (AdminService.getInstance().areFieldsFilled(request)) {
                 if (UserService.getInstance().isUniqueUser(user)) {
                     UserService.getInstance().registerUser(user);
                     request.setAttribute(Parameters.SUCCESS_REGISTRATION, MessageConstants.SUCCESS_REGISTRATION);
@@ -47,7 +49,7 @@ public class CreateActivityCommand implements BasicCommand {
                 }
             } else {
                 request.setAttribute(Parameters.OPERATION_MESSAGE, MessageConstants.EMPTY_FIELDS);
-                page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.REGISTRATION_PAGE_PATH);
+                page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH);
             }
         } catch (SQLException e) {
             request.setAttribute(Parameters.ERROR_DATABASE, MessageConstants.DATABASE_ACCESS_ERROR);
