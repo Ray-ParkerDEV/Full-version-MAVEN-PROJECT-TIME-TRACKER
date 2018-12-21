@@ -177,7 +177,7 @@ public class ActivityService {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         List<Activity> activities = new ArrayList<>();
-        List<String> activityNames = new ArrayList<>();
+        List<String> activityNames;
         try {
             statement = connection.prepareStatement(QueriesDB.GET_ALL_ACTIVITIES);
             resultSet = statement.executeQuery();

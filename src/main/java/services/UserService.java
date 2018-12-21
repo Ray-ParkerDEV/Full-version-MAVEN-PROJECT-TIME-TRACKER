@@ -151,11 +151,11 @@ public class UserService {
      * @throws SQLException
      */
     public List<String> getAllClientNames() throws SQLException {
-        final List<String>[] activityNameList = new List[1];
+        final List<String>[] clientNameList = new List[1];
         TransactionHandler.runInTransaction(connection ->
-                activityNameList[0] = getAllNames(connection)
+                clientNameList[0] = getAllNames(connection)
         );
-        return activityNameList[0];
+        return clientNameList[0];
     }
 
     /**
@@ -168,7 +168,7 @@ public class UserService {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         List<User> users = new ArrayList<>();
-        List<String> userNames = new ArrayList<>();
+        List<String> userNames ;
         try {
             statement = connection.prepareStatement(QueriesDB.GET_ALL_USERS);
             resultSet = statement.executeQuery();

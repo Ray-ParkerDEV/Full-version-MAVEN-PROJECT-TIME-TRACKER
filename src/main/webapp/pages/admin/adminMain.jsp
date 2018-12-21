@@ -31,9 +31,11 @@
                         <th>ACTION</th>
                         <th align="left">NOTICE</th>
                     </tr>
+                    <%--@elvariable id="userList" type="java.util.List"--%>
+                    <c:forEach items="${userList}" var="user">
                     <tr>
                         <td>
-                            user1
+                                ${user}<br>
                         </td>
                         <td>
                             <form class="formElement" name="actionForm" method="POST"
@@ -76,11 +78,12 @@
                             info...
                         </td>
                     </tr>
+                    </c:forEach>
                 </table>
             </div>
         </fieldset>
     </div>
-    <%--Table available activity--%>
+        <%--Table available activity--%>
     <div class="wrapperTableActivity">
         <div class="tableElement">
             <fieldset>
@@ -104,7 +107,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <%--@elvariable id="activityList" type="java.util.List"--%>
+                                    <%--@elvariable id="activityList" type="java.util.List"--%>
                                 <c:forEach items="${activityList}" var="activity">
                                     ${activity}<br>
                                 </c:forEach>
@@ -114,7 +117,7 @@
                     <table style=width:330px>
                         <tr>
                             <td>
-                                <div >
+                                <div>
                                     </br>${operationMessage}
                                 </div>
                             </td>

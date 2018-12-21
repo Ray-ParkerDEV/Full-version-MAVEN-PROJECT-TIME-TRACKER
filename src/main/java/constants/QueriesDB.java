@@ -17,7 +17,8 @@ public class QueriesDB {
     public static final String DELETE_USER_BY_ID = "DELETE FROM user WHERE id = ?";
     public static final String UPDATE_USER_BY_ID = "UPDATE user SET first_name = ?, sur_name = ? " +
             "login = ?, password = ?, user_type = ?  WHERE id = ?";
-    public static final String GET_ALL_USERS = "SELECT * FROM user";
+    public static final String GET_ALL_USERS = "SELECT * FROM user JOIN user_type ON user.user_type_id = \n" +
+            "    user_type.id";
     /*Queries to work with userType database table.*/
     public static final String ADD_USER_TYPE = "INSERT INTO user_type (name) VALUES (?);";
     public static final String UPDATE_USER_TYPE_BY_ID = "UPDATE user_type SET name=? WHERE id=?;";
