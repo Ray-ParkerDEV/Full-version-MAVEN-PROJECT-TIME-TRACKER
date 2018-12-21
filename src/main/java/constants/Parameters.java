@@ -12,6 +12,7 @@ public class Parameters {
     public static final String USER_TYPE = "userType";
     public static final String ACTIVITY = "activity";
     public static final String ACTIVITY_LIST = "activityList";
+    public static final String USER_LIST = "userList";
     public static final String ACTIVITY_NAME = "activityName";
     public static final String USER_TYPE_ID = "userTypeId";
     public static final String ACTIVITY_ID = "activityId";

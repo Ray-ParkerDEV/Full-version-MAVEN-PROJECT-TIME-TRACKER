@@ -104,7 +104,6 @@
                         </tr>
                         <tr>
                             <td>
-
                                 <%--@elvariable id="activityList" type="java.util.List"--%>
                                 <c:forEach items="${activityList}" var="activity">
                                     ${activity}<br>
@@ -112,11 +111,17 @@
                             </td>
                         </tr>
                     </table>
+                    <table style=width:330px>
+                        <tr>
+                            <td>
+                                <div >
+                                    </br>${operationMessage}
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </fieldset>
-            <div class="operationMessageElement">
-                </br>${operationMessage}
-            </div>
         </div>
     </div>
 </div>

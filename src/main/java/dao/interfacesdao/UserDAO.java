@@ -4,6 +4,8 @@ import entities.User;
 import exceptions.DAOException;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Description: This interface describes methods for working with <i>users</i> database table,
@@ -70,4 +72,15 @@ public interface UserDAO extends AbstractDAO<User> {
      * @param connection    - the current connection to a database. Transmitted from the service module to provide transactions.
      */
     void update(User user, Connection connection) throws DAOException;
+
+    /**
+     * This method creates entity of User class from data received from ResultSet.
+     *
+     * @param resultSet - a database result "row" with required values.
+     * @param user      - the entity of User with "null" value for setting corresponding values.
+     * @return - created user with fields.
+     * @throws SQLException
+     */
+    User createUser(ResultSet resultSet, User user) throws SQLException;
 }
+

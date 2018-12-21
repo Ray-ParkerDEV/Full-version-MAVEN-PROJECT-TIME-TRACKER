@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 
+import static entities.User.clientNameList;
+
 /**
  * Description: This class describes actions of logon logic.
  * <p>
@@ -44,9 +46,10 @@ public class LoginCommand implements BasicCommand {
         try {
             if ( UserService.getInstance().checkUserAuthorization(user.getLogin(), user.getPassword())) {
                 Activity.activityNameList = ActivityService.getInstance().getAllActivityNames();
+                clientNameList = UserService.getInstance().getAllClientNames();
                 ActivityService.getInstance().setActivityNameListToSession(Activity.activityNameList, session);
                 user =  UserService.getInstance().getUserByLogin(user.getLogin());
-                UserService.getInstance().setAttributeToSession(user, session);
+                UserService.getInstance().setAttributeToSession(clientNameList, user, session);
                 switch (user.getUserType().getUserType()) {
                     case "admin":
                         page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH);

@@ -19,6 +19,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static entities.Activity.activityNameList;
+
 /**
  * Description: This class describes actions on the user object.
  * This class contains methods that implement work with transaction support.
@@ -141,12 +143,13 @@ public class ActivityService {
      * @param activity - the current user which has been created.     *
      */
     public void addIfNewInListName(Activity activity) {
-        for (int i = 0; i < Activity.activityNameList.size(); i++) {
-            if (activity.getActivityName().equals(Activity.activityNameList.get(i))) {
+        if(activity.getActivityName()=="") return;
+        for (int i = 0; i < activityNameList.size(); i++) {
+            if (activity.getActivityName().equals(activityNameList.get(i))) {
                 return;
             }
         }
-        Activity.activityNameList.add(activity.getActivityName());
+        activityNameList.add(activity.getActivityName());
     }
 
     /**
@@ -192,7 +195,7 @@ public class ActivityService {
         return activityNames;
     }
 
-    List<String> activitiesArrayGetNames(List<Activity> activities){
+    List<String> activitiesArrayGetNames(List<Activity> activities) {
         List<String> activityNames = new ArrayList<>();
         for (int i = 0; i < activities.size(); i++) {
             activityNames.add(activities.get(i).getActivityName());

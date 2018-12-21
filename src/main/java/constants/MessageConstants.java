@@ -24,6 +24,7 @@ public class MessageConstants {
     public static final String USER_EXISTS = "User with this login has already existed.";
     public static final String ACTIVITY_EXISTS = "Activity with this name has already existed.";
     public static final String EMPTY_FIELDS = "Attention! At least one of the fields is empty.";
+    public static final String EMPTY_FIELDS_ACTIVITY = "Attention! Field is empty.";
     public static final String COLUMN_IS_NOT_VALID = "The column label is not valid.";
 
     public MessageConstants() {

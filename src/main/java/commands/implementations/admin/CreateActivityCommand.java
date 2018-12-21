@@ -38,8 +38,8 @@ public class CreateActivityCommand implements BasicCommand {
             if (session.isNew()) {
                 Activity.activityNameList = ActivityService.getInstance().getAllActivityNames();
             }
-            ActivityService.getInstance().addIfNewInListName(activity);
             if (AdminService.getInstance().areFieldsFilled(request)) {
+                ActivityService.getInstance().addIfNewInListName(activity);
                 if (ActivityService.getInstance().isUniqueActivity(activity)) {
                     ActivityService.getInstance().createActivityDB(activity);
                     request.setAttribute(Parameters.SUCCESS_CREATING, MessageConstants.SUCCESS_CREATION);
@@ -47,11 +47,11 @@ public class CreateActivityCommand implements BasicCommand {
                     page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH);
                     logger.info(MessageConstants.SUCCESS_CREATION);
                 } else {
-                    request.setAttribute(Parameters.USER_UNIQUE_ERROR, MessageConstants.ACTIVITY_EXISTS);
+                    request.setAttribute(Parameters.OPERATION_MESSAGE, MessageConstants.ACTIVITY_EXISTS);
                     page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH);
                 }
             } else {
-                request.setAttribute(Parameters.OPERATION_MESSAGE, MessageConstants.EMPTY_FIELDS);
+                request.setAttribute(Parameters.OPERATION_MESSAGE, MessageConstants.EMPTY_FIELDS_ACTIVITY);
                 page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH);
             }
         } catch (SQLException e) {

@@ -1,14 +1,23 @@
 package services;
 
+import connection.ConnectionPool;
 import connection.TransactionHandler;
+import constants.MessageConstants;
 import constants.Parameters;
+import constants.QueriesDB;
 import dao.daofactory.DaoFactory;
 import dao.interfacesdao.UserDAO;
 import entities.User;
+import exceptions.DAOException;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Description: This class describes actions on the user object.
@@ -53,7 +62,7 @@ public class UserService {
      * @throws SQLException
      */
     public boolean checkUserAuthorization(String login, String password) throws SQLException {
-        final boolean [] isAuthorized = new boolean[1];
+        final boolean[] isAuthorized = new boolean[1];
         TransactionHandler.runInTransaction(connection ->
                 isAuthorized[0] = userDAO.isAuthorized(login, password, connection)
         );
@@ -69,7 +78,7 @@ public class UserService {
     public User getUserByLogin(String login) throws SQLException {
         final User[] user = new User[1];
         TransactionHandler.runInTransaction(connection ->
-            user[0] = userDAO.getByLogin(login,connection)
+                user[0] = userDAO.getByLogin(login, connection)
         );
         return user[0];
     }
@@ -94,7 +103,7 @@ public class UserService {
      * @throws SQLException
      */
     public boolean isUniqueUser(User user) throws SQLException {
-        final boolean [] isUnique = new boolean[1];
+        final boolean[] isUnique = new boolean[1];
         TransactionHandler.runInTransaction(connection ->
                 isUnique[0] = userDAO.checkUniqueUser(user.getLogin(), connection)
         );
@@ -122,6 +131,67 @@ public class UserService {
     public void setAttributeToSession(User user, HttpSession session) {
         session.setAttribute(Parameters.USER, user);
         session.setAttribute(Parameters.USER_TYPE, String.valueOf(user.getUserType()));
+    }
+    /**
+     * An additional overloaded accessory method that provides work with some attributes of the object of http session.
+     * This method sets user's names parameters to the session.
+     *
+     * @param session - an object of the current session.
+     */
+    public void setAttributeToSession(List<String> userList, User user, HttpSession session) {
+        session.setAttribute(Parameters.USER, user);
+        session.setAttribute(Parameters.USER_TYPE, String.valueOf(user.getUserType()));
+        session.setAttribute(Parameters.USER_LIST, userList);
+    }
+
+    /**
+     * This method receives all client names from database. This method implements work with transaction support.
+     *
+     * @return - a list of activity names from the database.
+     * @throws SQLException
+     */
+    public List<String> getAllClientNames() throws SQLException {
+        final List<String>[] activityNameList = new List[1];
+        TransactionHandler.runInTransaction(connection ->
+                activityNameList[0] = getAllNames(connection)
+        );
+        return activityNameList[0];
+    }
+
+    /**
+     * This method reads and returns information from all records (rows) of a database table.
+     *
+     * @param connection - the current connection to a database. Transmitted from the service module to provide transactions.
+     * @return - list of all entities from a database table.
+     */
+    public List<String> getAllNames(Connection connection) throws DAOException {
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        List<User> users = new ArrayList<>();
+        List<String> userNames = new ArrayList<>();
+        try {
+            statement = connection.prepareStatement(QueriesDB.GET_ALL_USERS);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                users.add(userDAO.createUser(resultSet, new User()));
+            }
+            userNames = usersArrayGetNames(users);
+        } catch (SQLException e) {
+            logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
+            throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
+        } finally {
+            ConnectionPool.closeResultSet(resultSet);
+            ConnectionPool.closeStatement(statement);
+        }
+        return userNames;
+    }
+
+    List<String> usersArrayGetNames(List<User> activities) {
+        List<String> activityNames = new ArrayList<>();
+        for (int i = 0; i < activities.size(); i++) {
+            activityNames.add(activities.get(i).getFirstName() + " " + activities.get(i).getSurName());
+        }
+        return activityNames;
     }
 
 }

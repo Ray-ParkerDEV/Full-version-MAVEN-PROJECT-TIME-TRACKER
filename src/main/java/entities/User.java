@@ -1,6 +1,8 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Description: This class describes all applications users.
@@ -8,7 +10,7 @@ import java.io.Serializable;
  * Created by Yaroslav Bodyak on 11.12.2018.
  */
 public class User extends BaseEntity implements Serializable {
-
+    public static List<String> clientNameList = new ArrayList<>();
     private Integer userId;
     private String firstName;
     private String surName;
@@ -75,6 +77,14 @@ public class User extends BaseEntity implements Serializable {
 
     public void setUserType(UserType userType) {
         this.userType = userType;
+    }
+
+    public List<String> getUserNameList() {
+        return clientNameList;
+    }
+
+    public void setUserNameList(List<String> userNameList) {
+        User.clientNameList = userNameList;
     }
 
     @Override
