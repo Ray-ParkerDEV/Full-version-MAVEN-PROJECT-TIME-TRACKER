@@ -1,6 +1,7 @@
 <%--Created by Yaroslav Bodyak on 11.12.2018--%>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="spec" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>Admin page</title>
@@ -88,7 +89,7 @@
                     <table style=width:330px>
                         <col width="100">
                         <tr>
-                            <td width="330" align="left">
+                            <td width="350" align="left">
                                 <form class="formElement" name="actionForm" method="POST"
                                       action="controller">
                                     <div class="wrapperButtons">
@@ -96,24 +97,26 @@
                                         <input class="buttonElement" type="submit" value="add new activity"
                                                style="height:20px; width:110px"/>
                                         <input class="inputElement" type="text" name="activityName" value=""
-                                               style="height:20px; width:200px"/>
+                                               style="height:20px; width:220px"/>
                                     </div>
                                 </form>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                activity 1
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                activity 2
+
+                                <%--@elvariable id="activityList" type="java.util.List"--%>
+                                <c:forEach items="${activityList}" var="activity">
+                                    ${activity}<br>
+                                </c:forEach>
                             </td>
                         </tr>
                     </table>
                 </div>
             </fieldset>
+            <div class="operationMessageElement">
+                </br>${operationMessage}
+            </div>
         </div>
     </div>
 </div>

@@ -11,6 +11,7 @@ import services.ActivityService;
 import services.AdminService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 
 /**
@@ -31,13 +32,24 @@ public class CreateActivityCommand implements BasicCommand {
     @Override
     public String execute(HttpServletRequest request) {
         String page = null;
+        HttpSession session = request.getSession(false);
         Activity activity = AdminService.getInstance().geActivityFromRequest(request);
         try {
+            if (session.isNew()) {
+                Activity.activityNameList = ActivityService.getInstance().getAllActivityNames();
+            }
+            ActivityService.getInstance().addIfNewInListName(activity);
             if (AdminService.getInstance().areFieldsFilled(request)) {
-                ActivityService.getInstance().createActivityDB(activity);
-                request.setAttribute(Parameters.SUCCESS_CREATING, MessageConstants.SUCCESS_CREATION);
-                page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH);
-                logger.info(MessageConstants.SUCCESS_CREATION);
+                if (ActivityService.getInstance().isUniqueActivity(activity)) {
+                    ActivityService.getInstance().createActivityDB(activity);
+                    request.setAttribute(Parameters.SUCCESS_CREATING, MessageConstants.SUCCESS_CREATION);
+                    ActivityService.getInstance().setActivityNameListToSession(Activity.activityNameList, session);
+                    page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH);
+                    logger.info(MessageConstants.SUCCESS_CREATION);
+                } else {
+                    request.setAttribute(Parameters.USER_UNIQUE_ERROR, MessageConstants.ACTIVITY_EXISTS);
+                    page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH);
+                }
             } else {
                 request.setAttribute(Parameters.OPERATION_MESSAGE, MessageConstants.EMPTY_FIELDS);
                 page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH);

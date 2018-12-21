@@ -28,12 +28,6 @@
                 <legend align="center">YOUR ACTIVITIES TRACKING</legend>
                 <div class="activityInfoForm">
                     <table>
-                        <!--<col width="320">-->
-                        <!--<col/>-->
-                        <!--<col width="150">-->
-                        <!--<col>-->
-                        <!--<col width="100">-->
-                        <!--<col width="300">-->
                         <tr>
                             <th align="left" width="320">ACTIVITIES</th>
                             <th align="left" width="150">STATUS</th>

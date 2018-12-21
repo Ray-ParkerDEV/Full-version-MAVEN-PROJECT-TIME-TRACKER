@@ -70,3 +70,8 @@ fieldset {
     margin: 0;
     text-align: center
 }
+.operationMessageElement {
+    position: fixed;
+    left: 10px; bottom: 5px;
+    color: firebrick;
+}

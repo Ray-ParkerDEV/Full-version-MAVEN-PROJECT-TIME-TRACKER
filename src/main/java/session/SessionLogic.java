@@ -20,10 +20,10 @@ public class SessionLogic {
         return session;
     }
 
-    public static boolean isSessionAlive(HttpSession session) {
+    public static boolean isSessionNotAlive(HttpSession session) {
         if (session == null) {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 }

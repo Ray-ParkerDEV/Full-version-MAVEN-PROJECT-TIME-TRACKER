@@ -22,6 +22,7 @@ public class MessageConstants {
     public static final String DATABASE_ACCESS_ERROR = "Database is not available.";
     public static final String EXECUTE_QUERY_ERROR = "An error was occurred while executing the query to the database.";
     public static final String USER_EXISTS = "User with this login has already existed.";
+    public static final String ACTIVITY_EXISTS = "Activity with this name has already existed.";
     public static final String EMPTY_FIELDS = "Attention! At least one of the fields is empty.";
     public static final String COLUMN_IS_NOT_VALID = "The column label is not valid.";
 

@@ -48,7 +48,7 @@ public class Controller extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = SessionLogic.getSession(request);
-        if (!SessionLogic.isSessionAlive(session)) {
+        if (SessionLogic.isSessionNotAlive(session)) {
             String page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.SESSION_PAGE_PATH);
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
             dispatcher.forward(request, response);

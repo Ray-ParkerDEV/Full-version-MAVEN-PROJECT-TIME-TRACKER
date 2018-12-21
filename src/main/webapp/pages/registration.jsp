@@ -41,6 +41,6 @@
                 </div>
             </form>
         </div>
-        <div class="registrationPageMessage">REGISTRATION PAGE</div>
+        <div ></div>
     </body>
 </html>

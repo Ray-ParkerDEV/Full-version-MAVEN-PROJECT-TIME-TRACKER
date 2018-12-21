@@ -1,16 +1,12 @@
 package services;
 
-import connection.TransactionHandler;
 import constants.Parameters;
 import dao.daofactory.DaoFactory;
 import dao.interfacesdao.UserDAO;
 import entities.Activity;
-import entities.User;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.sql.SQLException;
 
 /**
  * Description: This class describes actions that admin performs.
@@ -75,70 +71,6 @@ public class AdminService {
         } else {
             return false;
         }
-    }
-
-    /**
-     * This method receives user object. This method implements work with transaction support.
-     *
-     * @param login - entered login.
-     * @return - User object.
-     */
-    public User getUserByLogin(String login) throws SQLException {
-        final User[] user = new User[1];
-        TransactionHandler.runInTransaction(connection ->
-                user[0] = userDAO.getByLogin(login, connection)
-        );
-        return user[0];
-    }
-
-    /**
-     * This method updates user object. This method implements work with transaction support.
-     *
-     * @param user - an user which fields will be updated.
-     * @throws SQLException
-     */
-    public void updateUser(User user) throws SQLException {
-        TransactionHandler.runInTransaction(connection ->
-                userDAO.update(user, connection)
-        );
-    }
-
-    /**
-     * This method checks the uniqueness of the user. This method implements work with transaction support.
-     *
-     * @param user - an user object with fields will be checked.
-     * @return - boolean value of the condition.
-     * @throws SQLException
-     */
-    public boolean isUniqueUser(User user) throws SQLException {
-        final boolean[] isUnique = new boolean[1];
-        TransactionHandler.runInTransaction(connection ->
-                isUnique[0] = userDAO.checkUniqueUser(user.getLogin(), connection)
-        );
-        return isUnique[0];
-    }
-
-    /**
-     * This method registers new user of application. This method implements work with transaction support.
-     *
-     * @param user - a new user which will be registered.
-     * @throws SQLException
-     */
-    public void registerUser(User user) throws SQLException {
-        TransactionHandler.runInTransaction(connection ->
-                userDAO.add(user, connection)
-        );
-    }
-
-    /**
-     * An additional accessory method that provides work with some attributes of the object of http session.
-     * This method sets user's parameters to the session.
-     *
-     * @param session - an object of the current session.
-     */
-    public void setAttributeToSession(User user, HttpSession session) {
-        session.setAttribute(Parameters.USER, user);
-        session.setAttribute(Parameters.USER_TYPE, String.valueOf(user.getUserType()));
     }
 
 }

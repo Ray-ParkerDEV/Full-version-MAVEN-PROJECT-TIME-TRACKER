@@ -1,6 +1,8 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Description: This class describes all user's activities.
@@ -8,7 +10,7 @@ import java.io.Serializable;
  * Created by Yaroslav Bodyak on 11.12.2018.
  */
 public class Activity extends BaseEntity implements Serializable {
-
+    public static List<String> activityNameList = new ArrayList<>();
     private Integer activityId;
     private String activityName;
 
@@ -36,6 +38,10 @@ public class Activity extends BaseEntity implements Serializable {
         this.activityName = activityName;
     }
 
+    public List<String> getActivityList() {
+        return activityNameList;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -61,4 +67,5 @@ public class Activity extends BaseEntity implements Serializable {
                 ", activityName='" + activityName + '\'' +
                 '}';
     }
+
 }

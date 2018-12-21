@@ -4,9 +4,11 @@ import commands.BasicCommand;
 import constants.MessageConstants;
 import constants.Parameters;
 import constants.PathPageConstants;
+import entities.Activity;
 import entities.User;
 import manager.ConfigManagerPages;
 import org.apache.log4j.Logger;
+import services.ActivityService;
 import services.UserService;
 import utils.RequestParameterIdentifier;
 
@@ -41,6 +43,8 @@ public class LoginCommand implements BasicCommand {
         HttpSession session = request.getSession(false);
         try {
             if ( UserService.getInstance().checkUserAuthorization(user.getLogin(), user.getPassword())) {
+                Activity.activityNameList = ActivityService.getInstance().getAllActivityNames();
+                ActivityService.getInstance().setActivityNameListToSession(Activity.activityNameList, session);
                 user =  UserService.getInstance().getUserByLogin(user.getLogin());
                 UserService.getInstance().setAttributeToSession(user, session);
                 switch (user.getUserType().getUserType()) {
