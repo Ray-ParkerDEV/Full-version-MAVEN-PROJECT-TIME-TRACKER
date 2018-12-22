@@ -27,10 +27,6 @@ fieldset {
     position: absolute;
     left: 20px; top: 250px;
 }
-.trackingTable {
-    /*position: absolute;*/
-    /*left:20px; top:50px;*/
-}
 .buttonElement {
     display: inline-block;
     margin-right: 10px;
@@ -74,4 +70,18 @@ fieldset {
     position: fixed;
     left: 10px; bottom: 5px;
     color: firebrick;
+}
+.mockButtonBlue{
+    height:22px;
+    width:140px;
+    background-color: #008CBA; /* Blue */
+    border: 1px solid black;
+    color: white;
+    padding: 0;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin-right: 10px;
+    /*cursor: none;*/
 }
