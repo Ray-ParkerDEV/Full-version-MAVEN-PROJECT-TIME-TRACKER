@@ -30,6 +30,11 @@ fieldset {
 
 .wrapperTableActivity {
     position: absolute;
+    left: 850px;
+    top: 0px;
+}
+.wrapperTableActivityAdmin {
+    position: absolute;
     left: 870px;
     top: 0px;
 }
@@ -37,7 +42,7 @@ fieldset {
 .wrapperUserData {
     position: absolute;
     left: 20px;
-    top: 250px;
+    top: 50px;
 }
 
 .buttonElement {
@@ -68,7 +73,7 @@ fieldset {
 }
 .backElement {
     position: fixed;
-    right: 10px;
+    right: 100px;
     top: 10px;
 }
 

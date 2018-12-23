@@ -19,10 +19,7 @@ fieldset {
     position: absolute;
     left: 20px; top: 50px;
 }
-.trackingTable {
-    /*position: absolute;*/
-    /*left:20px; top:50px;*/
-}
+
 .buttonElement {
     display: inline-block;
     margin-right: 10px;

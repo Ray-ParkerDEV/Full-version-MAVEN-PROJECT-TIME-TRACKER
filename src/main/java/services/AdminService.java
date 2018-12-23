@@ -55,6 +55,19 @@ public class AdminService {
     }
 
     /**
+     * This method gets activity name that admin tries to add to current client.
+     * This method receives activity name from request
+     * and sets this values to the corresponding fields of the activity.
+     *
+     * @param request - an object of request with necessary parameters.
+     * @return - user object with updated fields.
+     */
+    public String geActivityNameFromRequest(HttpServletRequest request) {
+        String activityName = request.getParameter(Parameters.ACTIVITY_NAME);
+        return activityName;
+    }
+
+    /**
      * This method creates a new activity caused by admin action on admin page.
      * This method receives activity name from request
      * and sets this values to the corresponding fields of the activity.

@@ -8,6 +8,7 @@ import constants.QueriesDB;
 import dao.daofactory.DaoFactory;
 import dao.interfacesdao.ActivityDAO;
 import entities.Activity;
+import entities.User;
 import exceptions.DAOException;
 import org.apache.log4j.Logger;
 
@@ -153,6 +154,20 @@ public class ActivityService {
     }
 
     /**
+     * This method add activity names iu user activities names list.
+     *
+     * @param activityName - the current user which has been created.     *
+     */
+    public void addIfNewInListNameOfUser(String activityName) {
+        for (int i = 0; i < User.activityNameList.size(); i++) {
+            if (activityName.equals(activityNameList.get(i))) {
+                return;
+            }
+        }
+        User.activityNameList.add(activityName);
+    }
+
+    /**
      * This method checks the uniqueness of the activity. This method implements work with transaction support.
      *
      * @param activity - an user object with fields will be checked.
@@ -166,6 +181,23 @@ public class ActivityService {
         );
         return isUnique[0];
     }
+
+    /**
+     * This method checks the uniqueness of the activity name in user list. This method implements work with transaction support.
+     *
+     * @param activityName - an user object with fields will be checked.
+     * @return - boolean value of the condition.
+     * @throws SQLException
+     */
+    public boolean isUniqueActivityName(String activityName) {
+        for (int i = 0; i < User.activityNameList.size(); i++) {
+            if (activityName.equals(activityNameList.get(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     /**
      * This method reads and returns information from all records (rows) of a database table.

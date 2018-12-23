@@ -41,7 +41,6 @@
                             <form class="formElement" name="actionForm" method="POST"
                                   action="controller">
                                 <div class="wrapperButtons">
-                                        <%--<input type="text" value="${sessionScope.user}"/>--%>
                                     <input type="hidden" name="user" value="${user}"/>
                                     <input type="hidden" name="command" value="overviewClient"/>
                                     <input class="buttonElement" type="submit" value="overview"
@@ -72,7 +71,7 @@
         </div>
     </fieldset>
     <%--Table available activity--%>
-    <div class="wrapperTableActivity">
+    <div class="wrapperTableActivityAdmin">
         <fieldset>
             <legend align="center">AVAILABLE ACTIVITIES</legend>
             <div class="activityInfoForm">
