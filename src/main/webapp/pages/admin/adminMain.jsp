@@ -41,7 +41,9 @@
                             <form class="formElement" name="actionForm" method="POST"
                                   action="controller">
                                 <div class="wrapperButtons">
-                                    <input type="hidden" name="command" value="${user}"/>
+                                        <%--<input type="text" value="${sessionScope.user}"/>--%>
+                                    <input type="hidden" name="user" value="${user}"/>
+                                    <input type="hidden" name="command" value="overviewClient"/>
                                     <input class="buttonElement" type="submit" value="overview"
                                            style="height:20px; width:70px"/>
                                 </div>
@@ -51,11 +53,11 @@
                             <table>
                                 <tr>
                                     <td>
-                                        <button class="mockButtonBlue">add new activity
+                                        <button class="mockButton blue">add new activity
                                         </button>
                                     </td>
                                     <td>
-                                        <button class="mockButtonBlue">remove finished activity
+                                        <button class="mockButton red">remove finished activity
                                         </button>
                                     </td>
                                 </tr>

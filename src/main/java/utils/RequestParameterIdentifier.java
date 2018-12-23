@@ -22,6 +22,7 @@ public class RequestParameterIdentifier {
      */
     public static CommandType getCommandFromRequest(HttpServletRequest request) {
         CommandType commandType = CommandType.DEFAULT;
+        //if (request.getSession())
         if (request.getParameter(Parameters.COMMAND) != null
                 && !request.getParameter(Parameters.COMMAND).isEmpty()) {
             commandType = CommandType.valueOf(request.getParameter(Parameters.COMMAND).toUpperCase());

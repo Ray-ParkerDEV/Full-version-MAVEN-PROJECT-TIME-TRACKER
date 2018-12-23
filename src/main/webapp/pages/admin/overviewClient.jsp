@@ -107,14 +107,21 @@
             </div>
         </fieldset>
     </div>
-    <div/>
+</div>
 
-    <!--LOGOUT-->
-    <div class="logoutElement">
-        <form name="logout" method="POST" action="controller">
-            <input type="hidden" name="command" value="logout"/>
-            <input type="submit" value="Log Out"/>
-        </form>
-    </div>
+<!--LOGOUT-->
+<div class="logoutElement">
+    <form name="logout" method="POST" action="controller">
+        <input type="hidden" name="command" value="logout"/>
+        <input type="submit" value="Log Out"/>
+    </form>
+</div>
+<!--BACK-->
+<div class="backElement">
+    <form name="backForm" method="POST" action="controller">
+            <input type="hidden" name="command" value="backAdmin"/>
+            <input type="submit" value="Back"/>
+    </form>
+</div>
 </body>
 </html>

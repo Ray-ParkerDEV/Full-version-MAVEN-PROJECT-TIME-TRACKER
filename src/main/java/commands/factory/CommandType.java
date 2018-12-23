@@ -2,7 +2,9 @@ package commands.factory;
 
 import commands.BasicCommand;
 import commands.implementations.DefaultCommand;
+import commands.implementations.admin.BackAdminCommand;
 import commands.implementations.admin.CreateActivityCommand;
+import commands.implementations.admin.OverviewClientCommand;
 import commands.implementations.user.*;
 
 /**
@@ -16,7 +18,7 @@ public enum CommandType {
     LOGIN, LOGOUT, REGISTRATION, GOTOREGISTRATION, UPDATECLIENT, BACK, DEFAULT,
 
     /*admin commands*/
-    CREATEACTIVITY;
+    CREATEACTIVITY, OVERVIEWCLIENT, BACKADMIN;
 
     /**
      * This method directs the control to the corresponding class. The transfer of the control to the corresponding class
@@ -41,6 +43,10 @@ public enum CommandType {
                 return new BackCommand();
             case CREATEACTIVITY:
                 return new CreateActivityCommand();
+            case OVERVIEWCLIENT:
+                return new OverviewClientCommand();
+            case BACKADMIN:
+                return new BackAdminCommand();
             case DEFAULT:
                 return new DefaultCommand();
             default:

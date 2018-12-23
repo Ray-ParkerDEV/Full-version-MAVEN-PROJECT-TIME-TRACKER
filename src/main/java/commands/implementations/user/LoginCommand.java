@@ -9,6 +9,7 @@ import entities.User;
 import manager.ConfigManagerPages;
 import org.apache.log4j.Logger;
 import services.ActivityService;
+import services.AdminService;
 import services.UserService;
 import utils.RequestParameterIdentifier;
 
@@ -16,10 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 
-import static entities.User.clientNameList;
-
 /**
- * Description: This class describes actions of logon logic.
+ * Description: This class describes actions of login logic.
  * <p>
  * Created by Yaroslav Bodyak on 11.12.2018.
  */
@@ -46,10 +45,10 @@ public class LoginCommand implements BasicCommand {
         try {
             if ( UserService.getInstance().checkUserAuthorization(user.getLogin(), user.getPassword())) {
                 Activity.activityNameList = ActivityService.getInstance().getAllActivityNames();
-                clientNameList = UserService.getInstance().getAllClientNames();
+                AdminService.getInstance().clientNameList = UserService.getInstance().getAllClientNames();
                 ActivityService.getInstance().setActivityNameListToSession(Activity.activityNameList, session);
                 user =  UserService.getInstance().getUserByLogin(user.getLogin());
-                UserService.getInstance().setAttributeToSession(clientNameList, user, session);
+                UserService.getInstance().setAttributeToSession(AdminService.getInstance().clientNameList, user, session);
                 switch (user.getUserType().getUserType()) {
                     case "admin":
                         page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH);

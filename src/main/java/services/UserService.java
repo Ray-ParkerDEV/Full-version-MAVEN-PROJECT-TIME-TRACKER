@@ -153,7 +153,7 @@ public class UserService {
     public List<String> getAllClientNames() throws SQLException {
         final List<String>[] clientNameList = new List[1];
         TransactionHandler.runInTransaction(connection ->
-                clientNameList[0] = getAllNames(connection)
+                clientNameList[0] = getClientNames(connection)
         );
         return clientNameList[0];
     }
@@ -186,12 +186,40 @@ public class UserService {
         return userNames;
     }
 
-    List<String> usersArrayGetNames(List<User> activities) {
-        List<String> activityNames = new ArrayList<>();
-        for (int i = 0; i < activities.size(); i++) {
-            activityNames.add(activities.get(i).getFirstName() + " " + activities.get(i).getSurName());
+    /**
+     * This method reads and returns clients names from database table.
+     *
+     * @param connection - the current connection to a database. Transmitted from the service module to provide transactions.
+     * @return - list of all entities from a database table.
+     */
+    public List<String> getClientNames(Connection connection) throws DAOException {
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        List<User> clients = new ArrayList<>();
+        List<String> userNames ;
+        try {
+            statement = connection.prepareStatement(QueriesDB.GET_ALL_CLIENTS);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                clients.add(userDAO.createUser(resultSet, new User()));
+            }
+            userNames = usersArrayGetNames(clients);
+        } catch (SQLException e) {
+            logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
+            throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
+        } finally {
+            ConnectionPool.closeResultSet(resultSet);
+            ConnectionPool.closeStatement(statement);
         }
-        return activityNames;
+        return userNames;
+    }
+
+    List<String> usersArrayGetNames(List<User> activities) {
+        List<String> clientNames = new ArrayList<>();
+        for (int i = 0; i < activities.size(); i++) {
+            clientNames.add(activities.get(i).getFirstName() + " " + activities.get(i).getSurName());
+        }
+        return clientNames;
     }
 
 }

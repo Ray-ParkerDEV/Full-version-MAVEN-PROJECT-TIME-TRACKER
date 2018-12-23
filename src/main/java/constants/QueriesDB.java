@@ -19,6 +19,8 @@ public class QueriesDB {
             "login = ?, password = ?, user_type = ?  WHERE id = ?";
     public static final String GET_ALL_USERS = "SELECT * FROM user JOIN user_type ON user.user_type_id = \n" +
             "    user_type.id";
+    public static final String GET_ALL_CLIENTS = "SELECT * FROM user JOIN user_type ON user.user_type_id = \n" +
+            "    user_type.id WHERE user_type_id = 2";
     /*Queries to work with userType database table.*/
     public static final String ADD_USER_TYPE = "INSERT INTO user_type (name) VALUES (?);";
     public static final String UPDATE_USER_TYPE_BY_ID = "UPDATE user_type SET name=? WHERE id=?;";

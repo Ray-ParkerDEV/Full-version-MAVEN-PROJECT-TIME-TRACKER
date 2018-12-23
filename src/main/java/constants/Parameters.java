@@ -8,6 +8,8 @@ package constants;
  */
 public class Parameters {
     public static final String USER_ID = "userId";
+    public static final String USER_FIRST_NAME = "firstName";
+    public static final String USER_SUR_NAME = "surName";
     public static final String TRACKING_ID = "trackingId";
     public static final String USER_TYPE = "userType";
     public static final String ACTIVITY = "activity";
