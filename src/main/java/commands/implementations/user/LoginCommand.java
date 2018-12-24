@@ -5,17 +5,19 @@ import constants.MessageConstants;
 import constants.Parameters;
 import constants.PathPageConstants;
 import entities.Activity;
+import entities.Tracking;
 import entities.User;
 import manager.ConfigManagerPages;
 import org.apache.log4j.Logger;
 import services.ActivityService;
-import services.AdminService;
+import services.TrackingService;
 import services.UserService;
 import utils.RequestParameterIdentifier;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Description: This class describes actions of login logic.
@@ -43,14 +45,15 @@ public class LoginCommand implements BasicCommand {
         User user = RequestParameterIdentifier.getUserLoginPasswordFromRequest(request);
         HttpSession session = request.getSession(false);
         try {
-            if ( UserService.getInstance().checkUserAuthorization(user.getLogin(), user.getPassword())) {
-                Activity.activityNameList = ActivityService.getInstance().getAllActivityNames();
-                AdminService.getInstance().clientNameList = UserService.getInstance().getAllClientNames();
-                ActivityService.getInstance().setActivityNameListToSession(Activity.activityNameList, session);
-                user =  UserService.getInstance().getUserByLogin(user.getLogin());
-                UserService.getInstance().setAttributeToSession(AdminService.getInstance().clientNameList, user, session);
+            if (UserService.getInstance().checkUserAuthorization(user.getLogin(), user.getPassword())) {
+                List<Activity> activityAdminList = ActivityService.getInstance().getAllActivities();
+                List<Tracking> trackingList = TrackingService.getInstance().getAllTracking();
+                List<User> userList = UserService.getInstance().getAllUser();
+                user = UserService.getInstance().getUserByLogin(user.getLogin());
+                UserService.getInstance().setAttributeToSession(activityAdminList, trackingList, userList, session);
                 switch (user.getUserType().getUserType()) {
                     case "admin":
+                        UserService.getInstance().setAttributeAdminToSession(user, session);
                         page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH);
                         break;
                     case "client":

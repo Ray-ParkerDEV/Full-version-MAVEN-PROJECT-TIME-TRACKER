@@ -5,10 +5,7 @@ import constants.MessageConstants;
 import constants.Parameters;
 import constants.QueriesDB;
 import dao.interfacesdao.TrackingDAO;
-import entities.Activity;
-import entities.ActivityStatus;
-import entities.Tracking;
-import entities.User;
+import entities.*;
 import exceptions.DAOException;
 import org.apache.log4j.Logger;
 
@@ -119,15 +116,15 @@ public class TrackingDAOImpl implements TrackingDAO {
      * This method creates entity of Tracking class from data received from ResultSet.
      *
      * @param resultSet - a database result "row" with required values.
-     * @param tracking      - the entity of User with "null" value for setting corresponding values.
+     * @param tracking  - the entity of User with "null" value for setting corresponding values.
      * @return - created user with fields.
      * @throws SQLException
      */
     private Tracking createTracking(ResultSet resultSet, Tracking tracking) throws SQLException {
-        tracking.setTrackingId(resultSet.getInt(Parameters.TRACKING_ID));
-        tracking.setUser(UserDAOImpl.getInstance().createUser(resultSet,new User()));
-        tracking.setActivity(ActivityDAOImpl.getInstance().createActivity(resultSet,new Activity()));
-        switch (resultSet.getString(Parameters.STATUS)) {
+        tracking.setTrackingId(resultSet.getInt(Parameters.ID_DB));
+        tracking.setUser(UserDAOImpl.getInstance().createUser(resultSet, new User()));
+        tracking.setActivity(ActivityDAOImpl.getInstance().createActivity(resultSet, new Activity()));
+        switch (resultSet.getString(Parameters.STATUS_NAME_DB)) {
             case Parameters.NEW_ACTIVITY:
                 tracking.setStatus(ActivityStatus.NEW_ACTIVITY);
                 break;
@@ -142,6 +139,14 @@ public class TrackingDAOImpl implements TrackingDAO {
                 break;
             case Parameters.STOP:
                 tracking.setStatus(ActivityStatus.STOP);
+                break;
+        }
+        switch (resultSet.getString(Parameters.USER_REQUEST_NAME_DB)) {
+            case Parameters.ADD:
+                tracking.setUserRequest(UserRequest.ADD);
+                break;
+            case Parameters.REMOVE:
+                tracking.setUserRequest(UserRequest.REMOVE);
                 break;
         }
         tracking.setTime(resultSet.getInt(Parameters.TIME));
@@ -196,7 +201,7 @@ public class TrackingDAOImpl implements TrackingDAO {
     /**
      * This method creates and inserts an entity in a database table.
      *
-     * @param tracking       - the current user which has been created.
+     * @param tracking   - the current user which has been created.
      * @param connection - the current connection to a database. Transmitted from the service module to provide transactions.
      */
     @Override
@@ -207,7 +212,8 @@ public class TrackingDAOImpl implements TrackingDAO {
             statement.setString(1, String.valueOf(tracking.getUser().getUserId()));
             statement.setString(2, String.valueOf(tracking.getActivity().getActivityId()));
             statement.setString(3, tracking.getStatus().toString());
-            statement.setString(4, String.valueOf(tracking.getTime()));
+            statement.setString(4, tracking.getUserRequest().toString());
+            statement.setString(5, String.valueOf(tracking.getTime()));
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
@@ -227,12 +233,12 @@ public class TrackingDAOImpl implements TrackingDAO {
     public List<Tracking> getAll(Connection connection) throws DAOException {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
-        List<Tracking> trackings = new ArrayList<>();
+        List<Tracking> tracking = new ArrayList<>();
         try {
             statement = connection.prepareStatement(QueriesDB.GET_ALL_TRACKING);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                trackings.add(createTracking(resultSet, new Tracking()));
+                tracking.add(createTracking(resultSet, new Tracking()));
             }
         } catch (SQLException e) {
             logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
@@ -241,6 +247,35 @@ public class TrackingDAOImpl implements TrackingDAO {
             ConnectionPool.closeResultSet(resultSet);
             ConnectionPool.closeStatement(statement);
         }
-        return trackings;
+        return tracking;
+    }
+
+    /**
+     * This method reads and returns information from all records (rows) of a database table.
+     *
+     * @param user - user which rows will have retrieved from tracking table in DB.
+     * @param connection - the current connection to a database. Transmitted from the service module to provide transactions.
+     * @return - list of all entities from a database table.
+     */
+    @Override
+    public List<Tracking> getTrackingByClientId(User user, Connection connection) throws DAOException {
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        List<Tracking> trackingList = new ArrayList<>();
+        try {
+            statement = connection.prepareStatement(QueriesDB.GET_ALL_TRACKING_BY_CLIENT_ID);
+            statement.setString(1, String.valueOf(user.getUserId()));
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                trackingList.add(createTracking(resultSet, new Tracking()));
+            }
+        } catch (SQLException e) {
+            logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
+            throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
+        } finally {
+            ConnectionPool.closeResultSet(resultSet);
+            ConnectionPool.closeStatement(statement);
+        }
+        return trackingList;
     }
 }

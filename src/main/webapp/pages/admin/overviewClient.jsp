@@ -10,9 +10,9 @@
 <body>
 
 <div class="wrapperUserData">
-    <%--Next table--%>
+    <%--table overview user activities--%>
     <fieldset>
-        <legend align="center"> USER1 ACTIVITIES</legend>
+        <legend align="center"> Client <c:out value="${sessionScope.overviewUserName}"/></legend>
         <div class="activityInfoForm">
             <table>
                 <col width="200">
@@ -24,34 +24,40 @@
                     <th align="left">ACTIVITIES</th>
                     <th align="left">STATUS</th>
                     <th align="left">TIME</th>
-                    <th>ACTION</th>
+                    <th align="center">ACTION</th>
                     <th align="left">NOTICE</th>
                 </tr>
-                <c:forEach items="${activityUserList}" var="activity">
-                    <tr>
-                        <td>
-                                ${activity}<br>
-                        </td>
-                        <td>
-                            status
-                        </td>
-                        <td>
-                            time
-                        </td>
-                        <td>
-                                <%--action--%>
-                            <form class="formElement" name="actionForm" method="POST"
-                                  action="controller">
-                                <div class="wrapperButtons">
-                                    <input type="hidden" name="command" value="removeAct"/>
-                                    <input class="buttonElement" type="submit" value="remove"/>
-                                </div>
-                            </form>
-                        </td>
-                        <td>
-                            info...
-                        </td>
-                    </tr>
+                <c:forEach items="${sessionScope.trackingList}" var="tracking">
+                    <c:set var="myVar" value="${tracking.user.firstName} ${tracking.user.surName}"/>
+                    <c:if test="${myVar==sessionScope.overviewUserName}">
+                        <tr>
+                            <td>
+                                <c:out value="${tracking.activity.activityName}"/>
+                            </td>
+                            <td>
+                                <c:out value="${tracking.status}"/>
+                            </td>
+                            <td>
+                                <c:out value="${tracking.time}"/>
+                            </td>
+                            <td >
+                                <%--align="left"--%>
+                                    <%--action--%>
+                                        <%--class="formElement"--%>
+                                <form  class="formElement" name="actionForm" method="POST"
+                                      action="controller">
+                                        <input type="hidden" name="command" value="removeAct"/>
+                                        <input class="buttonElement" type="submit" value="remove"/>
+                                </form>
+                            </td>
+                            <td>
+                                <c:set var="myVar1" value="${tracking.userRequest}"/>
+                                <c:if test="${myVar1=='REMOVE'}">
+                                    waiting for admin response...
+                                </c:if>
+                            </td>
+                        </tr>
+                    </c:if>
                 </c:forEach>
             </table>
         </div>
@@ -63,14 +69,13 @@
             <div class="activityInfoForm">
                 <table style=width:330px>
                     <col width="100">
-                    <%--@elvariable id="activityList" type="java.util.List"--%>
-                    <c:forEach items="${activityList}" var="activity">
+                    <c:forEach items="${sessionScope.activityAdminList}" var="activity">
                         <tr>
-                            <td >
+                            <td>
                                 <form class="formElement" name="actionForm" method="POST"
                                       action="controller">
                                     <div class="wrapperButtons">
-                                        <input type="hidden" name="activityName" value="${activity}"/>
+                                        <input type="hidden" name="activityName" value="${activity.activityName}"/>
                                         <input type="hidden" name="command" value="addActivity"/>
                                         <input class="buttonElement" type="submit" value="add activity"
                                                style="height:20px; width:80px"/>
@@ -78,7 +83,7 @@
                                 </form>
                             </td>
                             <td>
-                                    ${activity}<br>
+                                <c:out value="${activity.activityName}"/>
                             </td>
                         </tr>
                     </c:forEach>

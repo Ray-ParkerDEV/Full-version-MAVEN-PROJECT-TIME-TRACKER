@@ -2,12 +2,18 @@ package commands.implementations.admin;
 
 import commands.BasicCommand;
 import constants.MessageConstants;
+import constants.Parameters;
 import constants.PathPageConstants;
+import entities.Tracking;
 import manager.ConfigManagerPages;
 import org.apache.log4j.Logger;
+import services.TrackingService;
+import services.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.sql.SQLException;
+import java.util.List;
 
 public class OverviewClientCommand implements BasicCommand {
     private static final Logger logger = Logger.getLogger(CreateActivityCommand.class);
@@ -21,10 +27,20 @@ public class OverviewClientCommand implements BasicCommand {
      */
     @Override
     public String execute(HttpServletRequest request) {
-        String page = null;
+        String page;
         HttpSession session = request.getSession(false);
+        String overviewUserName = request.getParameter(Parameters.USER);
+        UserService.getInstance().setAttributeOverviewUserNameToSession(overviewUserName, session);
+        try {
+            List<Tracking> trackingList = TrackingService.getInstance().getAllTracking();
+            TrackingService.getInstance().setAttributeTrackingListToSession(trackingList, session);
             page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH_CLIENT_OVERVIEW);
-            logger.info(MessageConstants.SUCCESS_CREATION);
+            logger.info(MessageConstants.SUCCESS_OVERVIEW_CLIENT_COMMAND);
+        } catch (SQLException e) {
+            page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ERROR_PAGE_PATH);
+            request.setAttribute(Parameters.ERROR_DATABASE, MessageConstants.DATABASE_ACCESS_ERROR);
+            logger.error(MessageConstants.DATABASE_ACCESS_ERROR);
+        }
         return page;
     }
 }

@@ -252,7 +252,7 @@ public class UserDAOImpl implements UserDAO {
         user.setLogin(resultSet.getString(Parameters.LOGIN));
         user.setPassword(resultSet.getString(Parameters.PASSWORD));
         user.setUserType(new UserType(resultSet.getInt(Parameters.USER_TYPE_ID_DB)
-                , resultSet.getString(Parameters.NAME_DB)));
+                , resultSet.getString(Parameters.USER_TYPE_NAME_DB)));
         return user;
     }
 

@@ -7,6 +7,8 @@ import constants.Parameters;
 import constants.QueriesDB;
 import dao.daofactory.DaoFactory;
 import dao.interfacesdao.UserDAO;
+import entities.Activity;
+import entities.Tracking;
 import entities.User;
 import exceptions.DAOException;
 import org.apache.log4j.Logger;
@@ -111,7 +113,7 @@ public class UserService {
     }
 
     /**
-     * This method registers new user of application. This method implements work with transaction support.
+     * This method registers new user of application in DB. This method implements work with transaction support.
      *
      * @param user - a new user which will be registered.
      * @throws SQLException
@@ -128,23 +130,44 @@ public class UserService {
      *
      * @param session - an object of the current session.
      */
-    public void setAttributeToSession(User user, HttpSession session) {
-        session.setAttribute(Parameters.USER, user);
-        session.setAttribute(Parameters.USER_TYPE, String.valueOf(user.getUserType()));
+    public void setAttributeAdminToSession(User adminName, HttpSession session) {
+        session.setAttribute(Parameters.ADMIN_NAME,adminName);
     }
+
     /**
-     * An additional overloaded accessory method that provides work with some attributes of the object of http session.
-     * This method sets user's names parameters to the session.
+     * An additional accessory method that provides work with some attributes of the object of http session.
+     * This method sets user's parameters to the session.
      *
      * @param session - an object of the current session.
      */
-    public void setAttributeToSession(List<String> userList, User user, HttpSession session) {
-        session.setAttribute(Parameters.USER, user);
-        session.setAttribute(Parameters.USER_TYPE, String.valueOf(user.getUserType()));
+    public void setAttributeOverviewUserNameToSession(String  overviewUserName, HttpSession session) {
+        session.setAttribute(Parameters.OVERVIEWUSERNAME,overviewUserName);
+    }
+
+    /**
+     * An additional overloaded method that provides work with some attributes of the object of http session.
+     * This method sets user's parameters to the session.
+     *
+     * @param session - an object of the current session.
+     */
+    public void setAttributeToSession(List<Activity> activityAdminList, List<Tracking> trackingList,
+                                      List<User> userList, HttpSession session) {
+        session.setAttribute(Parameters.ACTIVITY_ADMIN_LIST,activityAdminList);
+        session.setAttribute(Parameters.TRACKING_LIST, trackingList);
         session.setAttribute(Parameters.USER_LIST, userList);
     }
 
     /**
+     * An additional overloaded method that provides work with some attributes of the object of http session.
+     * This method sets user's parameters to the session.
+     *
+     * @param session - an object of the current session.
+     */
+    public void setAttributeToSession(List<Activity> activityAdminList, HttpSession session) {
+        session.setAttribute(Parameters.ACTIVITY_ADMIN_LIST,activityAdminList);
+    }
+
+     /**
      * This method receives all client names from database. This method implements work with transaction support.
      *
      * @return - a list of activity names from the database.
@@ -153,18 +176,32 @@ public class UserService {
     public List<String> getAllClientNames() throws SQLException {
         final List<String>[] clientNameList = new List[1];
         TransactionHandler.runInTransaction(connection ->
-                clientNameList[0] = getClientNames(connection)
+                clientNameList[0] = getAllClientNames(connection)
         );
         return clientNameList[0];
     }
 
     /**
-     * This method reads and returns information from all records (rows) of a database table.
+     * This method receives all Users from database. This method implements work with transaction support.
+     *
+     * @return - a list of activities from the database.
+     * @throws SQLException
+     */
+    public List<User> getAllUser() throws SQLException {
+        final List<User>[] userList = new List[1];
+        TransactionHandler.runInTransaction(connection ->
+                userList[0] = userDAO.getAll(connection)
+        );
+        return userList[0];
+    }
+
+    /**
+     * This method reads and returns users names from database table.
      *
      * @param connection - the current connection to a database. Transmitted from the service module to provide transactions.
      * @return - list of all entities from a database table.
      */
-    public List<String> getAllNames(Connection connection) throws DAOException {
+    public List<String> getAllUsersNames(Connection connection) throws DAOException {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         List<User> users = new ArrayList<>();
@@ -192,7 +229,7 @@ public class UserService {
      * @param connection - the current connection to a database. Transmitted from the service module to provide transactions.
      * @return - list of all entities from a database table.
      */
-    public List<String> getClientNames(Connection connection) throws DAOException {
+    public List<String> getAllClientNames(Connection connection) throws DAOException {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         List<User> clients = new ArrayList<>();

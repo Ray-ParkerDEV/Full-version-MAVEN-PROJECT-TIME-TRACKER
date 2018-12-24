@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * Description: This class contains the user and his activity.
- *
+ * <p>
  * Created by Yaroslav Bodyak on 11.12.2018.
  */
 public class Tracking extends BaseEntity implements Serializable {
@@ -12,20 +12,22 @@ public class Tracking extends BaseEntity implements Serializable {
     private User user;
     private Activity activity;
     private ActivityStatus status;
-    private Integer time;
     private UserRequest userRequest;
+    private Integer time;
+
 
     public Tracking() {
     }
 
     public Tracking(Integer trackingId, User user, Activity activity,
-                    ActivityStatus status, Integer time, UserRequest requestUser) {
+                    ActivityStatus status, UserRequest userRequest, Integer time) {
         this.trackingId = trackingId;
         this.user = user;
         this.activity = activity;
         this.status = status;
+        this.userRequest = userRequest;
         this.time = time;
-        this.userRequest = requestUser;
+
     }
 
     public Integer getTrackingId() {

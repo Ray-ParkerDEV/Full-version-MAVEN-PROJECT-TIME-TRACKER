@@ -9,10 +9,12 @@ import manager.ConfigManagerPages;
 import org.apache.log4j.Logger;
 import services.ActivityService;
 import services.AdminService;
+import services.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Description: This describes actions of registration new user.
@@ -31,19 +33,15 @@ public class CreateActivityCommand implements BasicCommand {
      */
     @Override
     public String execute(HttpServletRequest request) {
-        String page = null;
+        String page;
         HttpSession session = request.getSession(false);
         Activity activity = AdminService.getInstance().geActivityFromRequest(request);
         try {
-            if (session.isNew()) {
-                Activity.activityNameList = ActivityService.getInstance().getAllActivityNames();
-            }
             if (AdminService.getInstance().areFieldsFilled(request)) {
-                ActivityService.getInstance().addIfNewInListName(activity);
                 if (ActivityService.getInstance().isUniqueActivity(activity)) {
                     ActivityService.getInstance().createActivityDB(activity);
-                    request.setAttribute(Parameters.SUCCESS_CREATING, MessageConstants.SUCCESS_CREATION);
-                    ActivityService.getInstance().setActivityNameListToSession(Activity.activityNameList, session);
+                    List<Activity> activityAdminList = ActivityService.getInstance().getAllActivities();
+                    UserService.getInstance().setAttributeToSession(activityAdminList, session);
                     page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH);
                     logger.info(MessageConstants.SUCCESS_CREATION);
                 } else {

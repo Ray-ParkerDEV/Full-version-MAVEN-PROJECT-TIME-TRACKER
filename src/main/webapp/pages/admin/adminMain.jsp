@@ -12,7 +12,8 @@
 <div class="wrapperWelcomeInfo">
     <div class="welcomeElement">
         Administration service of TIMETRACKER.
-        Hello ADMIN, <i>${user.getFirstName()} ${user.getSurName()}</i>!
+
+        Hello ADMIN, <c:out value="${sessionScope.adminName.firstName} ${sessionScope.adminName.surName}"/>!
     </div>
 </div>
 <%--Table overview users activity--%>
@@ -31,41 +32,42 @@
                     <th>REQUEST FROM CLIENT</th>
                     <th align="left">NOTICE</th>
                 </tr>
-                <%--@elvariable id="userList" type="java.util.List"--%>
-                <c:forEach items="${userList}" var="user">
-                    <tr>
-                        <td>
-                                ${user}<br>
-                        </td>
-                        <td>
-                            <form class="formElement" name="actionForm" method="POST"
-                                  action="controller">
-                                <div class="wrapperButtons">
-                                    <input type="hidden" name="user" value="${user}"/>
-                                    <input type="hidden" name="command" value="overviewClient"/>
-                                    <input class="buttonElement" type="submit" value="overview"
-                                           style="height:20px; width:70px"/>
-                                </div>
-                            </form>
-                        </td>
-                        <td>
-                            <table>
-                                <tr>
-                                    <td>
-                                        <button class="mockButton blue">add new activity
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button class="mockButton red">remove finished activity
-                                        </button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                        <td>
-                            info...
-                        </td>
-                    </tr>
+                <c:forEach items="${sessionScope.userList}" var="user">
+                    <c:if test="${user.userType.userType=='client'}">
+                        <tr>
+                            <td>
+                                <c:out value="${user.firstName} ${user.surName}"/>
+                            </td>
+                            <td>
+                                <form class="formElement" name="actionForm" method="POST"
+                                      action="controller">
+                                    <div class="wrapperButtons">
+                                        <input type="hidden" name="user" value="${user.firstName} ${user.surName}"/>
+                                        <input type="hidden" name="command" value="overviewClient"/>
+                                        <input class="buttonElement" type="submit" value="overview"
+                                               style="height:20px; width:70px"/>
+                                    </div>
+                                </form>
+                            </td>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <button class="mockButton blue">add new activity
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button class="mockButton red">remove finished activity
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td>
+                                info...
+                            </td>
+                        </tr>
+                    </c:if>
                 </c:forEach>
             </table>
         </div>
@@ -93,9 +95,8 @@
                     </tr>
                     <tr>
                         <td>
-                            <%--@elvariable id="activityList" type="java.util.List"--%>
-                            <c:forEach items="${activityList}" var="activity">
-                                ${activity}<br>
+                            <c:forEach items="${sessionScope.activityAdminList}" var="activity">
+                                ${activity.activityName}<br>
                             </c:forEach>
                         </td>
                     </tr>

@@ -8,7 +8,6 @@ import constants.QueriesDB;
 import dao.daofactory.DaoFactory;
 import dao.interfacesdao.ActivityDAO;
 import entities.Activity;
-import entities.User;
 import exceptions.DAOException;
 import org.apache.log4j.Logger;
 
@@ -100,7 +99,7 @@ public class ActivityService {
      * @return - a list of activities from the database.
      * @throws SQLException
      */
-    public List<Activity> showAllActivities() throws SQLException {
+    public List<Activity> getAllActivities() throws SQLException {
         final List<Activity>[] activityList = new List[1];
         TransactionHandler.runInTransaction(connection ->
                 activityList[0] = activityDAO.getAll(connection)
@@ -153,24 +152,10 @@ public class ActivityService {
         activityNameList.add(activity.getActivityName());
     }
 
-    /**
-     * This method add activity names iu user activities names list.
-     *
-     * @param activityName - the current user which has been created.     *
-     */
-    public void addIfNewInListNameOfUser(String activityName) {
-        for (int i = 0; i < User.activityNameList.size(); i++) {
-            if (activityName.equals(activityNameList.get(i))) {
-                return;
-            }
-        }
-        User.activityNameList.add(activityName);
-    }
-
-    /**
+      /**
      * This method checks the uniqueness of the activity. This method implements work with transaction support.
      *
-     * @param activity - an user object with fields will be checked.
+     * @param activity - an activity object with fields will be checked.
      * @return - boolean value of the condition.
      * @throws SQLException
      */
@@ -185,12 +170,13 @@ public class ActivityService {
     /**
      * This method checks the uniqueness of the activity name in user list. This method implements work with transaction support.
      *
-     * @param activityName - an user object with fields will be checked.
+     * @param activityName - an activity name with fields will be checked.
+     * @param activityNameList - an activities names array with all names.
      * @return - boolean value of the condition.
      * @throws SQLException
      */
-    public boolean isUniqueActivityName(String activityName) {
-        for (int i = 0; i < User.activityNameList.size(); i++) {
+    public boolean isUniqueActivityName(String activityName, List<String> activityNameList) {
+        for (int i = 0; i < activityNameList.size(); i++) {
             if (activityName.equals(activityNameList.get(i))) {
                 return false;
             }

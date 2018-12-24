@@ -1,9 +1,11 @@
 package dao.interfacesdao;
 
 import entities.Tracking;
+import entities.User;
 import exceptions.DAOException;
 
 import java.sql.Connection;
+import java.util.List;
 
 /**
  * Description: This interface describes methods for working with <i>activity</i> database table,
@@ -53,4 +55,12 @@ public interface TrackingDAO extends AbstractDAO<Tracking> {
      */
     void updateTrackingStatusByID (Tracking tracking, Connection connection) throws DAOException;
 
+    /**
+     * This method reads and returns information from all records (rows) of a database table.
+     *
+     * @param user - user which activities will have retrieved from tracking table in DB.
+     * @param connection - the current connection to a database. Transmitted from the service module to provide transactions.
+     * @return - list of all entities from a database table.
+     */
+    List<Tracking> getTrackingByClientId(User user, Connection connection) throws DAOException;
 }

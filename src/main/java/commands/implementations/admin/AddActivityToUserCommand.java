@@ -4,16 +4,17 @@ import commands.BasicCommand;
 import constants.MessageConstants;
 import constants.Parameters;
 import constants.PathPageConstants;
-import entities.Activity;
-import entities.User;
+import entities.Tracking;
 import manager.ConfigManagerPages;
 import org.apache.log4j.Logger;
 import services.ActivityService;
-import services.AdminService;
+import services.TrackingService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
+
+import static entities.Activity.activityNameList;
 
 /**
  * Description: This describes actions of registration new user.
@@ -32,23 +33,25 @@ public class AddActivityToUserCommand implements BasicCommand {
      */
     @Override
     public String execute(HttpServletRequest request) {
-        String page = null;
+        String page;
         HttpSession session = request.getSession(false);
-        String activity = AdminService.getInstance().geActivityNameFromRequest(request);
+        String addActivityName = request.getParameter(Parameters.ACTIVITY_NAME);
+        Tracking tracking = new Tracking();
         try {
-            if (session.isNew()) {
-                User.activityNameList = ActivityService.getInstance().getAllActivityNames();
-            }
-            if (ActivityService.getInstance().isUniqueActivityName(activity)) {
-                User.activityNameList.add(activity);
-                request.setAttribute(Parameters.SUCCESS_CREATING, MessageConstants.SUCCESS_CREATION);
-                ActivityService.getInstance().setActivityNameListToSession(Activity.activityNameList, session);
-                page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH);
-                logger.info(MessageConstants.SUCCESS_CREATION);
-            } else {
-                request.setAttribute(Parameters.OPERATION_MESSAGE, MessageConstants.ACTIVITY_EXISTS);
-                page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH);
-            }
+//            if (session.isNew()) {
+//                //we have to update data from tracking table DB
+//                activityNameList = ActivityService.getInstance().getAllActivityNames();
+//            }
+//            if (ActivityService.getInstance().isUniqueActivityName(activity,activityNameList)) {
+//                activityNameList.add(activity);
+            TrackingService.getInstance().registerTracking(tracking);
+            ActivityService.getInstance().setActivityNameListToSession(activityNameList, session);
+            page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH_CLIENT_OVERVIEW);
+            logger.info(MessageConstants.SUCCESS_ADDING_ACTIVITY);
+//            } else {
+//                request.setAttribute(Parameters.OPERATION_MESSAGE, MessageConstants.ACTIVITY_EXISTS);
+//                page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH);
+//            }
         } catch (SQLException e) {
             request.setAttribute(Parameters.ERROR_DATABASE, MessageConstants.DATABASE_ACCESS_ERROR);
             page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ERROR_PAGE_PATH);
