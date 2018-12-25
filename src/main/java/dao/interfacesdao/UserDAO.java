@@ -63,7 +63,7 @@ public interface UserDAO extends AbstractDAO<User> {
      * @param connection    - the current connection to a database. Transmitted from the service module to provide transactions.
      * @return              - an entity from a database table according to the incoming id number.
      */
-    User getById(int id, Connection connection) throws DAOException;
+    User getById(String  id, Connection connection) throws DAOException;
 
     /**
      * This method updates an existing record (row) in a database table.

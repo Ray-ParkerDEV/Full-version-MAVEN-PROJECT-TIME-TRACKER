@@ -188,13 +188,13 @@ public class UserDAOImpl implements UserDAO {
      * @return - an entity from a database table according to the incoming id number.
      */
     @Override
-    public User getById(int id, Connection connection) throws DAOException {
+    public User getById(String id, Connection connection) throws DAOException {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         User user = new User();
         try {
             statement = connection.prepareStatement(QueriesDB.GET_USER_BY_ID);
-            statement.setInt(1, id);
+            statement.setString(1, id);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 createUser(resultSet, user);
@@ -246,7 +246,7 @@ public class UserDAOImpl implements UserDAO {
      * @throws SQLException
      */
     public User createUser(ResultSet resultSet, User user) throws SQLException {
-        user.setUserId(resultSet.getInt(Parameters.ID_DB));
+        user.setUserId(resultSet.getInt(Parameters.USER_ID_DB));
         user.setFirstName(resultSet.getString(Parameters.FIRST_NAME_DB));
         user.setSurName(resultSet.getString(Parameters.SURNAME_DB));
         user.setLogin(resultSet.getString(Parameters.LOGIN));

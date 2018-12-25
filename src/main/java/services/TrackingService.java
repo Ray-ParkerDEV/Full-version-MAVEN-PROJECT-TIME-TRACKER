@@ -73,11 +73,11 @@ public class TrackingService {
      * @throws SQLException
      */
     public List<Tracking> getAllTracking() throws SQLException {
-        final List<Tracking>[] activityList = new List[1];
+        final List<Tracking>[] trackingList = new List[1];
         TransactionHandler.runInTransaction(connection ->
-                activityList[0] = trackingDAO.getAll(connection)
+                trackingList[0] = trackingDAO.getAll(connection)
         );
-        return activityList[0];
+        return trackingList[0];
     }
 
     /**

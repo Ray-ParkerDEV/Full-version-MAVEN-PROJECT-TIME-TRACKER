@@ -30,7 +30,7 @@ public class Parameters {
     public static final String STATUS_ID = "statusId";
     public static final String PASSWORD = "password";
     public static final String TIME = "time";
-    public static final String OVERVIEWUSERNAME = "overviewUserName";
+    public static final String OVERVIEWUSER = "overviewUser";
     public static final String CLIENT = "client";
     public static final String NEW_ACTIVITY = "new";
     public static final String ADD = "add";
@@ -52,7 +52,6 @@ public class Parameters {
     public static final String OPERATION_MESSAGE = "operationMessage";
     public static final String BACK_PAGE = "backpage";
     /* parameters for DB*/
-    public static final String ID_DB = "id";
     public static final String USER_TYPE_NAME_DB = "user_type_name";
     public static final String USER_ID_DB = "user_id";
     public static final String TRACKING_ID_DB = "tracking_id";

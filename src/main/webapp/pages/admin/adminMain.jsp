@@ -42,7 +42,7 @@
                                 <form class="formElement" name="actionForm" method="POST"
                                       action="controller">
                                     <div class="wrapperButtons">
-                                        <input type="hidden" name="user" value="${user.firstName} ${user.surName}"/>
+                                        <input type="hidden" name="userId" value="${user.userId}"/>
                                         <input type="hidden" name="command" value="overviewClient"/>
                                         <input class="buttonElement" type="submit" value="overview"
                                                style="height:20px; width:70px"/>

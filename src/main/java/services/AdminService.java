@@ -7,8 +7,6 @@ import entities.Activity;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Description: This class describes actions that admin performs.
@@ -20,22 +18,12 @@ public class AdminService {
 
     private final static Logger logger = Logger.getLogger(AdminService.class);
     private volatile static AdminService instance;
-    public List<String> clientNameList;
     private DaoFactory mySqlFactory;
     private UserDAO userDAO;
 
     private AdminService() {
-        clientNameList = new ArrayList<>();
         mySqlFactory = DaoFactory.getDaoFactory(DaoFactory.MYSQL);
         userDAO = mySqlFactory.getUserDao();
-    }
-
-    public List<String> getUserNameList() {
-        return clientNameList;
-    }
-
-    public void setUserNameList(List<String> userNameList) {
-        clientNameList = userNameList;
     }
 
     /**
@@ -53,7 +41,6 @@ public class AdminService {
         }
         return instance;
     }
-
 
     /**
      * This method creates a new activity caused by admin action on admin page.

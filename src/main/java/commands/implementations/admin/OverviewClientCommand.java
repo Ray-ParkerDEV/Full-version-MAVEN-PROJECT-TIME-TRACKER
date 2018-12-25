@@ -5,6 +5,7 @@ import constants.MessageConstants;
 import constants.Parameters;
 import constants.PathPageConstants;
 import entities.Tracking;
+import entities.User;
 import manager.ConfigManagerPages;
 import org.apache.log4j.Logger;
 import services.TrackingService;
@@ -29,9 +30,11 @@ public class OverviewClientCommand implements BasicCommand {
     public String execute(HttpServletRequest request) {
         String page;
         HttpSession session = request.getSession(false);
-        String overviewUserName = request.getParameter(Parameters.USER);
-        UserService.getInstance().setAttributeOverviewUserNameToSession(overviewUserName, session);
+        String overviewUserId = request.getParameter(Parameters.USER_ID);
+
         try {
+            User overviewUser = UserService.getInstance().getUserById(overviewUserId);
+            UserService.getInstance().setAttributeOverviewUserToSession(overviewUser, session);
             List<Tracking> trackingList = TrackingService.getInstance().getAllTracking();
             TrackingService.getInstance().setAttributeTrackingListToSession(trackingList, session);
             page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH_CLIENT_OVERVIEW);

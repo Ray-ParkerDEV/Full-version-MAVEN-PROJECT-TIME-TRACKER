@@ -38,7 +38,7 @@ public interface ActivityDAO extends AbstractDAO<Activity> {
      * @param connection - the current connection to a database. Transmitted from the service module to provide transactions.
      * @return - an entity from a database table according to the incoming id number.
      */
-    Activity getById(int id, Connection connection) throws DAOException;
+    Activity getById(String  id, Connection connection) throws DAOException;
 
     /**
      * This method updates an existing record (row) in a database table.

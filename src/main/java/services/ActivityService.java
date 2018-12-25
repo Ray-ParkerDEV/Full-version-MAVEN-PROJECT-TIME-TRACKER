@@ -70,13 +70,13 @@ public class ActivityService {
     /**
      * This method receives user object. This method implements work with transaction support.
      *
-     * @param name - entered login.
+     * @param id - entered id.
      * @return - User object.
      */
-    public Activity getActivityBaName(String name) throws SQLException {
+    public Activity getActivityById(String id) throws SQLException {
         final Activity[] activity = new Activity[1];
         TransactionHandler.runInTransaction(connection ->
-                activity[0] = activityDAO.getByName(name, connection)
+                activity[0] = activityDAO.getById(id, connection)
         );
         return activity[0];
     }

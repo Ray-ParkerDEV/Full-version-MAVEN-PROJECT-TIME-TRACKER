@@ -4,17 +4,17 @@ import commands.BasicCommand;
 import constants.MessageConstants;
 import constants.Parameters;
 import constants.PathPageConstants;
-import entities.Tracking;
+import entities.*;
 import manager.ConfigManagerPages;
 import org.apache.log4j.Logger;
 import services.ActivityService;
 import services.TrackingService;
+import services.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
-
-import static entities.Activity.activityNameList;
+import java.util.List;
 
 /**
  * Description: This describes actions of registration new user.
@@ -35,23 +35,18 @@ public class AddActivityToUserCommand implements BasicCommand {
     public String execute(HttpServletRequest request) {
         String page;
         HttpSession session = request.getSession(false);
-        String addActivityName = request.getParameter(Parameters.ACTIVITY_NAME);
-        Tracking tracking = new Tracking();
+        String activityId = request.getParameter(Parameters.ACTIVITY_ID);
+        String overviewUserId = request.getParameter(Parameters.USER_ID);
         try {
-//            if (session.isNew()) {
-//                //we have to update data from tracking table DB
-//                activityNameList = ActivityService.getInstance().getAllActivityNames();
-//            }
-//            if (ActivityService.getInstance().isUniqueActivityName(activity,activityNameList)) {
-//                activityNameList.add(activity);
+            User overviewUser = UserService.getInstance().getUserById(overviewUserId);
+            Activity addActivityToUser = ActivityService.getInstance().getActivityById(activityId);
+            Tracking tracking = new Tracking(overviewUser, addActivityToUser, ActivityStatus.NEW_ACTIVITY,
+                    UserRequest.ADD, 0);
             TrackingService.getInstance().registerTracking(tracking);
-            ActivityService.getInstance().setActivityNameListToSession(activityNameList, session);
+            List<Tracking> trackingList = TrackingService.getInstance().getAllTracking();
+            TrackingService.getInstance().setAttributeTrackingListToSession(trackingList, session);
             page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH_CLIENT_OVERVIEW);
             logger.info(MessageConstants.SUCCESS_ADDING_ACTIVITY);
-//            } else {
-//                request.setAttribute(Parameters.OPERATION_MESSAGE, MessageConstants.ACTIVITY_EXISTS);
-//                page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH);
-//            }
         } catch (SQLException e) {
             request.setAttribute(Parameters.ERROR_DATABASE, MessageConstants.DATABASE_ACCESS_ERROR);
             page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ERROR_PAGE_PATH);

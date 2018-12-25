@@ -9,10 +9,7 @@ import entities.*;
 import exceptions.DAOException;
 import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -121,7 +118,7 @@ public class TrackingDAOImpl implements TrackingDAO {
      * @throws SQLException
      */
     private Tracking createTracking(ResultSet resultSet, Tracking tracking) throws SQLException {
-        tracking.setTrackingId(resultSet.getInt(Parameters.ID_DB));
+        tracking.setTrackingId(resultSet.getInt(Parameters.TRACKING_ID_DB));
         tracking.setUser(UserDAOImpl.getInstance().createUser(resultSet, new User()));
         tracking.setActivity(ActivityDAOImpl.getInstance().createActivity(resultSet, new Activity()));
         switch (resultSet.getString(Parameters.STATUS_NAME_DB)) {
@@ -141,13 +138,18 @@ public class TrackingDAOImpl implements TrackingDAO {
                 tracking.setStatus(ActivityStatus.STOP);
                 break;
         }
-        switch (resultSet.getString(Parameters.USER_REQUEST_NAME_DB)) {
-            case Parameters.ADD:
-                tracking.setUserRequest(UserRequest.ADD);
-                break;
-            case Parameters.REMOVE:
-                tracking.setUserRequest(UserRequest.REMOVE);
-                break;
+        String userRequest = resultSet.getString(Parameters.USER_REQUEST_NAME_DB);
+        if (!resultSet.wasNull()) {
+            switch (userRequest) {
+                case Parameters.ADD:
+                    tracking.setUserRequest(UserRequest.ADD);
+                    break;
+                case Parameters.REMOVE:
+                    tracking.setUserRequest(UserRequest.REMOVE);
+                    break;
+            }
+        } else {
+            tracking.setUserRequest(null);
         }
         tracking.setTime(resultSet.getInt(Parameters.TIME));
         return tracking;
@@ -211,13 +213,15 @@ public class TrackingDAOImpl implements TrackingDAO {
             statement = connection.prepareStatement(QueriesDB.ADD_TRACKING);
             statement.setString(1, String.valueOf(tracking.getUser().getUserId()));
             statement.setString(2, String.valueOf(tracking.getActivity().getActivityId()));
-            statement.setString(3, tracking.getStatus().toString());
-            statement.setString(4, tracking.getUserRequest().toString());
+            statement.setString(3, "1");
+            statement.setNull(4, Types.VARCHAR);
             statement.setString(5, String.valueOf(tracking.getTime()));
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
             throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
+        } catch (NullPointerException e) {
+            logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
         } finally {
             ConnectionPool.closeStatement(statement);
         }
@@ -253,7 +257,7 @@ public class TrackingDAOImpl implements TrackingDAO {
     /**
      * This method reads and returns information from all records (rows) of a database table.
      *
-     * @param user - user which rows will have retrieved from tracking table in DB.
+     * @param user       - user which rows will have retrieved from tracking table in DB.
      * @param connection - the current connection to a database. Transmitted from the service module to provide transactions.
      * @return - list of all entities from a database table.
      */

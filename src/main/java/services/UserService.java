@@ -86,6 +86,20 @@ public class UserService {
     }
 
     /**
+     * This method receives user object. This method implements work with transaction support.
+     *
+     * @param overviewUserId - entered id.
+     * @return - User object.
+     */
+    public User getUserById(String overviewUserId) throws SQLException {
+        final User[] user = new User[1];
+        TransactionHandler.runInTransaction(connection ->
+                user[0] = userDAO.getById(overviewUserId, connection)
+        );
+        return user[0];
+    }
+
+    /**
      * This method updates user object. This method implements work with transaction support.
      *
      * @param user - an user which fields will be updated.
@@ -131,7 +145,7 @@ public class UserService {
      * @param session - an object of the current session.
      */
     public void setAttributeAdminToSession(User adminName, HttpSession session) {
-        session.setAttribute(Parameters.ADMIN_NAME,adminName);
+        session.setAttribute(Parameters.ADMIN_NAME, adminName);
     }
 
     /**
@@ -140,8 +154,8 @@ public class UserService {
      *
      * @param session - an object of the current session.
      */
-    public void setAttributeOverviewUserNameToSession(String  overviewUserName, HttpSession session) {
-        session.setAttribute(Parameters.OVERVIEWUSERNAME,overviewUserName);
+    public void setAttributeOverviewUserToSession(User overviewUser, HttpSession session) {
+        session.setAttribute(Parameters.OVERVIEWUSER, overviewUser);
     }
 
     /**
@@ -152,7 +166,7 @@ public class UserService {
      */
     public void setAttributeToSession(List<Activity> activityAdminList, List<Tracking> trackingList,
                                       List<User> userList, HttpSession session) {
-        session.setAttribute(Parameters.ACTIVITY_ADMIN_LIST,activityAdminList);
+        session.setAttribute(Parameters.ACTIVITY_ADMIN_LIST, activityAdminList);
         session.setAttribute(Parameters.TRACKING_LIST, trackingList);
         session.setAttribute(Parameters.USER_LIST, userList);
     }
@@ -164,10 +178,10 @@ public class UserService {
      * @param session - an object of the current session.
      */
     public void setAttributeToSession(List<Activity> activityAdminList, HttpSession session) {
-        session.setAttribute(Parameters.ACTIVITY_ADMIN_LIST,activityAdminList);
+        session.setAttribute(Parameters.ACTIVITY_ADMIN_LIST, activityAdminList);
     }
 
-     /**
+    /**
      * This method receives all client names from database. This method implements work with transaction support.
      *
      * @return - a list of activity names from the database.
@@ -205,7 +219,7 @@ public class UserService {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         List<User> users = new ArrayList<>();
-        List<String> userNames ;
+        List<String> userNames;
         try {
             statement = connection.prepareStatement(QueriesDB.GET_ALL_USERS);
             resultSet = statement.executeQuery();
@@ -233,7 +247,7 @@ public class UserService {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         List<User> clients = new ArrayList<>();
-        List<String> userNames ;
+        List<String> userNames;
         try {
             statement = connection.prepareStatement(QueriesDB.GET_ALL_CLIENTS);
             resultSet = statement.executeQuery();

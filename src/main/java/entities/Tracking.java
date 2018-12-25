@@ -30,6 +30,15 @@ public class Tracking extends BaseEntity implements Serializable {
 
     }
 
+    public Tracking(User user, Activity activity, ActivityStatus status, UserRequest userRequest, Integer time) {
+        this.user = user;
+        this.activity = activity;
+        this.status = status;
+        this.userRequest = userRequest;
+        this.time = time;
+
+    }
+
     public Integer getTrackingId() {
         return trackingId;
     }

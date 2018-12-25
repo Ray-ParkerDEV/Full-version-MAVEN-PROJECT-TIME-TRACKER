@@ -12,7 +12,8 @@
 <div class="wrapperUserData">
     <%--table overview user activities--%>
     <fieldset>
-        <legend align="center"> Client <c:out value="${sessionScope.overviewUserName}"/></legend>
+        <legend align="center"> Client <c:out value="${sessionScope.overviewUser.firstName}
+                                                ${sessionScope.overviewUser.surName}"/></legend>
         <div class="activityInfoForm">
             <table>
                 <col width="200">
@@ -28,8 +29,8 @@
                     <th align="left">NOTICE</th>
                 </tr>
                 <c:forEach items="${sessionScope.trackingList}" var="tracking">
-                    <c:set var="myVar" value="${tracking.user.firstName} ${tracking.user.surName}"/>
-                    <c:if test="${myVar==sessionScope.overviewUserName}">
+                    <c:set var="userType" value="2"/>
+                    <c:if test="${tracking.user.userId==userType}">
                         <tr>
                             <td>
                                 <c:out value="${tracking.activity.activityName}"/>
@@ -40,19 +41,19 @@
                             <td>
                                 <c:out value="${tracking.time}"/>
                             </td>
-                            <td >
-                                <%--align="left"--%>
-                                    <%--action--%>
-                                        <%--class="formElement"--%>
-                                <form  class="formElement" name="actionForm" method="POST"
+                            <td>
+                                <c:set var="status" value="${tracking.status}"/>
+                                <c:if test="${status=='FINISHED'}">
+                                <form class="formElement" name="actionForm" method="POST"
                                       action="controller">
-                                        <input type="hidden" name="command" value="removeAct"/>
-                                        <input class="buttonElement" type="submit" value="remove"/>
+                                    <input type="hidden" name="command" value="removeAct"/>
+                                    <input class="buttonElement" type="submit" value="remove"/>
                                 </form>
+                                </c:if>
                             </td>
                             <td>
-                                <c:set var="myVar1" value="${tracking.userRequest}"/>
-                                <c:if test="${myVar1=='REMOVE'}">
+                                <c:set var="request" value="${tracking.userRequest}"/>
+                                <c:if test="${request=='REMOVE'}">
                                     waiting for admin response...
                                 </c:if>
                             </td>
@@ -75,7 +76,8 @@
                                 <form class="formElement" name="actionForm" method="POST"
                                       action="controller">
                                     <div class="wrapperButtons">
-                                        <input type="hidden" name="activityName" value="${activity.activityName}"/>
+                                        <input type="hidden" name="userId" value="${sessionScope.overviewUser.userId}"/>
+                                        <input type="hidden" name="activityId" value="${activity.activityId}"/>
                                         <input type="hidden" name="command" value="addActivity"/>
                                         <input class="buttonElement" type="submit" value="add activity"
                                                style="height:20px; width:80px"/>
