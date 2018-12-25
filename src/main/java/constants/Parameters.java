@@ -31,6 +31,7 @@ public class Parameters {
     public static final String PASSWORD = "password";
     public static final String TIME = "time";
     public static final String OVERVIEWUSER = "overviewUser";
+    public static final String CLIENTUSER = "clientUser";
     public static final String CLIENT = "client";
     public static final String NEW_ACTIVITY = "new";
     public static final String ADD = "add";

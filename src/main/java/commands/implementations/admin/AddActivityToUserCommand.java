@@ -39,9 +39,10 @@ public class AddActivityToUserCommand implements BasicCommand {
         String overviewUserId = request.getParameter(Parameters.USER_ID);
         try {
             User overviewUser = UserService.getInstance().getUserById(overviewUserId);
+            UserService.getInstance().setAttributeOverviewUserToSession(overviewUser, session);
             Activity addActivityToUser = ActivityService.getInstance().getActivityById(activityId);
             Tracking tracking = new Tracking(overviewUser, addActivityToUser, ActivityStatus.NEW_ACTIVITY,
-                    UserRequest.ADD, 0);
+                    null, 0);
             TrackingService.getInstance().registerTracking(tracking);
             List<Tracking> trackingList = TrackingService.getInstance().getAllTracking();
             TrackingService.getInstance().setAttributeTrackingListToSession(trackingList, session);

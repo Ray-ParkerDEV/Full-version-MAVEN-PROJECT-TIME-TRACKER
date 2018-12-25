@@ -57,6 +57,7 @@ public class LoginCommand implements BasicCommand {
                         page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH);
                         break;
                     case "client":
+                        UserService.getInstance().setAttributeClientToSession(user, session);
                         page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.CLIENT_PAGE_PATH);
                         break;
                     default:

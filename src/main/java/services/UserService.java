@@ -159,6 +159,16 @@ public class UserService {
     }
 
     /**
+     * An additional accessory method that provides work with some attributes of the object of http session.
+     * This method sets user's parameters to the session.
+     *
+     * @param session - an object of the current session.
+     */
+    public void setAttributeClientToSession(User clientUser, HttpSession session) {
+        session.setAttribute(Parameters.CLIENTUSER, clientUser);
+    }
+
+    /**
      * An additional overloaded method that provides work with some attributes of the object of http session.
      * This method sets user's parameters to the session.
      *

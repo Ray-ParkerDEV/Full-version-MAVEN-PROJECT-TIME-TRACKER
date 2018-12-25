@@ -29,8 +29,8 @@
                     <th align="left">NOTICE</th>
                 </tr>
                 <c:forEach items="${sessionScope.trackingList}" var="tracking">
-                    <c:set var="userType" value="2"/>
-                    <c:if test="${tracking.user.userId==userType}">
+                    <c:set var="userId" value="${sessionScope.overviewUser.userId}" />
+                    <c:if test="${tracking.user.userId==userId}">
                         <tr>
                             <td>
                                 <c:out value="${tracking.activity.activityName}"/>
@@ -92,7 +92,7 @@
                     <tr>
                         <td>
                             <div>
-                                </br>${operationMessage}
+                                </br>${sessionScope.operationMessage}
                             </div>
                         </td>
                     </tr>
