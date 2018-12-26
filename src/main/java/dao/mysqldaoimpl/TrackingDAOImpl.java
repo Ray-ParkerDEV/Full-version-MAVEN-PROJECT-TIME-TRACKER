@@ -151,7 +151,7 @@ public class TrackingDAOImpl implements TrackingDAO {
         } else {
             tracking.setUserRequest(null);
         }
-        tracking.setTime(resultSet.getInt(Parameters.TIME));
+        tracking.setTime(resultSet.getString(Parameters.TIME));
         return tracking;
     }
 

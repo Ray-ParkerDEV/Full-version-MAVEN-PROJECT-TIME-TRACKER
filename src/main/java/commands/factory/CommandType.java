@@ -6,6 +6,8 @@ import commands.implementations.admin.AddActivityToUserCommand;
 import commands.implementations.admin.BackAdminCommand;
 import commands.implementations.admin.CreateActivityCommand;
 import commands.implementations.admin.OverviewClientCommand;
+import commands.implementations.client.StartTimeCommand;
+import commands.implementations.client.StopTimeCommand;
 import commands.implementations.user.*;
 
 /**
@@ -19,7 +21,10 @@ public enum CommandType {
     LOGIN, LOGOUT, REGISTRATION, GOTOREGISTRATION, UPDATECLIENT, BACK, DEFAULT,
 
     /*admin commands*/
-    CREATEACTIVITY, OVERVIEWCLIENT, BACKADMIN, ADDACTIVITY;
+    CREATEACTIVITY, OVERVIEWCLIENT, BACKADMIN, ADDACTIVITY,
+
+    /*client commands*/
+    START, STOP;
 
     /**
      * This method directs the control to the corresponding class. The transfer of the control to the corresponding class
@@ -50,6 +55,10 @@ public enum CommandType {
                 return new BackAdminCommand();
             case ADDACTIVITY:
                 return new AddActivityToUserCommand();
+            case START:
+                return new StartTimeCommand();
+            case STOP:
+                return new StopTimeCommand();
             case DEFAULT:
                 return new DefaultCommand();
             default:

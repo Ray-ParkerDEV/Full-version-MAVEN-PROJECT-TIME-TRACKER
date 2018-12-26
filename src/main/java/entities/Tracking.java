@@ -13,14 +13,14 @@ public class Tracking extends BaseEntity implements Serializable {
     private Activity activity;
     private ActivityStatus status;
     private UserRequest userRequest;
-    private Integer time;
+    private String time;
 
 
     public Tracking() {
     }
 
     public Tracking(Integer trackingId, User user, Activity activity,
-                    ActivityStatus status, UserRequest userRequest, Integer time) {
+                    ActivityStatus status, UserRequest userRequest, String time) {
         this.trackingId = trackingId;
         this.user = user;
         this.activity = activity;
@@ -30,7 +30,7 @@ public class Tracking extends BaseEntity implements Serializable {
 
     }
 
-    public Tracking(User user, Activity activity, ActivityStatus status, UserRequest userRequest, Integer time) {
+    public Tracking(User user, Activity activity, ActivityStatus status, UserRequest userRequest, String time) {
         this.user = user;
         this.activity = activity;
         this.status = status;
@@ -71,11 +71,11 @@ public class Tracking extends BaseEntity implements Serializable {
         this.status = status;
     }
 
-    public Integer getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(Integer time) {
+    public void setTime(String time) {
         this.time = time;
     }
 

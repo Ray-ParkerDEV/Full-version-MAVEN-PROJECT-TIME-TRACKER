@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="spec" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%--<%@ taglib prefix = "ex" uri = "WEB-INF/custom.tld"%>--%>
 <html>
 <head>
     <title>Clients account page</title>
@@ -45,7 +47,8 @@
                                     <form class="formElement" name="actionForm" method="POST"
                                           action="controller">
                                         <div class="wrapperButtons">
-                                            <input type="hidden" name="command" value="actionStart"/>
+                                            <input type="hidden" name="trackingId" value="${tracking.trackingId}"/>
+                                            <input type="hidden" name="command" value="start"/>
                                             <input class="buttonElement" type="submit" value="start"/>
                                         </div>
                                     </form>
@@ -54,7 +57,8 @@
                                     <form class="formElement" name="actionForm" method="POST"
                                           action="controller">
                                         <div class="wrapperButtons">
-                                            <input type="hidden" name="command" value="actionStop"/>
+                                            <input type="hidden" name="trackingId" value="${tracking.trackingId}"/>
+                                            <input type="hidden" name="command" value="stop"/>
                                             <input class="buttonElement" type="submit" value="stop"/>
                                         </div>
                                     </form>
@@ -84,7 +88,9 @@
                         <c:out value="${tracking.time}"/>
                     </td>
                     <td>
-                        <!--info...-->
+                            <%--<jsp:useBean id="now" class="java.util.Date"/>--%>
+                            <%--<fmt:formatDate type="time" value="${now}"/>--%>
+                            <%--<c:out value="${now}"/>--%>
                     </td>
                 </tr>
                 </c:if>
