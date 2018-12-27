@@ -38,6 +38,8 @@ public class QueriesDB {
     public static final String GET_ACTIVITY_BY_NAME = "SELECT * FROM activity WHERE activity_name = ?;";
     public static final String GET_ALL_ACTIVITIES = "SELECT * FROM activity;";
     /*Queries to work with tracking database table.*/
+    public static final String GET_ACTIVITY_BY_USER_FROM_TRACKING = "SELECT * FROM tracking WHERE activity_id = ? AND" +
+            " user_id = ?;";
     public static final String DELETE_TRACKING_BY_USER_ID = "DELETE FROM tracking WHERE user_id = ?;";
     public static final String DELETE_TRACKING_BY_ID = "DELETE FROM tracking WHERE tracking_id = ?;";
     public static final String GET_TRACKING_BY_ID = "SELECT * FROM tracking \n" +
@@ -51,6 +53,8 @@ public class QueriesDB {
             "WHERE tracking_id=?;";
     public static final String UPDATE_TRACKING_TIME = "UPDATE tracking SET status_id = ?, time = ?, " +
             " time_stop = ?, difference_time=?  WHERE tracking_id=?;";
+    public static final String UPDATE_TRACKING = "UPDATE tracking SET status_id = ?, user_request_id= ?,time = ?, \n" +
+            "     time_start = ?, time_stop = ?, difference_time=? WHERE tracking_id=?;";
     public static final String UPDATE_TRACKING_STATUS_AND_START_TIME_BY_ID = "UPDATE tracking SET status_id = ?, time_start = ? " +
             "WHERE tracking_id=?;";
     public static final String UPDATE_TRACKING_STATUS_BY_ID = "UPDATE tracking SET status_id = ? WHERE tracking_id=?;";

@@ -4,10 +4,9 @@ import commands.BasicCommand;
 import constants.MessageConstants;
 import constants.Parameters;
 import constants.PathPageConstants;
-import entities.ActivityStatus;
 import entities.Tracking;
+import entities.UserRequest;
 import manager.ConfigManagerPages;
-import services.ClientService;
 import services.TrackingService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,13 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.List;
 
-public class StopTimeCommand implements BasicCommand {
-    /**
-     * This method stop te Time counter.
-     *
-     * @param request - request which will be processed.
-     * @return - a page which user will be directed to.
-     */
+public class RemoveCommand implements BasicCommand {
     @Override
     public String execute(HttpServletRequest request) {
         String page;
@@ -29,10 +22,7 @@ public class StopTimeCommand implements BasicCommand {
         String trackingId = request.getParameter(Parameters.TRACKING_ID);
         try {
             Tracking tracking = TrackingService.getInstance().getTrackingById(trackingId);
-            if (tracking.getStatus() == ActivityStatus.IN_PROGRESS) {
-                tracking=ClientService.getInstance().setUpTime(tracking);
-            }
-            tracking.setStatus(ActivityStatus.PAUSE);
+            tracking.setUserRequest(UserRequest.REMOVE);
             TrackingService.getInstance().updateTracking(trackingId, tracking);
             List<Tracking> trackingList = TrackingService.getInstance().getAllTracking();
             TrackingService.getInstance().setAttributeTrackingListToSession(trackingList, session);
@@ -43,6 +33,4 @@ public class StopTimeCommand implements BasicCommand {
         }
         return page;
     }
-
 }
-

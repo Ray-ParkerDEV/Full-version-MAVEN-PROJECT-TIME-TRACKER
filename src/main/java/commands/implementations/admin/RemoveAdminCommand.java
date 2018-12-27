@@ -1,13 +1,12 @@
-package commands.implementations.client;
+package commands.implementations.admin;
 
 import commands.BasicCommand;
 import constants.MessageConstants;
 import constants.Parameters;
 import constants.PathPageConstants;
-import entities.ActivityStatus;
 import entities.Tracking;
 import manager.ConfigManagerPages;
-import services.ClientService;
+import org.apache.log4j.Logger;
 import services.TrackingService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,34 +14,30 @@ import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.List;
 
-public class StopTimeCommand implements BasicCommand {
+public class RemoveAdminCommand implements BasicCommand {
+    private static final Logger logger = Logger.getLogger(CreateActivityCommand.class);
+
     /**
-     * This method stop te Time counter.
+     * This method describes the removing activities logic.
+     * The method uses methods of the RequestParameterIdentifier and AdminService.
      *
      * @param request - request which will be processed.
      * @return - a page which user will be directed to.
      */
     @Override
     public String execute(HttpServletRequest request) {
-        String page;
+        String page = null;
         HttpSession session = request.getSession(false);
-        String trackingId = request.getParameter(Parameters.TRACKING_ID);
+        Integer trackingId = Integer.valueOf(request.getParameter(Parameters.TRACKING_ID));
         try {
-            Tracking tracking = TrackingService.getInstance().getTrackingById(trackingId);
-            if (tracking.getStatus() == ActivityStatus.IN_PROGRESS) {
-                tracking=ClientService.getInstance().setUpTime(tracking);
-            }
-            tracking.setStatus(ActivityStatus.PAUSE);
-            TrackingService.getInstance().updateTracking(trackingId, tracking);
+            TrackingService.getInstance().deleteTrackingById(trackingId);
             List<Tracking> trackingList = TrackingService.getInstance().getAllTracking();
             TrackingService.getInstance().setAttributeTrackingListToSession(trackingList, session);
-            page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.CLIENT_PAGE_PATH);
+            page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH_CLIENT_OVERVIEW);
         } catch (SQLException e) {
             page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ERROR_PAGE_PATH);
             request.setAttribute(Parameters.ERROR_DATABASE, MessageConstants.DATABASE_ACCESS_ERROR);
         }
         return page;
     }
-
 }
-

@@ -2,12 +2,8 @@ package commands.factory;
 
 import commands.BasicCommand;
 import commands.implementations.DefaultCommand;
-import commands.implementations.admin.AddActivityToUserCommand;
-import commands.implementations.admin.BackAdminCommand;
-import commands.implementations.admin.CreateActivityCommand;
-import commands.implementations.admin.OverviewClientCommand;
-import commands.implementations.client.StartTimeCommand;
-import commands.implementations.client.StopTimeCommand;
+import commands.implementations.admin.*;
+import commands.implementations.client.*;
 import commands.implementations.user.*;
 
 /**
@@ -21,10 +17,10 @@ public enum CommandType {
     LOGIN, LOGOUT, REGISTRATION, GOTOREGISTRATION, UPDATECLIENT, BACK, DEFAULT,
 
     /*admin commands*/
-    CREATEACTIVITY, OVERVIEWCLIENT, BACKADMIN, ADDACTIVITY,
+    CREATEACTIVITY, OVERVIEWCLIENT, BACKADMIN, ADDACTIVITY, REMOVEADMIN,
 
     /*client commands*/
-    STARTTIME, STOPTIME;
+    STARTTIME, STOPTIME, FINISH, REMOVE, ADD;
 
     /**
      * This method directs the control to the corresponding class. The transfer of the control to the corresponding class
@@ -53,12 +49,20 @@ public enum CommandType {
                 return new OverviewClientCommand();
             case BACKADMIN:
                 return new BackAdminCommand();
+            case REMOVEADMIN:
+                return new RemoveAdminCommand();
             case ADDACTIVITY:
                 return new AddActivityToUserCommand();
             case STARTTIME:
                 return new StartTimeCommand();
             case STOPTIME:
                 return new StopTimeCommand();
+            case FINISH:
+                return new FinishCommand();
+            case REMOVE:
+                return new RemoveCommand();
+            case ADD:
+                return new AddCommand();
             case DEFAULT:
                 return new DefaultCommand();
             default:

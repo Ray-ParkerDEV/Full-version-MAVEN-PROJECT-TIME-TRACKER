@@ -42,11 +42,12 @@
                                 <c:out value="${tracking.elapsedTime}"/>
                             </td>
                             <td>
-                                <c:set var="status" value="${tracking.status}"/>
-                                <c:if test="${status=='FINISHED'}">
+                                <c:set var="status" value="${tracking.userRequest}"/>
+                                <c:if test="${status=='REMOVE'}">
                                 <form class="formElement" name="actionForm" method="POST"
                                       action="controller">
-                                    <input type="hidden" name="command" value="removeAct"/>
+                                    <input type="hidden" name="trackingId" value="${tracking.trackingId}"/>
+                                    <input type="hidden" name="command" value="removeAdmin"/>
                                     <input class="buttonElement" type="submit" value="remove"/>
                                 </form>
                                 </c:if>
@@ -93,6 +94,15 @@
                         <td>
                             <div>
                                 </br>${sessionScope.operationMessage}
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <table style=width:330px>
+                    <tr>
+                        <td>
+                            <div>
+                                </br>${operationMessage}
                             </div>
                         </td>
                     </tr>

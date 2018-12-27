@@ -1,4 +1,4 @@
-package Timer;
+package timer;
 
 import java.util.concurrent.TimeUnit;
 
@@ -23,6 +23,7 @@ public class Time {
         }
         return instance;
     }
+
     /**
      * Time that elapsed from startTime in string representation for rendering on jsp page.
      */
@@ -30,7 +31,7 @@ public class Time {
     /**
      * Time that elapsed from startTime in milliseconds.
      */
-    private long difference=0;
+    private long difference = 0;
     /**
      * Time startTime.
      */
@@ -52,7 +53,7 @@ public class Time {
      * Stop ticking.
      */
     public final void stop() {
-        stopTime = System.currentTimeMillis()+difference;
+        stopTime = System.currentTimeMillis() + difference;
         elapsedTime();
     }
 

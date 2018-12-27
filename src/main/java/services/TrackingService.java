@@ -88,6 +88,19 @@ public class TrackingService {
     }
 
     /**
+     * This method receives all activities from database which belongs corresponding user.
+     * This method implements work with transaction support.
+     *
+     * @return - a list of tracking from the database.
+     * @throws SQLException
+     */
+    public void deleteTrackingById(Integer trackingId) throws SQLException {
+        TransactionHandler.runInTransaction(connection ->
+                trackingDAO.deleteTrackingById(trackingId, connection)
+        );
+    }
+
+    /**
      * This method receives all trackings from database. This method implements work with transaction support.
      *
      * @return - a list of activities from the database.

@@ -38,16 +38,21 @@ public class AddActivityToUserCommand implements BasicCommand {
         String activityId = request.getParameter(Parameters.ACTIVITY_ID);
         String overviewUserId = request.getParameter(Parameters.USER_ID);
         try {
-            User overviewUser = UserService.getInstance().getUserById(overviewUserId);
-            UserService.getInstance().setAttributeOverviewUserToSession(overviewUser, session);
-            Activity addActivityToUser = ActivityService.getInstance().getActivityById(activityId);
-            Tracking tracking = new Tracking(overviewUser, addActivityToUser, ActivityStatus.NEW_ACTIVITY,
-                    null, "00:00:00",0L,0L,0L);
-            TrackingService.getInstance().registerTracking(tracking);
-            List<Tracking> trackingList = TrackingService.getInstance().getAllTracking();
-            TrackingService.getInstance().setAttributeTrackingListToSession(trackingList, session);
-            page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH_CLIENT_OVERVIEW);
-            logger.info(MessageConstants.SUCCESS_ADDING_ACTIVITY);
+            if (ActivityService.getInstance().isUniqueClientActivity(activityId,overviewUserId)) {
+                User overviewUser = UserService.getInstance().getUserById(overviewUserId);
+                UserService.getInstance().setAttributeOverviewUserToSession(overviewUser, session);
+                Activity addActivityToUser = ActivityService.getInstance().getActivityById(activityId);
+                Tracking tracking = new Tracking(overviewUser, addActivityToUser, ActivityStatus.NEW_ACTIVITY,
+                        null, "00:00:00", 0L, 0L, 0L);
+                TrackingService.getInstance().registerTracking(tracking);
+                List<Tracking> trackingList = TrackingService.getInstance().getAllTracking();
+                TrackingService.getInstance().setAttributeTrackingListToSession(trackingList, session);
+                page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH_CLIENT_OVERVIEW);
+                logger.info(MessageConstants.SUCCESS_ADDING_ACTIVITY);
+            } else {
+                request.setAttribute(Parameters.OPERATION_MESSAGE, MessageConstants.ACTIVITY_HAS_BEEN_ADDED);
+                page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH_CLIENT_OVERVIEW);
+            }
         } catch (SQLException e) {
             request.setAttribute(Parameters.ERROR_DATABASE, MessageConstants.DATABASE_ACCESS_ERROR);
             page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ERROR_PAGE_PATH);

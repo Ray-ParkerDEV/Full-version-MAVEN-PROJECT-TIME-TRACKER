@@ -7,7 +7,7 @@ import constants.PathPageConstants;
 import entities.ActivityStatus;
 import entities.Tracking;
 import manager.ConfigManagerPages;
-import Timer.Time;
+import timer.Time;
 import services.TrackingService;
 
 import javax.servlet.http.HttpServletRequest;

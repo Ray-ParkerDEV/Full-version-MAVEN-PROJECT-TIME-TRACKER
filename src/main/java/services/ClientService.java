@@ -1,9 +1,12 @@
 package services;
 
-import org.apache.log4j.Logger;
+import constants.Parameters;
+import entities.Tracking;
+import timer.Time;
+
+import javax.servlet.http.HttpSession;
 
 public class ClientService {
-    private final static Logger logger = Logger.getLogger(UserService.class);
     private volatile static ClientService instance;
 
     private ClientService() {
@@ -25,6 +28,33 @@ public class ClientService {
         }
         return instance;
     }
+
+    /**
+     * Method for setting parameters to Time Tracking.
+     * @param tracking - the tracking entity which will be updated.
+     *
+     * @return - an instance of the class.
+     */
+    public Tracking setUpTime(Tracking tracking){
+        Time.getInstance().setStartTime(tracking.getTimeStart());
+        Time.getInstance().setDifference(tracking.getDifferenceTime());
+        Time.getInstance().stop();
+        tracking.setElapsedTime(Time.getInstance().getElapsedTime());
+        tracking.setTimeStop(Time.getInstance().getStopTime());
+        tracking.setDifferenceTime(Time.getInstance().getDifference());
+        return tracking;
+    }
+
+    /**
+     * An additional accessory method that provides work with some attributes of the object of http session.
+     * This method sets user's parameters to the session.
+     *
+     * @param session - an object of the current session.
+     */
+    public void setAttributeUserRequestAddToSession(String userRequestAdd, HttpSession session) {
+        session.setAttribute(Parameters.USER_REQUEST_ADD, userRequestAdd);
+    }
+
 
 
 }

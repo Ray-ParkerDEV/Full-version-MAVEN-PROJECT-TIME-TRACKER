@@ -28,7 +28,7 @@ public interface TrackingDAO extends AbstractDAO<Tracking> {
      * @param id            - id number of the current entity which will be deleted.
      * @param connection    - the current connection to a database. Transmitted from the service module to provide transactions.
      */
-    void deleteTrackingById(int id, Connection connection) throws DAOException;
+    void deleteTrackingById(Integer id, Connection connection) throws DAOException ;
 
     /**
      * This method reads and returns information from a record (row) of a database table.

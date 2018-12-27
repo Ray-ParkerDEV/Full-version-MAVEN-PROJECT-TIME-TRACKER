@@ -15,9 +15,9 @@ import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.List;
 
-public class StopTimeCommand implements BasicCommand {
+public class FinishCommand implements BasicCommand {
     /**
-     * This method stop te Time counter.
+     * This method finish the Time counter.
      *
      * @param request - request which will be processed.
      * @return - a page which user will be directed to.
@@ -32,7 +32,7 @@ public class StopTimeCommand implements BasicCommand {
             if (tracking.getStatus() == ActivityStatus.IN_PROGRESS) {
                 tracking=ClientService.getInstance().setUpTime(tracking);
             }
-            tracking.setStatus(ActivityStatus.PAUSE);
+            tracking.setStatus(ActivityStatus.FINISHED);
             TrackingService.getInstance().updateTracking(trackingId, tracking);
             List<Tracking> trackingList = TrackingService.getInstance().getAllTracking();
             TrackingService.getInstance().setAttributeTrackingListToSession(trackingList, session);
@@ -43,6 +43,4 @@ public class StopTimeCommand implements BasicCommand {
         }
         return page;
     }
-
 }
-

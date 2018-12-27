@@ -65,7 +65,7 @@ public class TrackingDAOImpl implements TrackingDAO {
      * @param connection - the current connection to a database. Transmitted from the service module to provide transactions.
      */
     @Override
-    public void deleteTrackingById(int id, Connection connection) throws DAOException {
+    public void deleteTrackingById(Integer id, Connection connection) throws DAOException {
         PreparedStatement statement = null;
         try {
             statement = connection.prepareStatement(QueriesDB.DELETE_TRACKING_BY_ID);
@@ -191,36 +191,51 @@ public class TrackingDAOImpl implements TrackingDAO {
     public void updateTrackingById(String id, Tracking tracking, Connection connection) throws DAOException {
         PreparedStatement statement = null;
         try {
-            statement = connection.prepareStatement(QueriesDB.UPDATE_TRACKING_TIME);
+            statement = connection.prepareStatement(QueriesDB.UPDATE_TRACKING);
             Integer status = null;
             switch (tracking.getStatus().toString().toLowerCase()) {
                 case Parameters.NEW_ACTIVITY_DB:
-                    status=1;
+                    status = 1;
                     break;
                 case Parameters.IN_PROGRESS_DB:
-                    status=2;
+                    status = 2;
                     break;
                 case Parameters.PAUSE:
-                    status=3;
+                    status = 3;
                     break;
                 case Parameters.FINISHED:
-                    status=4;
+                    status = 4;
                     break;
                 case Parameters.STOP:
-                    status=5;
+                    status = 5;
                     break;
             }
+            Integer userRequest = null;
+            if (tracking.getUserRequest() != null) {
+                switch (tracking.getUserRequest().toString().toLowerCase()) {
+                    case Parameters.ADD:
+                        userRequest = 1;
+                        break;
+                    case Parameters.REMOVE:
+                        userRequest = 2;
+                        break;
+                }
+                statement.setInt(2, userRequest);
+            } else{
+                statement.setNull(2, Types.INTEGER);
+            }
             statement.setInt(1, status);
-            statement.setString(2, tracking.getElapsedTime());
-            statement.setString(3, tracking.getTimeStop().toString());
-            statement.setString(4, tracking.getDifferenceTime().toString());
-            statement.setString(5, id);
+            statement.setString(3, tracking.getElapsedTime());
+            statement.setString(4, tracking.getTimeStart().toString());
+            statement.setString(5, tracking.getTimeStop().toString());
+            statement.setString(6, tracking.getDifferenceTime().toString());
+            statement.setString(7, id);
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
             throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
         } catch (NullPointerException e) {
-            logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
+            logger.error(MessageConstants.NULLPOINTEREXEPTIONS, e);
         } finally {
             ConnectionPool.closeStatement(statement);
         }

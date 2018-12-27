@@ -44,8 +44,8 @@
                         <table>
                             <tr>
                                 <td>
-                                    <%--<c:set var="userId" value="${sessionScope.clientUser.userId}"/>--%>
-                                    <%--<c:if test="${tracking.user.userId==userId}">--%>
+                                        <%--<c:set var="userId" value="${sessionScope.clientUser.userId}"/>--%>
+                                        <%--<c:if test="${tracking.user.userId==userId}">--%>
                                     <form class="formElement" name="actionForm" method="POST"
                                           action="controller">
                                         <div class="wrapperButtons">
@@ -69,19 +69,23 @@
                                     <form class="formElement" name="finishForm" method="POST"
                                           action="controller">
                                         <div class="wrapperButtons">
+                                            <input type="hidden" name="trackingId" value="${tracking.trackingId}"/>
                                             <input type="hidden" name="command" value="finish"/>
                                             <input class="buttonElement" type="submit" value="finish"/>
                                         </div>
                                     </form>
                                 </td>
                                 <td align="center">
-                                    <form class="formElement" name="finishForm" method="POST"
-                                          action="controller">
-                                        <div class="wrapperButtons">
-                                            <input type="hidden" name="command" value="remove"/>
-                                            <input class="buttonElement" type="submit" value="remove"/>
-                                        </div>
-                                    </form>
+                                    <c:if test="${tracking.status == 'FINISHED'}">
+                                        <form class="formElement" name="finishForm" method="POST"
+                                              action="controller">
+                                            <div class="wrapperButtons">
+                                                <input type="hidden" name="trackingId" value="${tracking.trackingId}"/>
+                                                <input type="hidden" name="command" value="remove"/>
+                                                <input class="buttonElement" type="submit" value="remove"/>
+                                            </div>
+                                        </form>
+                                    </c:if>
                                 </td>
                             </tr>
                         </table>
@@ -90,9 +94,10 @@
                         <c:out value="${tracking.elapsedTime}"/>
                     </td>
                     <td>
-                            <%--<jsp:useBean id="now" class="java.util.Date"/>--%>
-                            <%--<fmt:formatDate type="elapsedTime" value="${now}"/>--%>
-                            <%--<c:out value="${now}"/>--%>
+                        <c:set var="request" value="${tracking.userRequest}"/>
+                        <c:if test="${request=='REMOVE'}">
+                            wait for admin approval...
+                        </c:if>
                     </td>
                 </tr>
                 </c:if>
@@ -103,13 +108,13 @@
                     <td>
                         <form class="formElement" name="formElement" method="POST" action="controller">
                             <div class="wrapperButtons">
-                                <input type="hidden" name="command" value="addActivityClient"/>
+                                <input type="hidden" name="command" value="add"/>
                                 <input type="submit" value="add new activity" style="height:20px; width:110px"/>
                             </div>
                         </form>
                     </td>
                     <td>
-                        waiting for admin response
+                        <c:out value="${sessionScope.userRequestAdd}"/>
                     </td>
                 </tr>
             </table>

@@ -33,7 +33,7 @@ public class Parameters {
     public static final String OVERVIEWUSER = "overviewUser";
     public static final String CLIENTUSER = "clientUser";
     public static final String CLIENT = "client";
-    public static final String NEW_ACTIVITY = "new";
+    public static final String USER_REQUEST_ADD = "userRequestAdd";
     public static final String ADD = "add";
     public static final String REMOVE = "remove";
     public static final String IN_PROGRESS = "in progress";

@@ -168,6 +168,22 @@ public class ActivityService {
     }
 
     /**
+     * This method checks the uniqueness of the activity. This method implements work with transaction support.
+     *
+     * @param id - an activity object with fields will be checked.
+     * @param userId - a user object with fields will be checked.
+     * @return - boolean value of the condition.
+     * @throws SQLException
+     */
+    public boolean isUniqueClientActivity(String id, String userId) throws SQLException {
+        final boolean[] isUnique = new boolean[1];
+        TransactionHandler.runInTransaction(connection ->
+                isUnique[0] = activityDAO.checkUniqueActivityByUser(id, userId, connection)
+        );
+        return isUnique[0];
+    }
+
+    /**
      * This method checks the uniqueness of the activity name in user list. This method implements work with transaction support.
      *
      * @param activityName - an activity name with fields will be checked.

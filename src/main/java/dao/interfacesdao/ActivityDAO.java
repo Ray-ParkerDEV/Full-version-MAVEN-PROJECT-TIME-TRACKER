@@ -68,4 +68,14 @@ public interface ActivityDAO extends AbstractDAO<Activity> {
      * @throws SQLException
      */
     Activity createActivity(ResultSet resultSet, Activity activity) throws SQLException;
+
+    /**
+     * This method check the uniqueness of the activity name in overview client list.
+     *
+     * @param id - an activity object with fields will be checked.
+     * @param userId - a user object with fields will be checked.
+     * @return - boolean value of the condition.
+     * @throws DAOException
+     */
+    boolean checkUniqueActivityByUser(String id, String userId, Connection connection) throws DAOException;
 }
