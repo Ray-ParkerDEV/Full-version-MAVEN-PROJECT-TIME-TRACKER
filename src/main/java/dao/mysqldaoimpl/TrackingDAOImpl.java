@@ -87,13 +87,13 @@ public class TrackingDAOImpl implements TrackingDAO {
      * @return - an entity from a database table according to the incoming id number.
      */
     @Override
-    public Tracking getTrackingById(int id, Connection connection) throws DAOException {
+    public Tracking getTrackingById(String id, Connection connection) throws DAOException {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         Tracking tracking = new Tracking();
         try {
             statement = connection.prepareStatement(QueriesDB.GET_TRACKING_BY_ID);
-            statement.setInt(1, id);
+            statement.setString(1, id);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 createTracking(resultSet, tracking);
@@ -122,10 +122,10 @@ public class TrackingDAOImpl implements TrackingDAO {
         tracking.setUser(UserDAOImpl.getInstance().createUser(resultSet, new User()));
         tracking.setActivity(ActivityDAOImpl.getInstance().createActivity(resultSet, new Activity()));
         switch (resultSet.getString(Parameters.STATUS_NAME_DB)) {
-            case Parameters.NEW_ACTIVITY:
+            case Parameters.NEW_ACTIVITY_DB:
                 tracking.setStatus(ActivityStatus.NEW_ACTIVITY);
                 break;
-            case Parameters.IN_PROGRESS:
+            case Parameters.IN_PROGRESS_DB:
                 tracking.setStatus(ActivityStatus.IN_PROGRESS);
                 break;
             case Parameters.PAUSE:
@@ -151,7 +151,10 @@ public class TrackingDAOImpl implements TrackingDAO {
         } else {
             tracking.setUserRequest(null);
         }
-        tracking.setTime(resultSet.getString(Parameters.TIME));
+        tracking.setElapsedTime(resultSet.getString(Parameters.TIME));
+        tracking.setTimeStart(resultSet.getLong(Parameters.TIME_START_DB));
+        tracking.setTimeStop(resultSet.getLong(Parameters.TIME_STOP_DB));
+        tracking.setDifferenceTime(resultSet.getLong(Parameters.DIFFERENCE_TIME_DB));
         return tracking;
     }
 
@@ -167,12 +170,57 @@ public class TrackingDAOImpl implements TrackingDAO {
         try {
             statement = connection.prepareStatement(QueriesDB.UPDATE_TRACKING_STATUS_AND_TIME_BY_ID);
             statement.setString(1, tracking.getStatus().toString());
-            statement.setString(2, tracking.getTime().toString());
+            statement.setString(2, tracking.getElapsedTime());
             statement.setString(3, tracking.getTrackingId().toString());
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
             throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
+        } finally {
+            ConnectionPool.closeStatement(statement);
+        }
+    }
+
+    /**
+     * This method updates an existing record (row) in a database table.
+     *
+     * @param tracking   - the current entity of user which will be updated.
+     * @param connection - the current connection to a database. Transmitted from the service module to provide transactions.
+     */
+    @Override
+    public void updateTrackingById(String id, Tracking tracking, Connection connection) throws DAOException {
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement(QueriesDB.UPDATE_TRACKING_TIME);
+            Integer status = null;
+            switch (tracking.getStatus().toString().toLowerCase()) {
+                case Parameters.NEW_ACTIVITY_DB:
+                    status=1;
+                    break;
+                case Parameters.IN_PROGRESS_DB:
+                    status=2;
+                    break;
+                case Parameters.PAUSE:
+                    status=3;
+                    break;
+                case Parameters.FINISHED:
+                    status=4;
+                    break;
+                case Parameters.STOP:
+                    status=5;
+                    break;
+            }
+            statement.setInt(1, status);
+            statement.setString(2, tracking.getElapsedTime());
+            statement.setString(3, tracking.getTimeStop().toString());
+            statement.setString(4, tracking.getDifferenceTime().toString());
+            statement.setString(5, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
+            throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
+        } catch (NullPointerException e) {
+            logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
         } finally {
             ConnectionPool.closeStatement(statement);
         }
@@ -215,7 +263,10 @@ public class TrackingDAOImpl implements TrackingDAO {
             statement.setString(2, String.valueOf(tracking.getActivity().getActivityId()));
             statement.setString(3, "1");
             statement.setNull(4, Types.VARCHAR);
-            statement.setString(5, String.valueOf(tracking.getTime()));
+            statement.setString(5, String.valueOf(tracking.getElapsedTime()));
+            statement.setString(6, "0");
+            statement.setString(7, "0");
+            statement.setString(8, "0");
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);

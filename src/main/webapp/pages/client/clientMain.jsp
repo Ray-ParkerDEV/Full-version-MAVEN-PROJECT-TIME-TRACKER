@@ -44,11 +44,13 @@
                         <table>
                             <tr>
                                 <td>
+                                    <%--<c:set var="userId" value="${sessionScope.clientUser.userId}"/>--%>
+                                    <%--<c:if test="${tracking.user.userId==userId}">--%>
                                     <form class="formElement" name="actionForm" method="POST"
                                           action="controller">
                                         <div class="wrapperButtons">
                                             <input type="hidden" name="trackingId" value="${tracking.trackingId}"/>
-                                            <input type="hidden" name="command" value="start"/>
+                                            <input type="hidden" name="command" value="startTime"/>
                                             <input class="buttonElement" type="submit" value="start"/>
                                         </div>
                                     </form>
@@ -58,7 +60,7 @@
                                           action="controller">
                                         <div class="wrapperButtons">
                                             <input type="hidden" name="trackingId" value="${tracking.trackingId}"/>
-                                            <input type="hidden" name="command" value="stop"/>
+                                            <input type="hidden" name="command" value="stopTime"/>
                                             <input class="buttonElement" type="submit" value="stop"/>
                                         </div>
                                     </form>
@@ -85,11 +87,11 @@
                         </table>
                     </td>
                     <td>
-                        <c:out value="${tracking.time}"/>
+                        <c:out value="${tracking.elapsedTime}"/>
                     </td>
                     <td>
                             <%--<jsp:useBean id="now" class="java.util.Date"/>--%>
-                            <%--<fmt:formatDate type="time" value="${now}"/>--%>
+                            <%--<fmt:formatDate type="elapsedTime" value="${now}"/>--%>
                             <%--<c:out value="${now}"/>--%>
                     </td>
                 </tr>

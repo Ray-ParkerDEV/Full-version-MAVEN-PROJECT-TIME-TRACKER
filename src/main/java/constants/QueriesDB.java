@@ -41,16 +41,21 @@ public class QueriesDB {
     public static final String DELETE_TRACKING_BY_USER_ID = "DELETE FROM tracking WHERE user_id = ?;";
     public static final String DELETE_TRACKING_BY_ID = "DELETE FROM tracking WHERE tracking_id = ?;";
     public static final String GET_TRACKING_BY_ID = "SELECT * FROM tracking \n" +
-            "JOIN user ON tracking.user_id = user.user_id\n" +
-            "JOIN user_request ON tracking.user_request_id = user_request.user_request_id\n" +
-            "JOIN status ON tracking.status_id = status.status_id \n" +
-            "JOIN activity ON tracking.activity_id = activity.activity_id\n" +
-            "JOIN user_type ON user.user_type_id = user_type.user_type_id WHERE tracking_id = ?;";
+            "    JOIN user ON tracking.user_id = user.user_id\n" +
+            "    LEFT JOIN user_request ON tracking.user_request_id = user_request.user_request_id\n" +
+            "    JOIN status ON tracking.status_id = status.status_id \n" +
+            "    JOIN activity ON tracking.activity_id = activity.activity_id\n" +
+            "    JOIN user_type ON user.user_type_id = user_type.user_type_id \n" +
+            "    WHERE tracking_id=?;";
     public static final String UPDATE_TRACKING_STATUS_AND_TIME_BY_ID = "UPDATE tracking SET status_id = ?, time = ? " +
             "WHERE tracking_id=?;";
+    public static final String UPDATE_TRACKING_TIME = "UPDATE tracking SET status_id = ?, time = ?, " +
+            " time_stop = ?, difference_time=?  WHERE tracking_id=?;";
+    public static final String UPDATE_TRACKING_STATUS_AND_START_TIME_BY_ID = "UPDATE tracking SET status_id = ?, time_start = ? " +
+            "WHERE tracking_id=?;";
     public static final String UPDATE_TRACKING_STATUS_BY_ID = "UPDATE tracking SET status_id = ? WHERE tracking_id=?;";
-    public static final String ADD_TRACKING = "INSERT INTO tracking (user_id, activity_id, status_id, user_request_id, time)" +
-            "VALUES (?, ?, ?, ?, ?);";
+    public static final String ADD_TRACKING = "INSERT INTO tracking (user_id, activity_id, status_id, user_request_id, time, " +
+            "time_start, time_stop, difference_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
     public static final String GET_ALL_TRACKING = "SELECT * FROM tracking \n" +
             "    JOIN user ON tracking.user_id = user.user_id\n" +
             "    LEFT JOIN user_request ON tracking.user_request_id = user_request.user_request_id\n" +

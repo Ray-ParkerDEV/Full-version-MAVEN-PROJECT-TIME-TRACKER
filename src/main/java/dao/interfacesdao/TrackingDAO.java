@@ -37,7 +37,15 @@ public interface TrackingDAO extends AbstractDAO<Tracking> {
      * @param connection    - the current connection to a database. Transmitted from the service module to provide transactions.
      * @return              - an entity from a database table according to the incoming id number.
      */
-    Tracking getTrackingById(int id, Connection connection) throws DAOException;
+    Tracking getTrackingById(String id, Connection connection) throws DAOException;
+
+    /**
+     * This method updates an existing record (row) in a database table.
+     *
+     * @param tracking   - the current entity of user which will be updated.
+     * @param connection - the current connection to a database. Transmitted from the service module to provide transactions.
+     */
+    void updateTrackingById(String id, Tracking tracking, Connection connection) throws DAOException;
 
     /**
      * This method updates an existing record (row) in a database table.

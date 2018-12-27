@@ -61,15 +61,30 @@ public class TrackingService {
      * This method receives all activities from database which belongs corresponding user.
      * This method implements work with transaction support.
      *
-     * @return - a list of activities from the database.
+     * @return - a list of tracking from the database.
      * @throws SQLException
      */
     public List<Tracking> getTrackingByClientId(User user) throws SQLException {
-        final List<Tracking>[] activityList = new List[1];
+        final List<Tracking>[] trackingList = new List[1];
         TransactionHandler.runInTransaction(connection ->
-                activityList[0] = trackingDAO.getTrackingByClientId(user, connection)
+                trackingList[0] = trackingDAO.getTrackingByClientId(user, connection)
         );
-        return activityList[0];
+        return trackingList[0];
+    }
+
+    /**
+     * This method receives all activities from database which belongs corresponding user.
+     * This method implements work with transaction support.
+     *
+     * @return - a list of tracking from the database.
+     * @throws SQLException
+     */
+    public Tracking getTrackingById(String trackingId) throws SQLException {
+        final Tracking [] tracking = new Tracking[1];
+        TransactionHandler.runInTransaction(connection ->
+                tracking[0] = trackingDAO.getTrackingById(trackingId, connection)
+        );
+        return tracking[0];
     }
 
     /**
@@ -138,10 +153,58 @@ public class TrackingService {
      * @param id - the id number of tracking which will be updated.
      * @throws SQLException
      */
-    public void setStatusAndTimeTracking(String id, String status, String time) throws SQLException {
+    public void setStatusAndTimeAndTimeStopTracking(String id, String status, String time) throws SQLException {
         TransactionHandler.runInTransaction(connection ->
                 setStatusAndTime(id, status, time, connection)
         );
+    }
+    /**
+     * This method updates an existing record (row) in a database table.
+     * @param id - the tracking id which will be updated.
+     * @param tracking - the tracking which will be updated.
+     * @throws SQLException
+     */
+    public void updateTracking(String id, Tracking tracking) throws SQLException {
+        TransactionHandler.runInTransaction(connection ->
+                trackingDAO.updateTrackingById(id ,tracking, connection)
+        );
+    }
+
+
+    /**
+     * This method updates an existing record (row) in a database table.
+     *
+     * @param id - the id number of tracking which will be updated.
+     * @throws SQLException
+     */
+    public void setStatusAndTimeStartTracking(String id, String status, Long startTime) throws SQLException {
+        TransactionHandler.runInTransaction(connection ->
+                setStatusAndStartTime(id, status, startTime, connection)
+        );
+    }
+    /**
+     * This method updates an existing record (row) in a database table.
+     *
+     * @param id         - the id number of tracking which will be updated.
+     * @param status     - the status of tracking which will be updated.
+     * @param startTime  - the start time of tracking which will be updated.
+     * @param connection - the current connection to a database. Transmitted from the service module to provide transactions.
+     */
+    public void setStatusAndStartTime(String id, String status, Long startTime, Connection connection) throws DAOException {
+        PreparedStatement statement = null;
+        Integer statusId = defineStatus(status);
+        try {
+            statement = connection.prepareStatement(QueriesDB.UPDATE_TRACKING_STATUS_AND_START_TIME_BY_ID);
+            statement.setInt(1,statusId);// status_id
+            statement.setLong(2, startTime);// time_start
+            statement.setString(3, id);// tracking_id
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
+            throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
+        } finally {
+            ConnectionPool.closeStatement(statement);
+        }
     }
 
     /**

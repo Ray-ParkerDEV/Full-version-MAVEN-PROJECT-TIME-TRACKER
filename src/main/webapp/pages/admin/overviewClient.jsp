@@ -39,7 +39,7 @@
                                 <c:out value="${tracking.status}"/>
                             </td>
                             <td>
-                                <c:out value="${tracking.time}"/>
+                                <c:out value="${tracking.elapsedTime}"/>
                             </td>
                             <td>
                                 <c:set var="status" value="${tracking.status}"/>

@@ -7,7 +7,7 @@ import constants.PathPageConstants;
 import entities.ActivityStatus;
 import entities.Tracking;
 import manager.ConfigManagerPages;
-import mybean.Time;
+import Timer.Time;
 import services.TrackingService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,10 +27,16 @@ public class StopTimeCommand implements BasicCommand {
         String page;
         HttpSession session = request.getSession(false);
         String trackingId = request.getParameter(Parameters.TRACKING_ID);
-        Time.stop();
-        String elapsedTime = Time.elapsedTime;
         try {
-            TrackingService.getInstance().setStatusAndTimeTracking(trackingId, ActivityStatus.PAUSE.toString(), elapsedTime);
+            Tracking tracking = TrackingService.getInstance().getTrackingById(trackingId);
+            Time.getInstance().setStartTime(tracking.getTimeStart());
+            Time.getInstance().setDifference(tracking.getDifferenceTime());
+            Time.getInstance().stop();
+            tracking.setStatus(ActivityStatus.PAUSE);
+            tracking.setElapsedTime(Time.getInstance().getElapsedTime());
+            tracking.setTimeStop(Time.getInstance().getStopTime());
+            tracking.setDifferenceTime(Time.getInstance().getDifference());
+            TrackingService.getInstance().updateTracking(trackingId, tracking);
             List<Tracking> trackingList = TrackingService.getInstance().getAllTracking();
             TrackingService.getInstance().setAttributeTrackingListToSession(trackingList, session);
             page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.CLIENT_PAGE_PATH);

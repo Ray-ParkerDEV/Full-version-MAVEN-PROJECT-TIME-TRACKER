@@ -7,7 +7,7 @@ import constants.PathPageConstants;
 import entities.ActivityStatus;
 import entities.Tracking;
 import manager.ConfigManagerPages;
-import mybean.Time;
+import Timer.Time;
 import services.TrackingService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,9 +33,10 @@ public class StartTimeCommand implements BasicCommand {
         String page = null;
         HttpSession session = request.getSession(false);
         String trackingId = request.getParameter(Parameters.TRACKING_ID);
-        Time.start();
         try {
-            TrackingService.getInstance().setStatusTracking(trackingId, ActivityStatus.IN_PROGRESS.toString());
+            Time.getInstance().start();
+            TrackingService.getInstance().setStatusAndTimeStartTracking(trackingId, ActivityStatus.IN_PROGRESS.toString(),
+                    Time.getInstance().getStartTime());
             List<Tracking> trackingList = TrackingService.getInstance().getAllTracking();
             TrackingService.getInstance().setAttributeTrackingListToSession(trackingList, session);
             page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.CLIENT_PAGE_PATH);

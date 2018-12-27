@@ -13,30 +13,25 @@ public class Tracking extends BaseEntity implements Serializable {
     private Activity activity;
     private ActivityStatus status;
     private UserRequest userRequest;
-    private String time;
+    private String elapsedTime;
+    private Long timeStart;
+    private Long timeStop;
+    private Long differenceTime;
 
 
     public Tracking() {
     }
 
-    public Tracking(Integer trackingId, User user, Activity activity,
-                    ActivityStatus status, UserRequest userRequest, String time) {
-        this.trackingId = trackingId;
+    public Tracking(User user, Activity activity, ActivityStatus status, UserRequest userRequest,
+                    String elapsedTime, Long timeStart, Long timeStop, Long differenceTime) {
         this.user = user;
         this.activity = activity;
         this.status = status;
         this.userRequest = userRequest;
-        this.time = time;
-
-    }
-
-    public Tracking(User user, Activity activity, ActivityStatus status, UserRequest userRequest, String time) {
-        this.user = user;
-        this.activity = activity;
-        this.status = status;
-        this.userRequest = userRequest;
-        this.time = time;
-
+        this.elapsedTime = elapsedTime;
+        this.timeStart = timeStart;
+        this.timeStop = timeStop;
+        this.differenceTime = differenceTime;
     }
 
     public Integer getTrackingId() {
@@ -71,20 +66,44 @@ public class Tracking extends BaseEntity implements Serializable {
         this.status = status;
     }
 
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
     public UserRequest getUserRequest() {
         return userRequest;
     }
 
     public void setUserRequest(UserRequest userRequest) {
         this.userRequest = userRequest;
+    }
+
+    public String getElapsedTime() {
+        return elapsedTime;
+    }
+
+    public void setElapsedTime(String elapsedTime) {
+        this.elapsedTime = elapsedTime;
+    }
+
+    public Long getTimeStart() {
+        return timeStart;
+    }
+
+    public void setTimeStart(Long timeStart) {
+        this.timeStart = timeStart;
+    }
+
+    public Long getTimeStop() {
+        return timeStop;
+    }
+
+    public void setTimeStop(Long timeStop) {
+        this.timeStop = timeStop;
+    }
+
+    public Long getDifferenceTime() {
+        return differenceTime;
+    }
+
+    public void setDifferenceTime(Long differenceTime) {
+        this.differenceTime = differenceTime;
     }
 
     @Override
@@ -98,8 +117,11 @@ public class Tracking extends BaseEntity implements Serializable {
         if (user != null ? !user.equals(tracking.user) : tracking.user != null) return false;
         if (activity != null ? !activity.equals(tracking.activity) : tracking.activity != null) return false;
         if (status != tracking.status) return false;
-        if (time != null ? !time.equals(tracking.time) : tracking.time != null) return false;
-        return userRequest == tracking.userRequest;
+        if (userRequest != tracking.userRequest) return false;
+        if (elapsedTime != null ? !elapsedTime.equals(tracking.elapsedTime) : tracking.elapsedTime != null) return false;
+        if (timeStart != null ? !timeStart.equals(tracking.timeStart) : tracking.timeStart != null) return false;
+        if (timeStop != null ? !timeStop.equals(tracking.timeStop) : tracking.timeStop != null) return false;
+        return differenceTime != null ? differenceTime.equals(tracking.differenceTime) : tracking.differenceTime == null;
     }
 
     @Override
@@ -108,8 +130,11 @@ public class Tracking extends BaseEntity implements Serializable {
         result = 31 * result + (user != null ? user.hashCode() : 0);
         result = 31 * result + (activity != null ? activity.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
-        result = 31 * result + (time != null ? time.hashCode() : 0);
         result = 31 * result + (userRequest != null ? userRequest.hashCode() : 0);
+        result = 31 * result + (elapsedTime != null ? elapsedTime.hashCode() : 0);
+        result = 31 * result + (timeStart != null ? timeStart.hashCode() : 0);
+        result = 31 * result + (timeStop != null ? timeStop.hashCode() : 0);
+        result = 31 * result + (differenceTime != null ? differenceTime.hashCode() : 0);
         return result;
     }
 
@@ -120,8 +145,11 @@ public class Tracking extends BaseEntity implements Serializable {
                 ", user=" + user +
                 ", activity=" + activity +
                 ", status=" + status +
-                ", time=" + time +
                 ", userRequest=" + userRequest +
+                ", elapsedTime='" + elapsedTime + '\'' +
+                ", timeStart=" + timeStart +
+                ", timeStop=" + timeStop +
+                ", differenceTime=" + differenceTime +
                 '}';
     }
 }

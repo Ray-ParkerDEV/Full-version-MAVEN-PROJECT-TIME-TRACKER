@@ -5,7 +5,7 @@
 		  http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
            version="3.0">
 
-    <!--Servlet description start-->
+    <!--Servlet description startTime-->
     <servlet>
         <servlet-name>controller</servlet-name>
         <servlet-class>servlet.Controller</servlet-class>
@@ -18,7 +18,7 @@
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
-    <!--Filter descripption start-->
+    <!--Filter descripption startTime-->
     <filter>
         <filter-name>EncodingFilter</filter-name>
         <filter-class>filters.EncodingFilter</filter-class>
@@ -29,13 +29,13 @@
     </filter-mapping>
     <!--Filter description end-->
 
-    <!--Error jsp page start-->
+    <!--Error jsp page startTime-->
     <error-page>
         <location>/pages/error.jsp</location>
     </error-page>
     <!--Error jsp page end-->
 
-    <!--Start page description start-->
+    <!--Start page description startTime-->
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>

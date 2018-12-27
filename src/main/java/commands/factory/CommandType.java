@@ -24,7 +24,7 @@ public enum CommandType {
     CREATEACTIVITY, OVERVIEWCLIENT, BACKADMIN, ADDACTIVITY,
 
     /*client commands*/
-    START, STOP;
+    STARTTIME, STOPTIME;
 
     /**
      * This method directs the control to the corresponding class. The transfer of the control to the corresponding class
@@ -55,9 +55,9 @@ public enum CommandType {
                 return new BackAdminCommand();
             case ADDACTIVITY:
                 return new AddActivityToUserCommand();
-            case START:
+            case STARTTIME:
                 return new StartTimeCommand();
-            case STOP:
+            case STOPTIME:
                 return new StopTimeCommand();
             case DEFAULT:
                 return new DefaultCommand();

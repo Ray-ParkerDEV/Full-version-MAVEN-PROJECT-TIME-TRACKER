@@ -53,9 +53,14 @@ public class Parameters {
     public static final String OPERATION_MESSAGE = "operationMessage";
     public static final String BACK_PAGE = "backpage";
     /* parameters for DB*/
+    public static final String NEW_ACTIVITY_DB = "new_activity";
+    public static final String IN_PROGRESS_DB = "in_progress";
     public static final String USER_TYPE_NAME_DB = "user_type_name";
     public static final String USER_ID_DB = "user_id";
     public static final String TRACKING_ID_DB = "tracking_id";
+    public static final String TIME_START_DB = "time_start";
+    public static final String TIME_STOP_DB = "time_stop";
+    public static final String DIFFERENCE_TIME_DB = "difference_time";
     public static final String USER_TYPE_DB = "user_type";
     public static final String USER_TYPE_ID_DB = "user_type_id";
     public static final String ACTIVITY_ID_DB = "activity_id";
