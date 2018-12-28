@@ -55,13 +55,10 @@
                                     <tr>
                                         <td>
                                             <c:set var="flag" value="false"/>
-                                            <c:forEach items="${sessionScope.trackingList}" var="tracking">
-                                                <c:if test="${tracking.user.surName==user.surName &&
-                                                tracking.userRequest == 'ADD'}">
-                                                    <button class="mockButton red">add new activity</button>
-                                                    <c:set var="flag" value="true"/>
-                                                </c:if>
-                                            </c:forEach>
+                                            <c:if test="${user.requestAdd=='true'}">
+                                                <button class="mockButton red">add new activity</button>
+                                                <c:set var="flag" value="true"/>
+                                            </c:if>
                                             <c:if test="${flag == 'false'}">
                                                 <button class="mockButton blue">add new activity</button>
                                             </c:if>
@@ -71,13 +68,20 @@
                                             <c:forEach items="${sessionScope.trackingList}" var="tracking">
                                                 <c:if test="${tracking.user.surName==user.surName &&
                                                  tracking.userRequest == 'REMOVE'}">
-                                                    <button class="mockButton red">remove finished activity</button>
                                                     <c:set var="flag" value="true"/>
                                                 </c:if>
                                             </c:forEach>
-                                            <c:if test="${flag == 'false'}">
-                                                <button class="mockButton blue">remove finished activity</button>
-                                            </c:if>
+                                            <c:choose>
+                                                <c:when test="${flag == 'true'}">
+                                                    <button class="mockButton red">remove finished activity</button>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <button class="mockButton blue">remove finished activity</button>
+                                                </c:otherwise>
+                                            </c:choose>
+                                            <%--<c:if test="${flag == 'false'}">--%>
+                                                <%--<button class="mockButton blue">remove finished activity</button>--%>
+                                            <%--</c:if>--%>
                                         </td>
                                     </tr>
                                 </table>
@@ -85,23 +89,19 @@
                             <td>
                                 <c:set var="flag" value="false"/>
                                 <c:forEach items="${sessionScope.trackingList}" var="tracking">
-                                    <c:if test="${tracking.user.surName==user.surName && (tracking.userRequest == 'REMOVE'||
-                                    tracking.userRequest == 'ADD')}">
-                                        client waiting for response...
+                                    <c:if test="${tracking.user.userId==user.userId && (tracking.userRequest == 'REMOVE'||
+                                    tracking.userRequest == 'ADD' || user.requestAdd == 'true')}">
                                         <c:set var="flag" value="true"/>
                                     </c:if>
                                 </c:forEach>
-                                <c:if test="${flag == 'false'}">
-                                    no request from client
-                                </c:if>
-                                <%--<c:choose>--%>
-                                    <%--<c:when test="${tracking.userRequest == 'REMOVE'}">--%>
-                                        <%--client waiting for response...--%>
-                                    <%--</c:when>--%>
-                                    <%--<c:otherwise>--%>
-                                        <%--no request from client--%>
-                                    <%--</c:otherwise>--%>
-                                <%--</c:choose>--%>
+                                <c:choose>
+                                    <c:when test="${flag == 'true'}">
+                                        client waiting for response...
+                                    </c:when>
+                                    <c:otherwise>
+                                        no request from client
+                                    </c:otherwise>
+                                </c:choose>
                             </td>
                         </tr>
                     </c:if>

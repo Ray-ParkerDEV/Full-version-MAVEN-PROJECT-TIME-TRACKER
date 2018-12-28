@@ -40,13 +40,16 @@ public class AddActivityToUserCommand implements BasicCommand {
         try {
             if (ActivityService.getInstance().isUniqueClientActivity(activityId,overviewUserId)) {
                 User overviewUser = UserService.getInstance().getUserById(overviewUserId);
+                overviewUser.setRequestAdd(false);
+                UserService.getInstance().updateUser(overviewUser);
+                List<User> userList = UserService.getInstance().getAllUser();
                 UserService.getInstance().setAttributeOverviewUserToSession(overviewUser, session);
                 Activity addActivityToUser = ActivityService.getInstance().getActivityById(activityId);
                 Tracking tracking = new Tracking(overviewUser, addActivityToUser, ActivityStatus.NEW_ACTIVITY,
                         null, "00:00:00", 0L, 0L, 0L);
                 TrackingService.getInstance().registerTracking(tracking);
                 List<Tracking> trackingList = TrackingService.getInstance().getAllTracking();
-                TrackingService.getInstance().setAttributeTrackingListToSession(trackingList, session);
+                UserService.getInstance().setAttributeToSession(trackingList, userList, session);
                 page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH_CLIENT_OVERVIEW);
                 logger.info(MessageConstants.SUCCESS_ADDING_ACTIVITY);
             } else {

@@ -47,6 +47,7 @@
                                 <form class="formElement" name="actionForm" method="POST"
                                       action="controller">
                                     <input type="hidden" name="trackingId" value="${tracking.trackingId}"/>
+                                    <input type="hidden" name="userId" value="${tracking.user.userId}"/>
                                     <input type="hidden" name="command" value="removeAdmin"/>
                                     <input class="buttonElement" type="submit" value="remove"/>
                                 </form>

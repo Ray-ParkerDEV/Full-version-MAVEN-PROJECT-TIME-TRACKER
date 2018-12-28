@@ -13,11 +13,11 @@ public class QueriesDB {
             "    user_type.user_type_id  WHERE login = ? ;";
     public static final String GET_USER_BY_ID = "SELECT * FROM user JOIN user_type ON user.user_type_id =" +
             " user_type.user_type_id WHERE user_id = ?;";
-    public static final String ADD_USER_CLIENT = "INSERT INTO user (first_name, sur_name, login, password, user_type_id)" +
-            "VALUES (?, ?, ?, ?, ?);";
+    public static final String ADD_NEW_USER_CLIENT = "INSERT INTO user (first_name, sur_name, login, password, user_type_id," +
+            " request) VALUES (?, ?, ?, ?, ?, ?);";
     public static final String DELETE_USER_BY_ID = "DELETE FROM user WHERE id = ?;";
-    public static final String UPDATE_USER_BY_ID = "UPDATE user SET first_name = ?, sur_name = ? " +
-            "login = ?, password = ?, user_type = ?  WHERE user_id = ?;";
+    public static final String UPDATE_CLIENT_BY_ID = "UPDATE user SET first_name = ?, sur_name = ?, " +
+            "login = ?, password = ?, user_type_id = ?, request = ?  WHERE user_id = ?;";
     public static final String GET_ALL_USERS = "SELECT * FROM user JOIN user_type ON user.user_type_id = \n" +
             "    user_type.user_type_id;";
     public static final String GET_ALL_CLIENTS = "SELECT * FROM user JOIN user_type ON user.user_type_id = \n" +

@@ -15,18 +15,20 @@ public class User extends BaseEntity implements Serializable {
     private String login;
     private String password;
     private UserType userType;
+    private boolean requestAdd;
 
     public User() {
     }
 
-    public User(Integer userId, String firstName, String surName,
-                String login, String password, UserType userType) {
+    public User(Integer userId, String firstName, String surName, String login, String password,
+                UserType userType, boolean requestAdd) {
         this.userId = userId;
         this.firstName = firstName;
         this.surName = surName;
         this.login = login;
         this.password = password;
         this.userType = userType;
+        this.requestAdd = requestAdd;
     }
 
     public Integer getUserId() {
@@ -77,6 +79,14 @@ public class User extends BaseEntity implements Serializable {
         this.userType = userType;
     }
 
+    public boolean isRequestAdd() {
+        return requestAdd;
+    }
+
+    public void setRequestAdd(boolean requestAdd) {
+        this.requestAdd = requestAdd;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -84,12 +94,13 @@ public class User extends BaseEntity implements Serializable {
 
         User user = (User) o;
 
+        if (requestAdd != user.requestAdd) return false;
         if (userId != null ? !userId.equals(user.userId) : user.userId != null) return false;
         if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) return false;
         if (surName != null ? !surName.equals(user.surName) : user.surName != null) return false;
         if (login != null ? !login.equals(user.login) : user.login != null) return false;
         if (password != null ? !password.equals(user.password) : user.password != null) return false;
-        return userType == user.userType;
+        return userType != null ? userType.equals(user.userType) : user.userType == null;
     }
 
     @Override
@@ -100,6 +111,7 @@ public class User extends BaseEntity implements Serializable {
         result = 31 * result + (login != null ? login.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (userType != null ? userType.hashCode() : 0);
+        result = 31 * result + (requestAdd ? 1 : 0);
         return result;
     }
 
@@ -112,6 +124,7 @@ public class User extends BaseEntity implements Serializable {
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", userType=" + userType +
+                ", requestAdd=" + requestAdd +
                 '}';
     }
 }

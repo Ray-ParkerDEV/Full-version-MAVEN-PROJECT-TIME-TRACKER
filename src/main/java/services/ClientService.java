@@ -5,6 +5,7 @@ import entities.Tracking;
 import timer.Time;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 public class ClientService {
     private volatile static ClientService instance;
@@ -51,7 +52,7 @@ public class ClientService {
      *
      * @param session - an object of the current session.
      */
-    public void setAttributeUserRequestAddToSession(String userRequestAdd, HttpSession session) {
+    public void setAttributeUserRequestAddToSession(List<String> userRequestAdd, HttpSession session) {
         session.setAttribute(Parameters.USER_REQUEST_ADD, userRequestAdd);
     }
 

@@ -54,7 +54,7 @@ public class UserServiceTest {
     public void getUserByLoginSuccess() throws Exception {
         Connection connectionMock = mock(Connection.class);
         User user = new User(3, "Ievgen", "Kopachev", "admin", "admin",
-                new UserType(5, "admin"));
+                new UserType(5, "admin"),false);
         when(connectionPoolMock.getConnection()).thenReturn(connectionMock);
         when(userDAOMock.getByLogin(eq("admin"), eq(connectionMock)))
                 .thenReturn(user);

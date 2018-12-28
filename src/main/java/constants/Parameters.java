@@ -54,6 +54,7 @@ public class Parameters {
     public static final String BACK_PAGE = "backpage";
     /* parameters for DB*/
     public static final String NEW_ACTIVITY_DB = "new_activity";
+    public static final String REQUEST = "request";
     public static final String IN_PROGRESS_DB = "in_progress";
     public static final String USER_TYPE_NAME_DB = "user_type_name";
     public static final String USER_ID_DB = "user_id";

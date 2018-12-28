@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="spec" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%--<%@ taglib prefix = "ex" uri = "WEB-INF/custom.tld"%>--%>
 <html>
 <head>
     <title>Clients account page</title>
@@ -30,75 +29,79 @@
                     <th align="left" width="100">TIME</th>
                     <th align="left" width="300">NOTICE</th>
                 </tr>
-                <tr>
-                    <c:forEach items="${sessionScope.trackingList}" var="tracking">
+                <c:forEach items="${sessionScope.trackingList}" var="tracking">
                     <c:set var="userId" value="${sessionScope.clientUser.userId}"/>
+                    <tr>
                     <c:if test="${tracking.user.userId==userId}">
-                    <td>
-                        <c:out value="${tracking.activity.activityName}"/>
-                    </td>
-                    <td>
-                        <c:out value="${tracking.status}"/>
-                    </td>
-                    <td>
-                        <table>
-                            <tr>
-                                <td>
-                                    <form class="formElement" name="actionForm" method="POST"
-                                          action="controller">
-                                        <div class="wrapperButtons">
-                                            <input type="hidden" name="trackingId" value="${tracking.trackingId}"/>
-                                            <input type="hidden" name="command" value="startTime"/>
-                                            <input class="buttonElement" type="submit" value="start"/>
-                                        </div>
-                                    </form>
-                                </td>
-                                <td>
-                                    <form class="formElement" name="actionForm" method="POST"
-                                          action="controller">
-                                        <div class="wrapperButtons">
-                                            <input type="hidden" name="trackingId" value="${tracking.trackingId}"/>
-                                            <input type="hidden" name="command" value="stopTime"/>
-                                            <input class="buttonElement" type="submit" value="stop"/>
-                                        </div>
-                                    </form>
-                                </td>
-                                <td align="center">
-                                    <form class="formElement" name="finishForm" method="POST"
-                                          action="controller">
-                                        <div class="wrapperButtons">
-                                            <input type="hidden" name="trackingId" value="${tracking.trackingId}"/>
-                                            <input type="hidden" name="command" value="finish"/>
-                                            <input class="buttonElement" type="submit" value="finish"/>
-                                        </div>
-                                    </form>
-                                </td>
-                                <td align="center">
-                                    <c:if test="${tracking.status == 'FINISHED'}">
+                        <td>
+                            <c:out value="${tracking.activity.activityName}"/>
+                        </td>
+                        <td>
+                            <c:out value="${tracking.status}"/>
+                        </td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <form class="formElement" name="actionForm" method="POST"
+                                              action="controller">
+                                            <div class="wrapperButtons">
+                                                <input type="hidden" name="trackingId"
+                                                       value="${tracking.trackingId}"/>
+                                                <input type="hidden" name="command" value="startTime"/>
+                                                <input class="buttonElement" type="submit" value="start"/>
+                                            </div>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form class="formElement" name="actionForm" method="POST"
+                                              action="controller">
+                                            <div class="wrapperButtons">
+                                                <input type="hidden" name="trackingId"
+                                                       value="${tracking.trackingId}"/>
+                                                <input type="hidden" name="command" value="stopTime"/>
+                                                <input class="buttonElement" type="submit" value="stop"/>
+                                            </div>
+                                        </form>
+                                    </td>
+                                    <td align="center">
                                         <form class="formElement" name="finishForm" method="POST"
                                               action="controller">
                                             <div class="wrapperButtons">
-                                                <input type="hidden" name="trackingId" value="${tracking.trackingId}"/>
-                                                <input type="hidden" name="command" value="remove"/>
-                                                <input class="buttonElement" type="submit" value="remove"/>
+                                                <input type="hidden" name="trackingId"
+                                                       value="${tracking.trackingId}"/>
+                                                <input type="hidden" name="command" value="finish"/>
+                                                <input class="buttonElement" type="submit" value="finish"/>
                                             </div>
                                         </form>
-                                    </c:if>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td>
-                        <c:out value="${tracking.elapsedTime}"/>
-                    </td>
-                    <td>
-                        <c:set var="request" value="${tracking.userRequest}"/>
-                        <c:if test="${request=='REMOVE'}">
-                            wait for admin approval...
-                        </c:if>
-                    </td>
-                </tr>
-                </c:if>
+                                    </td>
+                                    <td align="center">
+                                        <c:if test="${tracking.status == 'FINISHED'}">
+                                            <form class="formElement" name="finishForm" method="POST"
+                                                  action="controller">
+                                                <div class="wrapperButtons">
+                                                    <input type="hidden" name="trackingId"
+                                                           value="${tracking.trackingId}"/>
+                                                    <input type="hidden" name="command" value="remove"/>
+                                                    <input class="buttonElement" type="submit" value="remove"/>
+                                                </div>
+                                            </form>
+                                        </c:if>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>
+                            <c:out value="${tracking.elapsedTime}"/>
+                        </td>
+                        <td>
+                            <c:set var="request" value="${tracking.userRequest}"/>
+                            <c:if test="${request=='REMOVE'}">
+                                wait for admin approval...
+                            </c:if>
+                        </td>
+                        </tr>
+                    </c:if>
                 </c:forEach>
             </table>
             <table>
@@ -113,7 +116,9 @@
                         </form>
                     </td>
                     <td>
-                        <c:out value="${sessionScope.userRequestAdd}"/>
+                        <c:if test="${sessionScope.clientUser.requestAdd == 'true'}">
+                            wait for admin response...
+                        </c:if>
                     </td>
                 </tr>
             </table>

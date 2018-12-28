@@ -56,12 +56,13 @@ public class UserDAOImpl implements UserDAO {
     public void add(User user, Connection connection) throws DAOException {
         PreparedStatement statement = null;
         try {
-            statement = connection.prepareStatement(QueriesDB.ADD_USER_CLIENT);
+            statement = connection.prepareStatement(QueriesDB.ADD_NEW_USER_CLIENT);
             statement.setString(1, user.getFirstName());
             statement.setString(2, user.getSurName());
             statement.setString(3, user.getLogin());
             statement.setString(4, user.getPassword());
-            statement.setString(5, String.valueOf(2));
+            statement.setInt(5, 2);
+            statement.setBoolean(6, user.isRequestAdd());
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
@@ -114,13 +115,14 @@ public class UserDAOImpl implements UserDAO {
     public void update(User user, Connection connection) throws DAOException {
         PreparedStatement statement = null;
         try {
-            statement = connection.prepareStatement(QueriesDB.UPDATE_USER_BY_ID);
+            statement = connection.prepareStatement(QueriesDB.UPDATE_CLIENT_BY_ID);
             statement.setString(1, user.getFirstName());
             statement.setString(2, user.getSurName());
             statement.setString(3, user.getLogin());
             statement.setString(4, user.getPassword());
-            statement.setString(5, String.valueOf(user.getUserType()));
-            statement.setInt(6, user.getUserId());
+            statement.setInt(5, 2);
+            statement.setBoolean(6, user.isRequestAdd());
+            statement.setInt(7, user.getUserId());
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
@@ -253,6 +255,7 @@ public class UserDAOImpl implements UserDAO {
         user.setPassword(resultSet.getString(Parameters.PASSWORD));
         user.setUserType(new UserType(resultSet.getInt(Parameters.USER_TYPE_ID_DB)
                 , resultSet.getString(Parameters.USER_TYPE_NAME_DB)));
+        user.setRequestAdd(resultSet.getBoolean(Parameters.REQUEST));
         return user;
     }
 
