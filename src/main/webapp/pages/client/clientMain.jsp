@@ -44,8 +44,6 @@
                         <table>
                             <tr>
                                 <td>
-                                        <%--<c:set var="userId" value="${sessionScope.clientUser.userId}"/>--%>
-                                        <%--<c:if test="${tracking.user.userId==userId}">--%>
                                     <form class="formElement" name="actionForm" method="POST"
                                           action="controller">
                                         <div class="wrapperButtons">
@@ -108,6 +106,7 @@
                     <td>
                         <form class="formElement" name="formElement" method="POST" action="controller">
                             <div class="wrapperButtons">
+                                <input type="hidden" name="userId" value="${sessionScope.clientUser.userId}"/>
                                 <input type="hidden" name="command" value="add"/>
                                 <input type="submit" value="add new activity" style="height:20px; width:110px"/>
                             </div>

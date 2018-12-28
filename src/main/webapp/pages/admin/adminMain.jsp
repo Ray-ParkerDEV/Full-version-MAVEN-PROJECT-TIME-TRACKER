@@ -49,22 +49,59 @@
                                     </div>
                                 </form>
                             </td>
+
                             <td>
                                 <table>
                                     <tr>
                                         <td>
-                                            <button class="mockButton blue">add new activity
-                                            </button>
+                                            <c:set var="flag" value="false"/>
+                                            <c:forEach items="${sessionScope.trackingList}" var="tracking">
+                                                <c:if test="${tracking.user.surName==user.surName &&
+                                                tracking.userRequest == 'ADD'}">
+                                                    <button class="mockButton red">add new activity</button>
+                                                    <c:set var="flag" value="true"/>
+                                                </c:if>
+                                            </c:forEach>
+                                            <c:if test="${flag == 'false'}">
+                                                <button class="mockButton blue">add new activity</button>
+                                            </c:if>
                                         </td>
                                         <td>
-                                            <button class="mockButton red">remove finished activity
-                                            </button>
+                                            <c:set var="flag" value="false"/>
+                                            <c:forEach items="${sessionScope.trackingList}" var="tracking">
+                                                <c:if test="${tracking.user.surName==user.surName &&
+                                                 tracking.userRequest == 'REMOVE'}">
+                                                    <button class="mockButton red">remove finished activity</button>
+                                                    <c:set var="flag" value="true"/>
+                                                </c:if>
+                                            </c:forEach>
+                                            <c:if test="${flag == 'false'}">
+                                                <button class="mockButton blue">remove finished activity</button>
+                                            </c:if>
                                         </td>
                                     </tr>
                                 </table>
                             </td>
                             <td>
-                                info...
+                                <c:set var="flag" value="false"/>
+                                <c:forEach items="${sessionScope.trackingList}" var="tracking">
+                                    <c:if test="${tracking.user.surName==user.surName && (tracking.userRequest == 'REMOVE'||
+                                    tracking.userRequest == 'ADD')}">
+                                        client waiting for response...
+                                        <c:set var="flag" value="true"/>
+                                    </c:if>
+                                </c:forEach>
+                                <c:if test="${flag == 'false'}">
+                                    no request from client
+                                </c:if>
+                                <%--<c:choose>--%>
+                                    <%--<c:when test="${tracking.userRequest == 'REMOVE'}">--%>
+                                        <%--client waiting for response...--%>
+                                    <%--</c:when>--%>
+                                    <%--<c:otherwise>--%>
+                                        <%--no request from client--%>
+                                    <%--</c:otherwise>--%>
+                                <%--</c:choose>--%>
                             </td>
                         </tr>
                     </c:if>
