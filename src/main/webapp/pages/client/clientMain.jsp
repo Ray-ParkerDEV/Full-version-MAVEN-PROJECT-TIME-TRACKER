@@ -116,7 +116,7 @@
                         </form>
                     </td>
                     <td>
-                        <c:if test="${sessionScope.clientUser.requestAdd == 'true'}">
+                        <c:if test="${sessionScope.overviewUser.requestAdd == 'true'}">
                             wait for admin response...
                         </c:if>
                     </td>

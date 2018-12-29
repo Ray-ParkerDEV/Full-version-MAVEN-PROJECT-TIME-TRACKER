@@ -2,6 +2,7 @@ package services;
 
 import constants.Parameters;
 import entities.Tracking;
+import entities.User;
 import timer.Time;
 
 import javax.servlet.http.HttpSession;
@@ -54,6 +55,13 @@ public class ClientService {
      */
     public void setAttributeUserRequestAddToSession(List<String> userRequestAdd, HttpSession session) {
         session.setAttribute(Parameters.USER_REQUEST_ADD, userRequestAdd);
+    }
+
+    public  boolean duplicateCommand(User user){
+        if (user.isRequestAdd()){
+            return  true;
+        }
+        return false;
     }
 
 

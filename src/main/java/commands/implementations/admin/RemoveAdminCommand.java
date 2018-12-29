@@ -5,11 +5,9 @@ import constants.MessageConstants;
 import constants.Parameters;
 import constants.PathPageConstants;
 import entities.Tracking;
-import entities.User;
 import manager.ConfigManagerPages;
 import org.apache.log4j.Logger;
 import services.TrackingService;
-import services.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -31,15 +29,10 @@ public class RemoveAdminCommand implements BasicCommand {
         String page = null;
         HttpSession session = request.getSession(false);
         Integer trackingId = Integer.valueOf(request.getParameter(Parameters.TRACKING_ID));
-        String userId = request.getParameter(Parameters.USER_ID);
         try {
-            User user = UserService.getInstance().getUserById(userId);
-            user.setRequestAdd(false);
-            UserService.getInstance().updateUser(user);
-            List<User> userList = UserService.getInstance().getAllUser();
             TrackingService.getInstance().deleteTrackingById(trackingId);
             List<Tracking> trackingList = TrackingService.getInstance().getAllTracking();
-            UserService.getInstance().setAttributeToSession(trackingList, userList, session);
+            TrackingService.getInstance().setAttributeTrackingListToSession(trackingList, session);
             page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH_CLIENT_OVERVIEW);
         } catch (SQLException e) {
             page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ERROR_PAGE_PATH);

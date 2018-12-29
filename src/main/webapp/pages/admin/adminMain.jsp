@@ -79,9 +79,6 @@
                                                     <button class="mockButton blue">remove finished activity</button>
                                                 </c:otherwise>
                                             </c:choose>
-                                            <%--<c:if test="${flag == 'false'}">--%>
-                                                <%--<button class="mockButton blue">remove finished activity</button>--%>
-                                            <%--</c:if>--%>
                                         </td>
                                     </tr>
                                 </table>
