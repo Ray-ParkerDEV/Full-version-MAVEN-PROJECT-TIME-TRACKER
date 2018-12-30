@@ -155,6 +155,7 @@ public class TrackingDAOImpl implements TrackingDAO {
         tracking.setTimeStart(resultSet.getLong(Parameters.TIME_START_DB));
         tracking.setTimeStop(resultSet.getLong(Parameters.TIME_STOP_DB));
         tracking.setDifferenceTime(resultSet.getLong(Parameters.DIFFERENCE_TIME_DB));
+        tracking.setTimeSwitch(resultSet.getBoolean(Parameters.TIME_SWITCH_DB));
         return tracking;
     }
 
@@ -229,7 +230,8 @@ public class TrackingDAOImpl implements TrackingDAO {
             statement.setString(4, tracking.getTimeStart().toString());
             statement.setString(5, tracking.getTimeStop().toString());
             statement.setString(6, tracking.getDifferenceTime().toString());
-            statement.setString(7, id);
+            statement.setBoolean(7, tracking.isTimeSwitch());
+            statement.setString(8, id);
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
@@ -282,6 +284,7 @@ public class TrackingDAOImpl implements TrackingDAO {
             statement.setString(6, "0");
             statement.setString(7, "0");
             statement.setString(8, "0");
+            statement.setBoolean(9, tracking.isTimeSwitch());
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);

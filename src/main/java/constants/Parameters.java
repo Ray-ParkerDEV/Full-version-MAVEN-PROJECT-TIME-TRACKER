@@ -62,6 +62,7 @@ public class Parameters {
     public static final String TIME_START_DB = "time_start";
     public static final String TIME_STOP_DB = "time_stop";
     public static final String DIFFERENCE_TIME_DB = "difference_time";
+    public static final String TIME_SWITCH_DB = "time_switch";
     public static final String USER_TYPE_DB = "user_type";
     public static final String USER_TYPE_ID_DB = "user_type_id";
     public static final String ACTIVITY_ID_DB = "activity_id";

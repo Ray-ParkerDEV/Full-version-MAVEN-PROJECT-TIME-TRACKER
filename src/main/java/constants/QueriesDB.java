@@ -54,12 +54,12 @@ public class QueriesDB {
     public static final String UPDATE_TRACKING_TIME = "UPDATE tracking SET status_id = ?, time = ?, " +
             " time_stop = ?, difference_time=?  WHERE tracking_id=?;";
     public static final String UPDATE_TRACKING = "UPDATE tracking SET status_id = ?, user_request_id= ?,time = ?, \n" +
-            "     time_start = ?, time_stop = ?, difference_time=? WHERE tracking_id=?;";
+            "     time_start = ?, time_stop = ?, difference_time=?, time_switch =? WHERE tracking_id=?;";
     public static final String UPDATE_TRACKING_STATUS_AND_START_TIME_BY_ID = "UPDATE tracking SET status_id = ?, time_start = ? " +
             "WHERE tracking_id=?;";
     public static final String UPDATE_TRACKING_STATUS_BY_ID = "UPDATE tracking SET status_id = ? WHERE tracking_id=?;";
     public static final String ADD_TRACKING = "INSERT INTO tracking (user_id, activity_id, status_id, user_request_id, time, " +
-            "time_start, time_stop, difference_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+            "time_start, time_stop, difference_time, time_switch) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
     public static final String GET_ALL_TRACKING = "SELECT * FROM tracking \n" +
             "    JOIN user ON tracking.user_id = user.user_id\n" +
             "    LEFT JOIN user_request ON tracking.user_request_id = user_request.user_request_id\n" +

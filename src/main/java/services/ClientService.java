@@ -2,11 +2,9 @@ package services;
 
 import constants.Parameters;
 import entities.Tracking;
-import entities.User;
 import timer.Time;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 public class ClientService {
     private volatile static ClientService instance;
@@ -48,22 +46,22 @@ public class ClientService {
     }
 
     /**
-     * An additional accessory method that provides work with some attributes of the object of http session.
-     * This method sets user's parameters to the session.
+     * This method sets user's parameters on Add new activity button to the session. It's like a flag, that prevents
+     * duplicating request during updating page.
      *
      * @param session - an object of the current session.
      */
-    public void setAttributeUserRequestAddToSession(List<String> userRequestAdd, HttpSession session) {
-        session.setAttribute(Parameters.USER_REQUEST_ADD, userRequestAdd);
+    public void setAttributeUserRequestAddToSessionTrue(HttpSession session) {
+        session.setAttribute(Parameters.USER_REQUEST_ADD, "true");
     }
 
-    public  boolean duplicateCommand(User user){
-        if (user.isRequestAdd()){
-            return  true;
-        }
-        return false;
+    /**
+     * This method sets user's parameters on Add new activity button to the session. It's like a flag, that prevents
+     * duplicating request during updating page.
+     *
+     * @param session - an object of the current session.
+     */
+    public void setAttributeUserRequestAddToSessionFalse(HttpSession session) {
+        session.setAttribute(Parameters.USER_REQUEST_ADD, "false");
     }
-
-
-
 }

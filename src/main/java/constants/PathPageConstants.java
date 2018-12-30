@@ -13,6 +13,7 @@ public class PathPageConstants {
     public static final String ADMIN_PAGE_PATH = "path.page.admin";
     public static final String ADMIN_PAGE_PATH_CLIENT_OVERVIEW = "path.page.clientOverview";
     public static final String ERROR_PAGE_PATH = "path.page.error";
+    public static final String ERROR_PAGE_TIME = "path.page.time";
     public static final String REGISTRATION_PAGE_PATH = "path.page.registration";
 
     public PathPageConstants() {

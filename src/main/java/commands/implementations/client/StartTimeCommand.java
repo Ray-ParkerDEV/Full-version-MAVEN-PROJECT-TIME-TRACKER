@@ -35,8 +35,12 @@ public class StartTimeCommand implements BasicCommand {
         String trackingId = request.getParameter(Parameters.TRACKING_ID);
         try {
             Time.getInstance().start();
+            Tracking tracking = TrackingService.getInstance().getTrackingById(trackingId);
+            tracking.setTimeSwitch(true);
+            TrackingService.getInstance().updateTracking(trackingId, tracking);
             TrackingService.getInstance().setStatusAndTimeStartTracking(trackingId, ActivityStatus.IN_PROGRESS.toString(),
                     Time.getInstance().getStartTime());
+
             List<Tracking> trackingList = TrackingService.getInstance().getAllTracking();
             TrackingService.getInstance().setAttributeTrackingListToSession(trackingList, session);
             page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.CLIENT_PAGE_PATH);

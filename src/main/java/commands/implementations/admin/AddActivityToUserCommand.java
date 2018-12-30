@@ -4,7 +4,10 @@ import commands.BasicCommand;
 import constants.MessageConstants;
 import constants.Parameters;
 import constants.PathPageConstants;
-import entities.*;
+import entities.Activity;
+import entities.ActivityStatus;
+import entities.Tracking;
+import entities.User;
 import manager.ConfigManagerPages;
 import org.apache.log4j.Logger;
 import services.ActivityService;
@@ -38,7 +41,7 @@ public class AddActivityToUserCommand implements BasicCommand {
         String activityId = request.getParameter(Parameters.ACTIVITY_ID);
         String overviewUserId = request.getParameter(Parameters.USER_ID);
         try {
-            if (ActivityService.getInstance().isUniqueClientActivity(activityId,overviewUserId)) {
+            if (ActivityService.getInstance().isUniqueClientActivity(activityId, overviewUserId)) {
                 User overviewUser = UserService.getInstance().getUserById(overviewUserId);
                 overviewUser.setRequestAdd(false);
                 UserService.getInstance().updateUser(overviewUser);
@@ -46,7 +49,7 @@ public class AddActivityToUserCommand implements BasicCommand {
                 UserService.getInstance().setAttributeOverviewUserToSession(overviewUser, session);
                 Activity addActivityToUser = ActivityService.getInstance().getActivityById(activityId);
                 Tracking tracking = new Tracking(overviewUser, addActivityToUser, ActivityStatus.NEW_ACTIVITY,
-                        null, "00:00:00", 0L, 0L, 0L);
+                        null, "00:00:00", 0L, 0L, 0L, false);
                 TrackingService.getInstance().registerTracking(tracking);
                 List<Tracking> trackingList = TrackingService.getInstance().getAllTracking();
                 UserService.getInstance().setAttributeToSession(trackingList, userList, session);

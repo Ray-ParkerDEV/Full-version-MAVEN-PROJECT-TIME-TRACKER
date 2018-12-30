@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import services.ActivityService;
 import services.AdminService;
 import services.UserService;
+import tag.MyTag;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -41,6 +42,7 @@ public class CreateActivityCommand implements BasicCommand {
                 if (ActivityService.getInstance().isUniqueActivity(activity)) {
                     ActivityService.getInstance().createActivityDB(activity);
                     List<Activity> activityAdminList = ActivityService.getInstance().getAllActivities();
+                    MyTag.activityList = activityAdminList;
                     UserService.getInstance().setAttributeToSession(activityAdminList, session);
                     page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH);
                     logger.info(MessageConstants.SUCCESS_CREATION);
