@@ -12,6 +12,7 @@
     <form name="loginForm" method="POST" action="controller">
         <fieldset>
             <legend align="center">
+                <fmt:message key="loginTitle"/>
                 <%--Login Form--%>
             </legend>
             <input type="hidden" name="command" value="login"/>
