@@ -25,7 +25,7 @@ To install and run the project on localhost:
  * Run maven command clean install, than copy project_file.war into the /TOMCAT/webapps folder. 
  Appe will be available by web-address: http:\\localhost:8080
 
-## Authors
+## Author
 Bodyak Iaroslav (e-mail: [4456602@gmail.com](mailto:4456602@gmail.com))
 
 
