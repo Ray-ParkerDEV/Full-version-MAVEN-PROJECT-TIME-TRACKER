@@ -17,3 +17,15 @@ body {
 .errorMessage {
     color: firebrick;
 }
+.languageElement {
+    position: fixed;
+    right: 10px;
+    top: 10px;
+    margin: 0px;
+    padding: 0px;
+    display: inline-block;
+}
+.formElement {
+    margin: 0;
+    text-align: center
+}

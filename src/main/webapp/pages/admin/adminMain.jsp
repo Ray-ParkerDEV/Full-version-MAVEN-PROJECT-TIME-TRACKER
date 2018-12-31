@@ -6,7 +6,7 @@
 <html>
 <head>
     <title>Admin page</title>
-    <link rel="stylesheet" type="text/css" href="/css/adminMain.css"/>
+    <link rel="stylesheet" type="text/css" href="<spec:url value="/css/adminMain.css"/>"/>
 
 </head>
 <body>

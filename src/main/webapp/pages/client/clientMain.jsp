@@ -5,7 +5,8 @@
 <html>
 <head>
     <title>Clients account page</title>
-    <link rel="stylesheet" type="text/css" href="/css/clientMain.css"/>
+    <link rel="stylesheet" type="text/css" href="<spec:url value="/css/clientMain.css"/>"/>
+    <%--<script type="text/javascript" src="/js/time.js"></script>--%>
 </head>
 <body>
 <div class="wrapperWelcomeInfo">
@@ -117,7 +118,6 @@
                             } else {
                                 document.getElementById("seconds").innerHTML = countSecond;
                             }
-
 
                            // var countSecond = 0;
                            // document.getElementById("seconds").innerHTML = "00";
