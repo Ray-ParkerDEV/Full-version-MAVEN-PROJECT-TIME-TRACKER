@@ -9,7 +9,7 @@ Time tracking system. The administrator assigns activity to the user. A user can
 * [Description](#description)
 * [Prerequisites](#prerequisites)
 * [Installation and running](#installation-and-running)
-* [Authors](#authors)
+* [Authors](#author)
 
 ### Prerequisites
 To run the project you need installed (according to the documentation): 
