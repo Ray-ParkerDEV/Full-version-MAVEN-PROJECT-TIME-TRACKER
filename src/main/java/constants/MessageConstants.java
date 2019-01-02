@@ -12,6 +12,7 @@ public class MessageConstants {
     public static final String SUCCESS_REGISTRATION = "Registration has been executed successfully.";
     public static final String SUCCESS_CREATION = "Creation has been executed successfully.";
     public static final String SUCCESS_OVERVIEW_CLIENT_COMMAND = "Overview client command executed successfully.";
+    public static final String SUCCESS_SET_LANGUAGE = "Set up language command executed successfully.";
     public static final String SUCCESS_ADDING_ACTIVITY = "Adding activity to user has been executed successfully.";
     public static final String SUCCESS_ADD_REQUEST = "Adding request has been executed successfully..";
     public static final String PAGE_NOT_FOUND = "Page not found. Business logic error was occurred.";
@@ -26,11 +27,11 @@ public class MessageConstants {
     public static final String EXECUTE_QUERY_ERROR = "An error was occurred while executing the query to the database.";
     public static final String USER_EXISTS = "User with this login has already existed.";
     public static final String NULLPOINTEREXEPTIONS = "NULLPOINTEREXEPTIONS in update tracking method.";
-    public static final String ACTIVITY_EXISTS = "Activity with this name has already existed.";
-    public static final String ACTIVITY_HAS_BEEN_ADDED = "Such activity has already been added.";
+    public static final String ACTIVITY_EXISTS = "ACTIVITY_EXISTS";
+    public static final String ACTIVITY_HAS_BEEN_ADDED = "ACTIVITY_HAS_BEEN_ADDED";
     public static final String WAIT_FOR_ADMIN_RESPONSE = "Wait for admin response.";
     public static final String EMPTY_FIELDS = "Attention! At least one of the fields is empty.";
-    public static final String EMPTY_FIELDS_ACTIVITY = "Attention! Field is empty.";
+    public static final String EMPTY_FIELDS_ACTIVITY = "EMPTY_FIELDS_ACTIVITY";
     public static final String COLUMN_IS_NOT_VALID = "The column label is not valid.";
 
     public MessageConstants() {

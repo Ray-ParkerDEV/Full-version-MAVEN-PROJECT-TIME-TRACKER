@@ -93,14 +93,14 @@
                             </table>
                         </td>
                         <td>
-                            <c:choose>
-                                <c:when test="${tracking.timeSwitch == 'true'}">
-                                    <label id="hours"></label>:<label id="minutes"></label>:<label id="seconds"></label>
-                                </c:when>
-                                <c:otherwise>
+                            <%--<c:choose>--%>
+                                <%--<c:when test="${tracking.timeSwitch == 'true'}">--%>
+                                    <%--<label id="hours"></label>:<label id="minutes"></label>:<label id="seconds"></label>--%>
+                                <%--</c:when>--%>
+                                <%--<c:otherwise>--%>
                                     <c:out value="${tracking.elapsedTime}"/>
-                                </c:otherwise>
-                            </c:choose>
+                                <%--</c:otherwise>--%>
+                            <%--</c:choose>--%>
                         </td>
                         <td>
                             <c:set var="request" value="${tracking.userRequest}"/>
@@ -109,73 +109,6 @@
                             </c:if>
                         </td>
                         </tr>
-                        <script type="text/javascript">
-                            var countSecond = parseInt(${tracking.differenceTime/1000});
-                            if (countSecond > 0 && countSecond < 9) {
-                                document.getElementById("seconds").innerHTML = "0" + countSecond;
-                            } else if (countSecond == 0){
-                                document.getElementById("seconds").innerHTML = "00";
-                            } else {
-                                document.getElementById("seconds").innerHTML = countSecond;
-                            }
-
-                           // var countSecond = 0;
-                           // document.getElementById("seconds").innerHTML = "00";
-                            var timeSeconds = setInterval(function () {
-                                myTimerSec()
-                            }, 1000);
-
-                            function myTimerSec() {
-                                if (countSecond > 59) {
-                                    countSecond = -1;
-                                }
-                                if (countSecond < 9) {
-                                    countSecond = countSecond + 1;
-                                    document.getElementById("seconds").innerHTML = "0" + countSecond;
-                                } else {
-                                    countSecond = countSecond + 1;
-                                    document.getElementById("seconds").innerHTML = countSecond;
-                                }
-                            }
-
-                            var countMinutes = 0;
-                            document.getElementById("minutes").innerHTML = "00";
-                            var timeMinutes = setInterval(function () {
-                                myTimerMin()
-                            }, 1000 * 60);
-
-                            function myTimerMin() {
-                                if (countMinutes == 59) {
-                                    countMinutes = -1;
-                                }
-                                if (countMinutes < 9) {
-                                    countMinutes = countMinutes + 1;
-                                    document.getElementById("minutes").innerHTML = "0" + countMinutes;
-                                } else {
-                                    countMinutes = countMinutes + 1;
-                                    document.getElementById("minutes").innerHTML = countMinutes;
-                                }
-                            }
-
-                            var countHours = 0;
-                            document.getElementById("hours").innerHTML = "00";
-                            var timeHours = setInterval(function () {
-                                myTimerHour()
-                            }, 1000 * 60 * 60);
-
-                            function myTimerHour() {
-                                if (countHours == 59) {
-                                    countHours = -1;
-                                }
-                                if (countHours < 9) {
-                                    countHours = countHours + 1;
-                                    document.getElementById("hours").innerHTML = "0" + countHours;
-                                } else {
-                                    countHours = countHours + 1;
-                                    document.getElementById("hours").innerHTML = countHours;
-                                }
-                            }
-                        </script>
                     </c:if>
                 </c:forEach>
             </table>
@@ -195,21 +128,45 @@
                             wait for admin response...
                         </c:if>
                     </td>
-                    <%--<td>--%>
-                    <%--<label id="hours"></label>:<label id="minutes"></label>:<label id="seconds"></label>--%>
-                    <%--</td>--%>
                 </tr>
             </table>
         </div>
     </fieldset>
 </div>
 <!--LOGOUT-->
-<div class="logoutElement">
+<div class="logoutElement" style="position:fixed; right:230px; top:12px;">
     <form name="logout" method="POST" action="controller">
         <input type="hidden" name="command" value="logout"/>
-        <input type="submit" value="Log Out"/>
+        <input type="submit" value="<fmt:message key="logout"/>"/>
     </form>
 </div>
-
+<!--LANGUAGE-->
+<div class="languageElement" style="position:fixed; right:20px; top:10px;">
+    <table>
+        <tr>
+            <form class="formElement" name="actionForm" method="POST" action="controller">
+                <td>
+                    <input type="hidden" name="command" value="setLanguage"/>
+                    <input type="hidden" name="page" value="clientPage"/>
+                    <input type="submit" value="<fmt:message key="language"/>"/>
+                </td>
+                <td>
+                    <select name="chosenLanguage">
+                        <c:choose>
+                            <c:when test="${current == 'en_EN'}">
+                                <option value="en_EN"><fmt:message key="en"/></option>
+                                <option value="ru_RU"><fmt:message key="ru"/></option>
+                            </c:when>
+                            <c:otherwise>
+                                <option value="ru_RU"><fmt:message key="ru"/></option>
+                                <option value="en_EN"><fmt:message key="en"/></option>
+                            </c:otherwise>
+                        </c:choose>
+                    </select>
+                </td>
+            </form>
+        </tr>
+    </table>
+</div>
 </body>
 </html>

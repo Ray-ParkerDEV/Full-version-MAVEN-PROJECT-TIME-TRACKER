@@ -29,3 +29,8 @@ body {
     margin: 0;
     text-align: center
 }
+.buttonElement {
+    display: inline-block;
+    height: 20px;
+    width: 70px
+}

@@ -14,7 +14,7 @@ import commands.implementations.user.*;
 public enum CommandType {
 
     /*user commands*/
-    LOGIN, LOGOUT, REGISTRATION, GOTOREGISTRATION, UPDATECLIENT, BACK, DEFAULT,
+    LOGIN, LOGOUT, REGISTRATION, GOTOREGISTRATION, UPDATECLIENT, BACK, DEFAULT, SETLANGUAGE,
 
     /*admin commands*/
     CREATEACTIVITY, OVERVIEWCLIENT, BACKADMIN, ADDACTIVITY, REMOVEADMIN,
@@ -33,6 +33,8 @@ public enum CommandType {
         switch (this) {
             case LOGIN:
                 return new LoginCommand();
+            case SETLANGUAGE:
+                return new SetLanguageCommand();
             case LOGOUT:
                 return new LogoutCommand();
             case REGISTRATION:

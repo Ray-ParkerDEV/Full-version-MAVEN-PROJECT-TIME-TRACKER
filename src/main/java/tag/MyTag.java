@@ -11,8 +11,9 @@ import java.util.List;
 
 public class MyTag extends TagSupport {
     public static List<Activity> activityList = new ArrayList<>();
-    public int doStartTag() throws JspException{
-        String str = "Amount of activity =" + activityList.size();
+
+    public int doStartTag() throws JspException {
+        String str = "" + activityList.size();
         try {
             JspWriter out = pageContext.getOut();
             out.write(str);

@@ -12,10 +12,13 @@ public class Parameters {
     public static final String ADMIN_NAME = "adminName";
     public static final String USER_LIST = "userList";
     public static final String USER_ID = "userId";
+    public static final String PAGE = "page";
     public static final String USER_FIRST_NAME = "firstName";
+    public static final String CHOSENLANGUAGE = "chosenLanguage";
     public static final String USER_SUR_NAME = "surName";
     public static final String TRACKING_ID = "trackingId";
     public static final String TRACKING_LIST = "trackingList";
+    public static final String LANGUAGE = "language";
     public static final String USER_TYPE = "userType";
     public static final String ACTIVITY = "activity";
     public static final String ACTIVITY_LIST = "activityList";

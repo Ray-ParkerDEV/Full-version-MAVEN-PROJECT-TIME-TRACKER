@@ -17,7 +17,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class OverviewClientCommand implements BasicCommand {
-    private static final Logger logger = Logger.getLogger(CreateActivityCommand.class);
+    private static final Logger logger = Logger.getLogger(OverviewClientCommand.class);
 
     /**
      * This method describes overview user logic.

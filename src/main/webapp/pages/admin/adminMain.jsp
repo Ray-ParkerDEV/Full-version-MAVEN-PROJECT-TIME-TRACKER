@@ -3,35 +3,42 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="spec" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib uri="/WEB-INF/tlds/tag.tld" prefix="myTag" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="current" value="${sessionScope.language}"/>
+<c:if test="${not empty current}">
+    <fmt:setLocale value="${current}" scope="session"/>
+</c:if>
+<fmt:setBundle basename="bundle" scope="session"/>
+
 <html>
 <head>
-    <title>Admin page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset = UTF-8">
     <link rel="stylesheet" type="text/css" href="<spec:url value="/css/adminMain.css"/>"/>
-
+    <title>Admin page</title>
 </head>
 <body>
 <div class="wrapperWelcomeInfo">
     <div class="welcomeElement">
-        Administration service of TIMETRACKER.
-
-        Hello ADMIN, <c:out value="${sessionScope.adminName.firstName} ${sessionScope.adminName.surName}"/>!
+        <fmt:message key="welcome_admin"/>
+        <c:out value="${sessionScope.adminName.firstName} ${sessionScope.adminName.surName}"/>!
     </div>
 </div>
 <%--Table overview users activity--%>
 <div class="wrapperPageData">
     <fieldset>
-        <legend align="center">OVERVIEW USERS ACTIVITIES</legend>
+        <legend align="center"><fmt:message key="overview_activity_table"/></legend>
         <div class="activityInfoForm">
             <table>
-                <col width="200">
+                <col width="180">
                 <col width="100">
                 <col width="200">
                 <col width="230">
                 <tr>
-                    <th align="left">USERS</th>
-                    <th>ACTIVITIES</th>
-                    <th>REQUEST FROM CLIENT</th>
-                    <th align="left">NOTICE</th>
+                    <th align="left"><fmt:message key="USERS"/></th>
+                    <th><fmt:message key="ACTIVITIES"/></th>
+                    <th><fmt:message key="REQUEST_FROM_CLIENT"/></th>
+                    <th align="left"><fmt:message key="NOTICE"/></th>
                 </tr>
                 <c:forEach items="${sessionScope.userList}" var="user">
                     <c:if test="${user.userType.userType=='client'}">
@@ -45,7 +52,7 @@
                                     <div class="wrapperButtons">
                                         <input type="hidden" name="userId" value="${user.userId}"/>
                                         <input type="hidden" name="command" value="overviewClient"/>
-                                        <input class="buttonElement" type="submit" value="overview"
+                                        <input class="buttonElement" type="submit" value="<fmt:message key="overview"/>"
                                                style="height:20px; width:70px"/>
                                     </div>
                                 </form>
@@ -57,11 +64,11 @@
                                         <td>
                                             <c:set var="flag" value="false"/>
                                             <c:if test="${user.requestAdd=='true'}">
-                                                <button class="mockButton red">add new activity</button>
+                                                <button class="mockButton red"><fmt:message key="add_new_activity"/></button>
                                                 <c:set var="flag" value="true"/>
                                             </c:if>
                                             <c:if test="${flag == 'false'}">
-                                                <button class="mockButton blue">add new activity</button>
+                                                <button class="mockButton blue"><fmt:message key="add_new_activity"/></button>
                                             </c:if>
                                         </td>
                                         <td>
@@ -74,10 +81,10 @@
                                             </c:forEach>
                                             <c:choose>
                                                 <c:when test="${flag == 'true'}">
-                                                    <button class="mockButton red">remove finished activity</button>
+                                                    <button class="mockButton red"><fmt:message key="remove_finished_activity"/></button>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <button class="mockButton blue">remove finished activity</button>
+                                                    <button class="mockButton blue"><fmt:message key="remove_finished_activity"/></button>
                                                 </c:otherwise>
                                             </c:choose>
                                         </td>
@@ -94,10 +101,10 @@
                                 </c:forEach>
                                 <c:choose>
                                     <c:when test="${flag == 'true'}">
-                                        client waiting for response...
+                                        <fmt:message key="waiting"/>
                                     </c:when>
                                     <c:otherwise>
-                                        no request from client
+                                        <fmt:message key="no_request"/>
                                     </c:otherwise>
                                 </c:choose>
                             </td>
@@ -110,20 +117,20 @@
     <%--Table available activity--%>
     <div class="wrapperTableActivityAdmin">
         <fieldset>
-            <legend align="center">AVAILABLE ACTIVITIES</legend>
+            <legend align="center"><fmt:message key="AVAILABLE_ACTIVITIES"/></legend>
             <div class="activityInfoForm">
-                <table style=width:330px>
+                <table style=width:250px>
                     <col width="100">
                     <tr>
-                        <td width="350" align="left">
+                        <td width="250" align="left">
                             <form class="formElement" name="actionForm" method="POST"
                                   action="controller">
                                 <div class="wrapperButtons">
                                     <input type="hidden" name="command" value="createActivity"/>
-                                    <input class="buttonElement" type="submit" value="add new activity"
-                                           style="height:20px; width:110px"/>
+                                    <input class="buttonElement" type="submit" value="<fmt:message key="add_activity"/>"
+                                           style="height:20px; width:150px"/>
                                     <input class="inputElement" type="text" name="activityName" value=""
-                                           style="height:20px; width:220px"/>
+                                           style="height:20px; width:180px"/>
                                 </div>
                             </form>
                         </td>
@@ -140,13 +147,15 @@
                     <tr>
                         <td>
                             <div>
-                                </br>${operationMessage}
+                                <c:if test="${requestScope.operationMessage!= null}">
+                                    <fmt:message key="${requestScope.operationMessage}"/>
+                                </c:if>
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            Custom Tag: <myTag:getSizeActivityList/>
+                            <fmt:message key="tag"/><myTag:getSizeActivityList/>
                         </td>
                     </tr>
                 </table>
@@ -156,11 +165,39 @@
 </div>
 
 <!--LOGOUT-->
-<div class="logoutElement">
+<div class="logoutElement" style="position:fixed; right:230px; top:12px;">
     <form name="logout" method="POST" action="controller">
         <input type="hidden" name="command" value="logout"/>
-        <input type="submit" value="Log Out"/>
+        <input type="submit" value="<fmt:message key="logout"/>"/>
     </form>
+</div>
+<!--LANGUAGE-->
+<div class="languageElement" style="position:fixed; right:20px; top:10px;">
+    <table>
+        <tr>
+            <form class="formElement" name="actionForm" method="POST" action="controller">
+                <td>
+                    <input type="hidden" name="command" value="setLanguage"/>
+                    <input type="hidden" name="page" value="adminMainPage"/>
+                    <input type="submit" value="<fmt:message key="language"/>"/>
+                </td>
+                <td>
+                    <select name="chosenLanguage">
+                        <c:choose>
+                            <c:when test="${current == 'en_EN'}">
+                                <option value="en_EN"><fmt:message key="en"/></option>
+                                <option value="ru_RU"><fmt:message key="ru"/></option>
+                            </c:when>
+                            <c:otherwise>
+                                <option value="ru_RU"><fmt:message key="ru"/></option>
+                                <option value="en_EN"><fmt:message key="en"/></option>
+                            </c:otherwise>
+                        </c:choose>
+                    </select>
+                </td>
+            </form>
+        </tr>
+    </table>
 </div>
 </body>
 </html>
