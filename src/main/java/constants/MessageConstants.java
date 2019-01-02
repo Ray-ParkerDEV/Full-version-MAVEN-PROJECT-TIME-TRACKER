@@ -6,10 +6,10 @@ package constants;
  * Created by Yaroslav Bodyak on 11.12.2018.
  */
 public class MessageConstants {
-    public static final String WRONG_LOGIN_OR_PASSWORD = "Incorrect login or password.";
+    public static final String WRONG_LOGIN_OR_PASSWORD = "WRONG_LOGIN_OR_PASSWORD";
     public static final String SUCCESS_LOGIN = "Login operation has been executed successfully.";
     public static final String SUCCESS_LOGOUT = "Logout operation has been executed successfully";
-    public static final String SUCCESS_REGISTRATION = "Registration has been executed successfully.";
+    public static final String SUCCESS_REGISTRATION = "SUCCESS_REGISTRATION";
     public static final String SUCCESS_CREATION = "Creation has been executed successfully.";
     public static final String SUCCESS_OVERVIEW_CLIENT_COMMAND = "Overview client command executed successfully.";
     public static final String SUCCESS_SET_LANGUAGE = "Set up language command executed successfully.";
@@ -25,12 +25,12 @@ public class MessageConstants {
     public static final String CONNECTION_ERROR = "Connection object is null.";
     public static final String DATABASE_ACCESS_ERROR = "Database is not available.";
     public static final String EXECUTE_QUERY_ERROR = "An error was occurred while executing the query to the database.";
-    public static final String USER_EXISTS = "User with this login has already existed.";
+    public static final String USER_EXISTS = "USER_EXISTS";
     public static final String NULLPOINTEREXEPTIONS = "NULLPOINTEREXEPTIONS in update tracking method.";
     public static final String ACTIVITY_EXISTS = "ACTIVITY_EXISTS";
     public static final String ACTIVITY_HAS_BEEN_ADDED = "ACTIVITY_HAS_BEEN_ADDED";
     public static final String WAIT_FOR_ADMIN_RESPONSE = "Wait for admin response.";
-    public static final String EMPTY_FIELDS = "Attention! At least one of the fields is empty.";
+    public static final String EMPTY_FIELDS = "EMPTY_FIELDS";
     public static final String EMPTY_FIELDS_ACTIVITY = "EMPTY_FIELDS_ACTIVITY";
     public static final String COLUMN_IS_NOT_VALID = "The column label is not valid.";
 

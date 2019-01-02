@@ -36,12 +36,12 @@ public class RegistrationCommand implements BasicCommand {
             if (RequestParameterIdentifier.areFieldsFilled(request)) {
                 if (UserService.getInstance().isUniqueUser(user)) {
                     UserService.getInstance().registerUser(user);
-                    request.setAttribute(Parameters.SUCCESS_REGISTRATION, MessageConstants.SUCCESS_REGISTRATION);
+                    request.setAttribute(Parameters.OPERATION_MESSAGE, MessageConstants.SUCCESS_REGISTRATION);
                     page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.LOGIN_PAGE_PATH);
                     logger.info(MessageConstants.SUCCESS_REGISTRATION);
                     Controller.flag = true;
                 } else {
-                    request.setAttribute(Parameters.USER_UNIQUE_ERROR, MessageConstants.USER_EXISTS);
+                    request.setAttribute(Parameters.OPERATION_MESSAGE, MessageConstants.USER_EXISTS);
                     page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.REGISTRATION_PAGE_PATH);
                 }
             } else {

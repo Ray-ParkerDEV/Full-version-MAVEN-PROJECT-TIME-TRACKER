@@ -2,10 +2,17 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="spec" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="current" value="${sessionScope.language}"/>
+<c:if test="${not empty current}">
+    <fmt:setLocale value="${current}" scope="session"/>
+</c:if>
+<fmt:setBundle basename="bundle" scope="session"/>
 <html>
 <head>
-    <title>Clients account page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset = UTF-8">
     <link rel="stylesheet" type="text/css" href="<spec:url value="/css/clientMain.css"/>"/>
+    <title>Client account page</title>
     <%--<script type="text/javascript" src="/js/time.js"></script>--%>
 </head>
 <body>
@@ -20,15 +27,15 @@
 </div>
 <div class="wrapperPageData">
     <fieldset>
-        <legend align="center">YOUR ACTIVITIES TRACKING</legend>
+        <legend align="center"><fmt:message key="tracking_title"/></legend>
         <div class="activityInfoForm">
             <table>
                 <tr>
-                    <th align="left" width="320">ACTIVITIES</th>
-                    <th align="left" width="150">STATUS</th>
-                    <th>ACTION</th>
-                    <th align="left" width="100">TIME</th>
-                    <th align="left" width="300">NOTICE</th>
+                    <th align="left" width="320"><fmt:message key="ACTIVITIES"/></th>
+                    <th align="left" width="150"><fmt:message key="STATUS"/></th>
+                    <th><fmt:message key="ACTION"/></th>
+                    <th align="left" width="100"><fmt:message key="TIME"/></th>
+                    <th align="left" width="300"><fmt:message key="NOTICE"/></th>
                 </tr>
                 <c:forEach items="${sessionScope.trackingList}" var="tracking">
                     <c:set var="userId" value="${sessionScope.clientUser.userId}"/>
@@ -38,7 +45,7 @@
                             <c:out value="${tracking.activity.activityName}"/>
                         </td>
                         <td>
-                            <c:out value="${tracking.status}"/>
+                            <fmt:message key="${tracking.status}"/>
                         </td>
                         <td>
                             <table>
@@ -50,7 +57,7 @@
                                                 <input type="hidden" name="trackingId"
                                                        value="${tracking.trackingId}"/>
                                                 <input type="hidden" name="command" value="startTime"/>
-                                                <input class="buttonElement" type="submit" value="start"/>
+                                                <input class="buttonElement" type="submit" value="<fmt:message key="start"/>"/>
                                             </div>
                                         </form>
                                     </td>
@@ -61,7 +68,7 @@
                                                 <input type="hidden" name="trackingId"
                                                        value="${tracking.trackingId}"/>
                                                 <input type="hidden" name="command" value="stopTime"/>
-                                                <input class="buttonElement" type="submit" value="stop"/>
+                                                <input class="buttonElement" type="submit" value="<fmt:message key="stop"/>"/>
                                             </div>
                                         </form>
                                     </td>
@@ -72,7 +79,7 @@
                                                 <input type="hidden" name="trackingId"
                                                        value="${tracking.trackingId}"/>
                                                 <input type="hidden" name="command" value="finish"/>
-                                                <input class="buttonElement" type="submit" value="finish"/>
+                                                <input class="buttonElement" type="submit" value="<fmt:message key="finish"/>"/>
                                             </div>
                                         </form>
                                     </td>
@@ -84,7 +91,7 @@
                                                     <input type="hidden" name="trackingId"
                                                            value="${tracking.trackingId}"/>
                                                     <input type="hidden" name="command" value="remove"/>
-                                                    <input class="buttonElement" type="submit" value="remove"/>
+                                                    <input class="buttonElement" type="submit" value="<fmt:message key="remove"/>"/>
                                                 </div>
                                             </form>
                                         </c:if>
@@ -105,7 +112,7 @@
                         <td>
                             <c:set var="request" value="${tracking.userRequest}"/>
                             <c:if test="${request=='REMOVE'}">
-                                wait for admin approval...
+                                <fmt:message key="approval"/>
                             </c:if>
                         </td>
                         </tr>
@@ -119,13 +126,13 @@
                             <div class="wrapperButtons">
                                 <input type="hidden" name="userId" value="${sessionScope.clientUser.userId}"/>
                                 <input type="hidden" name="command" value="add"/>
-                                <input type="submit" value="add new activity" style="height:20px; width:110px"/>
+                                <input type="submit" value=" <fmt:message key="add_activity"/>" style="height:20px; width:150px"/>
                             </div>
                         </form>
                     </td>
                     <td>
-                        <c:if test="${sessionScope.overviewUser.requestAdd == 'true'}">
-                            wait for admin response...
+                        <c:if test="${sessionScope.clientUser.requestAdd == 'true'}">
+                            <fmt:message key="wait_admin"/>
                         </c:if>
                     </td>
                 </tr>

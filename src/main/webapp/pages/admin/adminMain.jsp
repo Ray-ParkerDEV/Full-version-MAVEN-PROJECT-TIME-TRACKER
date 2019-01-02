@@ -21,7 +21,7 @@
 <div class="wrapperWelcomeInfo">
     <div class="welcomeElement">
         <fmt:message key="welcome_admin"/>
-        <c:out value="${sessionScope.adminName.firstName} ${sessionScope.adminName.surName}"/>!
+        <c:out value="${sessionScope.adminUser.firstName} ${sessionScope.adminUser.surName}"/>!
     </div>
 </div>
 <%--Table overview users activity--%>

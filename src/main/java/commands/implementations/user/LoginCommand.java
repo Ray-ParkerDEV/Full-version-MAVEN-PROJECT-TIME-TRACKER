@@ -44,6 +44,9 @@ public class LoginCommand implements BasicCommand {
         String page = null;
         User user = RequestParameterIdentifier.getUserLoginPasswordFromRequest(request);
         HttpSession session = request.getSession(false);
+//        String language = session.getAttribute("language").toString();
+//        session.invalidate();
+//        session = request.getSession(true);
         try {
             if (UserService.getInstance().checkUserAuthorization(user.getLogin(), user.getPassword())) {
                 List<Activity> activityAdminList = ActivityService.getInstance().getAllActivities();
@@ -53,11 +56,13 @@ public class LoginCommand implements BasicCommand {
                 UserService.getInstance().setAttributeToSession(activityAdminList, trackingList, userList, session);
                 switch (user.getUserType().getUserType()) {
                     case "admin":
-                        UserService.getInstance().setAttributeAdminToSession(user, session);
+                        User adminUser = user;
+                        UserService.getInstance().setAttributeAdminToSession(adminUser, session);
                         page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH);
                         break;
                     case "client":
-                        UserService.getInstance().setAttributeClientToSession(user, session);
+                        User clientUser = user;
+                        UserService.getInstance().setAttributeClientToSession(clientUser, session);
                         page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.CLIENT_PAGE_PATH);
                         break;
                     default:

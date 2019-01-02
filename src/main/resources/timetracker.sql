@@ -56,13 +56,13 @@ CREATE TABLE tracking (
     user_request_id INT,
     time VARCHAR(20),
     time_start BIGINT(64),
-	time_stop BIGINT(64),
+	  time_stop BIGINT(64),
     difference_time BIGINT(64),
     time_switch boolean,
     FOREIGN KEY (user_id) REFERENCES user (user_id),
     FOREIGN KEY (activity_id) REFERENCES activity (activity_id),
-	FOREIGN KEY (status_id) REFERENCES status (status_id),
-	FOREIGN KEY (user_request_id) REFERENCES user_request (user_request_id)
+	  FOREIGN KEY (status_id) REFERENCES status (status_id),
+	  FOREIGN KEY (user_request_id) REFERENCES user_request (user_request_id)
 );
 INSERT INTO tracking (user_id,activity_id,status_id,user_request_id,
     time, time_start, time_stop, difference_time)

@@ -23,8 +23,9 @@ body {
 }
 .operationMessageElement {
     position: fixed;
-    left: 10px; bottom: 5px;
-    color: firebrick;
+    left: 100px; bottom: 1000px;
+    color: black;
+    display: inline-block;
 }
 .registrationPageMessage {
     position: fixed;

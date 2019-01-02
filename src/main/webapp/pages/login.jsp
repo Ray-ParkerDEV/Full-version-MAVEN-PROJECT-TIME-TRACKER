@@ -29,10 +29,13 @@
             <input type="submit" value="<fmt:message key="log_in"/>"/>
             <input type="button" value="<fmt:message key="registration"/>" onclick='location.href="controller?command=gotoregistration"'/>
         </fieldset>
-        <div class="errorMessage">
-            </br>${errorLoginOrPassword}
-        </div>
+        <%--${pageContext.session.setAttribute("backpage", "login")}--%>
     </form>
+    <div class="errorMessage">
+        <c:if test="${requestScope.errorLoginOrPassword!= null}">
+            <fmt:message key="${requestScope.errorLoginOrPassword}"/>
+        </c:if>
+    </div>
 </div>
 
 <!--LANGUAGE-->
@@ -41,6 +44,7 @@
         <tr>
             <form class="formElement" name="actionForm" method="POST" action="controller">
                 <td>
+                    <%--${pageContext.session.setAttribute("backpage", "login")}--%>
                     <input type="hidden" name="command" value="setLanguage"/>
                     <input type="hidden" name="page" value="loginPage"/>
                     <input type="submit" value="<fmt:message key="language"/>"/>

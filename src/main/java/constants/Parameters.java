@@ -9,7 +9,7 @@ package constants;
 public class Parameters {
     public static final String USER = "user";
     public static final String USERNAME = "userName";
-    public static final String ADMIN_NAME = "adminName";
+    public static final String ADMIN_USER = "adminUser";
     public static final String USER_LIST = "userList";
     public static final String USER_ID = "userId";
     public static final String PAGE = "page";

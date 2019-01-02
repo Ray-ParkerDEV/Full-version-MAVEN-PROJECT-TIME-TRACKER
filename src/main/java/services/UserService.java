@@ -144,8 +144,8 @@ public class UserService {
      *
      * @param session - an object of the current session.
      */
-    public void setAttributeAdminToSession(User adminName, HttpSession session) {
-        session.setAttribute(Parameters.ADMIN_NAME, adminName);
+    public void setAttributeAdminToSession(User adminUser, HttpSession session) {
+        session.setAttribute(Parameters.ADMIN_USER, adminUser);
     }
 
     /**

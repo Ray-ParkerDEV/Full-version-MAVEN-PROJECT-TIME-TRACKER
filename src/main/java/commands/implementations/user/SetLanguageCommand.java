@@ -26,8 +26,8 @@ public class SetLanguageCommand implements BasicCommand {
         String page = null;
         HttpSession session = request.getSession(false);
         String currentPage = request.getParameter(Parameters.PAGE);
-        String language1  = request.getParameter(Parameters.CHOSENLANGUAGE);
-        session.setAttribute(Parameters.LANGUAGE, language1);
+        String language  = request.getParameter(Parameters.CHOSENLANGUAGE);
+        session.setAttribute(Parameters.LANGUAGE, language);
         switch (currentPage) {
             case ("loginPage"): {
                 page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.LOGIN_PAGE_PATH);
@@ -43,6 +43,10 @@ public class SetLanguageCommand implements BasicCommand {
             }
             case ("clientPage"): {
                 page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.CLIENT_PAGE_PATH);
+                break;
+            }
+            case ("registerPage"): {
+                page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.REGISTRATION_PAGE_PATH);
                 break;
             }
         }
