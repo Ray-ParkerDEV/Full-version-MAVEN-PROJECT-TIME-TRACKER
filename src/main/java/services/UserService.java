@@ -1,24 +1,16 @@
 package services;
 
-import connection.ConnectionPool;
 import connection.TransactionHandler;
-import constants.MessageConstants;
 import constants.Parameters;
-import constants.QueriesDB;
 import dao.daofactory.DaoFactory;
 import dao.interfacesdao.UserDAO;
 import entities.Activity;
 import entities.Tracking;
 import entities.User;
-import exceptions.DAOException;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -180,13 +172,14 @@ public class UserService {
         session.setAttribute(Parameters.TRACKING_LIST, trackingList);
         session.setAttribute(Parameters.USER_LIST, userList);
     }
+
     /**
      * An additional overloaded method that provides work with some attributes of the object of http session.
      * This method sets user's parameters to the session.
      *
      * @param session - an object of the current session.
      */
-    public void setAttributeToSession( List<Tracking> trackingList,
+    public void setAttributeToSession(List<Tracking> trackingList,
                                       List<User> userList, HttpSession session) {
         session.setAttribute(Parameters.TRACKING_LIST, trackingList);
         session.setAttribute(Parameters.USER_LIST, userList);
@@ -203,17 +196,13 @@ public class UserService {
     }
 
     /**
-     * This method receives all client names from database. This method implements work with transaction support.
+     * An additional overloaded method that provides work with some attributes of the object of http session.
+     * This method sets user's parameters to the session.
      *
-     * @return - a list of activity names from the database.
-     * @throws SQLException
+     * @param session - an object of the current session.
      */
-    public List<String> getAllClientNames() throws SQLException {
-        final List<String>[] clientNameList = new List[1];
-        TransactionHandler.runInTransaction(connection ->
-                clientNameList[0] = getAllClientNames(connection)
-        );
-        return clientNameList[0];
+    public void setAttributeToSession(String numbersPages, HttpSession session) {
+        session.setAttribute(Parameters.NUMBERSPAGES, numbersPages);
     }
 
     /**
@@ -230,68 +219,26 @@ public class UserService {
         return userList[0];
     }
 
-    /**
-     * This method reads and returns users names from database table.
-     *
-     * @param connection - the current connection to a database. Transmitted from the service module to provide transactions.
-     * @return - list of all entities from a database table.
-     */
-    public List<String> getAllUsersNames(Connection connection) throws DAOException {
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        List<User> users = new ArrayList<>();
-        List<String> userNames;
-        try {
-            statement = connection.prepareStatement(QueriesDB.GET_ALL_USERS);
-            resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                users.add(userDAO.createUser(resultSet, new User()));
-            }
-            userNames = usersArrayGetNames(users);
-        } catch (SQLException e) {
-            logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
-            throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
-        } finally {
-            ConnectionPool.closeResultSet(resultSet);
-            ConnectionPool.closeStatement(statement);
-        }
-        return userNames;
-    }
+//    /**
+//     * This method divides an array of clients per each page.
+//     *
+//     * @return - a two dimensional array of users for pagination.
+//     */
+//    public List<User>[] getClientListPage(List<User> userList) {
+//        List<User>[] getClientListPage = new List[1];
+//        int numbersPages = userList.size() / 5 + userList.size() % 5 == 0 ? 0 : 1;
+//        return getClientListPage;
+//    }
 
     /**
-     * This method reads and returns clients names from database table.
+     * This method divides an array of clients per each page.
      *
-     * @param connection - the current connection to a database. Transmitted from the service module to provide transactions.
-     * @return - list of all entities from a database table.
+     * @return - a amount of pages for pagination.
      */
-    public List<String> getAllClientNames(Connection connection) throws DAOException {
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        List<User> clients = new ArrayList<>();
-        List<String> userNames;
-        try {
-            statement = connection.prepareStatement(QueriesDB.GET_ALL_CLIENTS);
-            resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                clients.add(userDAO.createUser(resultSet, new User()));
-            }
-            userNames = usersArrayGetNames(clients);
-        } catch (SQLException e) {
-            logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
-            throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
-        } finally {
-            ConnectionPool.closeResultSet(resultSet);
-            ConnectionPool.closeStatement(statement);
-        }
-        return userNames;
+    public int getNumbersPages(List<User> userList) {
+        int numbersPages = userList.size() / 5 + userList.size() % 5 == 0 ? 0 : 1;
+        return numbersPages;
     }
 
-    List<String> usersArrayGetNames(List<User> activities) {
-        List<String> clientNames = new ArrayList<>();
-        for (int i = 0; i < activities.size(); i++) {
-            clientNames.add(activities.get(i).getFirstName() + " " + activities.get(i).getSurName());
-        }
-        return clientNames;
-    }
 
 }

@@ -5,10 +5,13 @@ import constants.MessageConstants;
 import constants.Parameters;
 import constants.PathPageConstants;
 import entities.Activity;
+import entities.Tracking;
+import entities.User;
 import manager.ConfigManagerPages;
 import org.apache.log4j.Logger;
 import services.ActivityService;
 import services.AdminService;
+import services.TrackingService;
 import services.UserService;
 import tag.MyTag;
 
@@ -43,15 +46,25 @@ public class CreateActivityCommand implements BasicCommand {
                     ActivityService.getInstance().createActivityDB(activity);
                     List<Activity> activityAdminList = ActivityService.getInstance().getAllActivities();
                     MyTag.activityList = activityAdminList;
-                    UserService.getInstance().setAttributeToSession(activityAdminList, session);
+                    List<Tracking> trackingList = TrackingService.getInstance().getAllTracking();
+                    List<User> userList = UserService.getInstance().getAllUser();
+                    UserService.getInstance().setAttributeToSession(activityAdminList, trackingList, userList, session);
                     page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH);
                     logger.info(MessageConstants.SUCCESS_CREATION);
                 } else {
                     request.setAttribute(Parameters.OPERATION_MESSAGE, MessageConstants.ACTIVITY_EXISTS);
+                    List<Activity> activityAdminList = ActivityService.getInstance().getAllActivities();
+                    List<Tracking> trackingList = TrackingService.getInstance().getAllTracking();
+                    List<User> userList = UserService.getInstance().getAllUser();
+                    UserService.getInstance().setAttributeToSession(activityAdminList, trackingList, userList, session);
                     page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH);
                 }
             } else {
                 request.setAttribute(Parameters.OPERATION_MESSAGE, MessageConstants.EMPTY_FIELDS_ACTIVITY);
+                List<Activity> activityAdminList = ActivityService.getInstance().getAllActivities();
+                List<Tracking> trackingList = TrackingService.getInstance().getAllTracking();
+                List<User> userList = UserService.getInstance().getAllUser();
+                UserService.getInstance().setAttributeToSession(activityAdminList, trackingList, userList, session);
                 page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH);
             }
         } catch (SQLException e) {

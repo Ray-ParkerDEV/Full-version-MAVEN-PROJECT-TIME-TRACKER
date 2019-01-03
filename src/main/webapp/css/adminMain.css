@@ -33,6 +33,7 @@ fieldset {
     left: 850px;
     top: 0px;
 }
+
 .wrapperTableActivityAdmin {
     position: absolute;
     left: 870px;
@@ -71,6 +72,7 @@ fieldset {
     right: 250px;
     top: 12px;
 }
+
 .languageElement {
     position: fixed;
     right: 20px;
@@ -134,6 +136,31 @@ fieldset {
 .red {
     background-color: #f44336;
 }
+
 .blue {
     background-color: #008CBA;
+}
+
+.pagination {
+    display: inline-block;
+}
+
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+    border: 1px solid #ddd;
+    margin: 0 4px;
+}
+
+.pagination a.active {
+    background-color: #008CBA;
+    color: white;
+    border: 1px solid #4CAF50;
+}
+
+.pagination a:hover:not(.active) {
+    background-color: #ddd;
 }

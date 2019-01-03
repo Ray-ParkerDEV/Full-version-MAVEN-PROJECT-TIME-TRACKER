@@ -18,7 +18,7 @@
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
-    <!--Filter descripption startTime-->
+    <!--Filter description startTime-->
     <filter>
         <filter-name>EncodingFilter</filter-name>
         <filter-class>filters.EncodingFilter</filter-class>

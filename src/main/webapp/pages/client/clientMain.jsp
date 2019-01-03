@@ -57,7 +57,8 @@
                                                 <input type="hidden" name="trackingId"
                                                        value="${tracking.trackingId}"/>
                                                 <input type="hidden" name="command" value="startTime"/>
-                                                <input class="buttonElement" type="submit" value="<fmt:message key="start"/>"/>
+                                                <input class="buttonElement" type="submit"
+                                                       value="<fmt:message key="start"/>"/>
                                             </div>
                                         </form>
                                     </td>
@@ -68,7 +69,8 @@
                                                 <input type="hidden" name="trackingId"
                                                        value="${tracking.trackingId}"/>
                                                 <input type="hidden" name="command" value="stopTime"/>
-                                                <input class="buttonElement" type="submit" value="<fmt:message key="stop"/>"/>
+                                                <input class="buttonElement" type="submit"
+                                                       value="<fmt:message key="stop"/>"/>
                                             </div>
                                         </form>
                                     </td>
@@ -79,7 +81,8 @@
                                                 <input type="hidden" name="trackingId"
                                                        value="${tracking.trackingId}"/>
                                                 <input type="hidden" name="command" value="finish"/>
-                                                <input class="buttonElement" type="submit" value="<fmt:message key="finish"/>"/>
+                                                <input class="buttonElement" type="submit"
+                                                       value="<fmt:message key="finish"/>"/>
                                             </div>
                                         </form>
                                     </td>
@@ -91,7 +94,8 @@
                                                     <input type="hidden" name="trackingId"
                                                            value="${tracking.trackingId}"/>
                                                     <input type="hidden" name="command" value="remove"/>
-                                                    <input class="buttonElement" type="submit" value="<fmt:message key="remove"/>"/>
+                                                    <input class="buttonElement" type="submit"
+                                                           value="<fmt:message key="remove"/>"/>
                                                 </div>
                                             </form>
                                         </c:if>
@@ -100,14 +104,14 @@
                             </table>
                         </td>
                         <td>
-                            <%--<c:choose>--%>
+                                <%--<c:choose>--%>
                                 <%--<c:when test="${tracking.timeSwitch == 'true'}">--%>
-                                    <%--<label id="hours"></label>:<label id="minutes"></label>:<label id="seconds"></label>--%>
+                                <%--<label id="hours"></label>:<label id="minutes"></label>:<label id="seconds"></label>--%>
                                 <%--</c:when>--%>
                                 <%--<c:otherwise>--%>
-                                    <c:out value="${tracking.elapsedTime}"/>
+                            <c:out value="${tracking.elapsedTime}"/>
                                 <%--</c:otherwise>--%>
-                            <%--</c:choose>--%>
+                                <%--</c:choose>--%>
                         </td>
                         <td>
                             <c:set var="request" value="${tracking.userRequest}"/>
@@ -126,12 +130,20 @@
                             <div class="wrapperButtons">
                                 <input type="hidden" name="userId" value="${sessionScope.clientUser.userId}"/>
                                 <input type="hidden" name="command" value="add"/>
-                                <input type="submit" value=" <fmt:message key="add_activity"/>" style="height:20px; width:150px"/>
+                                <input type="submit" value=" <fmt:message key="add_activity"/>"
+                                       style="height:20px; width:150px"/>
                             </div>
                         </form>
                     </td>
                     <td>
-                        <c:if test="${sessionScope.clientUser.requestAdd == 'true'}">
+                        <c:forEach items="${sessionScope.trackingList}" var="tracking">
+                            <c:set var="flag" value="false"/>
+                            <c:if test="${tracking.user.userId == sessionScope.clientUser.userId &&
+                            tracking.user.requestAdd == 'true'}">
+                                <c:set var="flag" value="true"/>
+                            </c:if>
+                        </c:forEach>
+                        <c:if test="${flag == 'true'}">
                             <fmt:message key="wait_admin"/>
                         </c:if>
                     </td>

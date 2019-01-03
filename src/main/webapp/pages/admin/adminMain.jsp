@@ -74,7 +74,7 @@
                                         <td>
                                             <c:set var="flag" value="false"/>
                                             <c:forEach items="${sessionScope.trackingList}" var="tracking">
-                                                <c:if test="${tracking.user.surName==user.surName &&
+                                                <c:if test="${tracking.user.userId==user.userId &&
                                                  tracking.userRequest == 'REMOVE'}">
                                                     <c:set var="flag" value="true"/>
                                                 </c:if>
@@ -111,6 +111,28 @@
                         </tr>
                     </c:if>
                 </c:forEach>
+            </table>
+            <table align="center">
+                <tr >
+                    <td >
+                        <div class="pagination"  >
+                            <c:set var="count" value="1"/>
+                            <c:forEach items="${sessionScope.numbersPages}" var="page">
+                                <c:if test="${page>1}">
+
+                                </c:if>
+                            </c:forEach>
+                            <a href="#">&laquo;</a>
+                            <a href="Controller?pageNumber=login">1</a>
+                            <a href="#" class="active">2</a>
+                            <a href="#">3</a>
+                            <a href="#">4</a>
+                            <a href="#">5</a>
+                            <a href="#">6</a>
+                            <a href="#">&raquo;</a>
+                        </div>
+                    </td>
+                </tr>
             </table>
         </div>
     </fieldset>

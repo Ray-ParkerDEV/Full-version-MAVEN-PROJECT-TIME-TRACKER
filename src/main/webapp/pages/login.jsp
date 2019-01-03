@@ -8,6 +8,9 @@
 <c:if test="${not empty current}">
     <fmt:setLocale value="${current}" scope="session"/>
 </c:if>
+<%--<c:if test="${current== null}">--%>
+    <%--<fmt:setLocale value="en_US" scope="session"/>--%>
+<%--</c:if>--%>
 <fmt:setBundle basename="bundle" scope="session"/>
 
 <html>
@@ -25,9 +28,11 @@
             </legend>
             <input type="hidden" name="command" value="login"/>
             <fmt:message key="login"/><br/><input class="inputElement" type="text" name="login" value=""/><br/>
-            <fmt:message key="password"/><br/><input class="inputElement" type="password" name="password" value=""/><br/><br/>
+            <fmt:message key="password"/><br/><input class="inputElement" type="password" name="password"
+                                                     value=""/><br/><br/>
             <input type="submit" value="<fmt:message key="log_in"/>"/>
-            <input type="button" value="<fmt:message key="registration"/>" onclick='location.href="controller?command=gotoregistration"'/>
+            <input type="button" value="<fmt:message key="registration"/>"
+                   onclick='location.href="controller?command=gotoregistration"'/>
         </fieldset>
         <%--${pageContext.session.setAttribute("backpage", "login")}--%>
     </form>

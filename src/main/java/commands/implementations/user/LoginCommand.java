@@ -52,6 +52,8 @@ public class LoginCommand implements BasicCommand {
                 List<Activity> activityAdminList = ActivityService.getInstance().getAllActivities();
                 List<Tracking> trackingList = TrackingService.getInstance().getAllTracking();
                 List<User> userList = UserService.getInstance().getAllUser();
+                String  numbersPages = String.valueOf(UserService.getInstance().getNumbersPages(userList));
+                UserService.getInstance().setAttributeToSession(numbersPages, session);
                 user = UserService.getInstance().getUserByLogin(user.getLogin());
                 UserService.getInstance().setAttributeToSession(activityAdminList, trackingList, userList, session);
                 switch (user.getUserType().getUserType()) {

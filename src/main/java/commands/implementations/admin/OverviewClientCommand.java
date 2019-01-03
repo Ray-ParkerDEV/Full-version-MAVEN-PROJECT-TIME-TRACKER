@@ -4,10 +4,12 @@ import commands.BasicCommand;
 import constants.MessageConstants;
 import constants.Parameters;
 import constants.PathPageConstants;
+import entities.Activity;
 import entities.Tracking;
 import entities.User;
 import manager.ConfigManagerPages;
 import org.apache.log4j.Logger;
+import services.ActivityService;
 import services.TrackingService;
 import services.UserService;
 
@@ -36,7 +38,9 @@ public class OverviewClientCommand implements BasicCommand {
             User overviewUser = UserService.getInstance().getUserById(overviewUserId);
             UserService.getInstance().setAttributeOverviewUserToSession(overviewUser, session);
             List<Tracking> trackingList = TrackingService.getInstance().getAllTracking();
-            TrackingService.getInstance().setAttributeTrackingListToSession(trackingList, session);
+            List<Activity> activityAdminList = ActivityService.getInstance().getAllActivities();
+            List<User> userList = UserService.getInstance().getAllUser();
+            UserService.getInstance().setAttributeToSession(activityAdminList, trackingList, userList, session);
             page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH_CLIENT_OVERVIEW);
             logger.info(MessageConstants.SUCCESS_OVERVIEW_CLIENT_COMMAND);
         } catch (SQLException e) {
