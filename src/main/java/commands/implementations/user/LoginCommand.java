@@ -1,6 +1,7 @@
 package commands.implementations.user;
 
 import commands.BasicCommand;
+import commands.implementations.admin.ChosePageCommand;
 import constants.MessageConstants;
 import constants.Parameters;
 import constants.PathPageConstants;
@@ -52,8 +53,12 @@ public class LoginCommand implements BasicCommand {
                 List<Activity> activityAdminList = ActivityService.getInstance().getAllActivities();
                 List<Tracking> trackingList = TrackingService.getInstance().getAllTracking();
                 List<User> userList = UserService.getInstance().getAllUser();
-                String  numbersPages = String.valueOf(UserService.getInstance().getNumbersPages(userList));
-                UserService.getInstance().setAttributeToSession(numbersPages, session);
+                int itemsPerPage = ChosePageCommand.itemsPerPage;
+                List<String> numbersPages = UserService.getInstance().getNumbersPages(userList, itemsPerPage);
+                String lastPage = String.valueOf(numbersPages.size());
+                String currentPage = "1";
+                UserService.getInstance().setPaginationAttributeToSession(numbersPages, lastPage, currentPage,
+                        itemsPerPage, session);
                 user = UserService.getInstance().getUserByLogin(user.getLogin());
                 UserService.getInstance().setAttributeToSession(activityAdminList, trackingList, userList, session);
                 switch (user.getUserType().getUserType()) {

@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -191,7 +192,7 @@ public class UserService {
      *
      * @param session - an object of the current session.
      */
-    public void setAttributeToSession(List<Activity> activityAdminList, HttpSession session) {
+    public void setactivityAdminListToSession(List<Activity> activityAdminList, HttpSession session) {
         session.setAttribute(Parameters.ACTIVITY_ADMIN_LIST, activityAdminList);
     }
 
@@ -201,8 +202,22 @@ public class UserService {
      *
      * @param session - an object of the current session.
      */
-    public void setAttributeToSession(String numbersPages, HttpSession session) {
+    public void setPaginationAttributeToSession(List<String> numbersPages, String lastPage, String currentPage,
+                                                int itemsPerPage, HttpSession session) {
         session.setAttribute(Parameters.NUMBERSPAGES, numbersPages);
+        session.setAttribute(Parameters.LASTPAGE, lastPage);
+        session.setAttribute(Parameters.CURRENTPAGE, currentPage);
+        session.setAttribute(Parameters.ITEMSPERPAGE, itemsPerPage);
+    }
+
+    /**
+     * An additional overloaded method that provides work with some attributes of the object of http session.
+     * This method sets user's parameters to the session.
+     *
+     * @param session - an object of the current session.
+     */
+    public void setCurrentPageToSession(String currentPage, HttpSession session) {
+        session.setAttribute(Parameters.CURRENTPAGE, currentPage);
     }
 
     /**
@@ -219,26 +234,20 @@ public class UserService {
         return userList[0];
     }
 
-//    /**
-//     * This method divides an array of clients per each page.
-//     *
-//     * @return - a two dimensional array of users for pagination.
-//     */
-//    public List<User>[] getClientListPage(List<User> userList) {
-//        List<User>[] getClientListPage = new List[1];
-//        int numbersPages = userList.size() / 5 + userList.size() % 5 == 0 ? 0 : 1;
-//        return getClientListPage;
-//    }
-
     /**
      * This method divides an array of clients per each page.
      *
      * @return - a amount of pages for pagination.
      */
-    public int getNumbersPages(List<User> userList) {
-        int numbersPages = userList.size() / 5 + userList.size() % 5 == 0 ? 0 : 1;
-        return numbersPages;
+    public List<String> getNumbersPages(List<User> userList, int itemsPerPage) {
+        List<String> pagesList = new ArrayList<>();
+        int fullPage = (userList.size()-1) / itemsPerPage; // -1 admin
+        int partPage = (userList.size()-1) % itemsPerPage == 0 ? 0 : 1; // -1 admin
+        int numbersPages = fullPage + partPage;
+        for (int i = 1; i <= numbersPages; i++) {
+            pagesList.add(String.valueOf(i));
+        }
+        return pagesList;
     }
-
 
 }

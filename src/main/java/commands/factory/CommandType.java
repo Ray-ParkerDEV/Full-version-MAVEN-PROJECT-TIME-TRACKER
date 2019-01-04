@@ -17,7 +17,7 @@ public enum CommandType {
     LOGIN, LOGOUT, REGISTRATION, GOTOREGISTRATION, UPDATECLIENT, BACK, DEFAULT, SETLANGUAGE,
 
     /*admin commands*/
-    CREATEACTIVITY, OVERVIEWCLIENT, BACKADMIN, ADDACTIVITY, REMOVEADMIN,
+    CREATEACTIVITY, OVERVIEWCLIENT, BACKADMIN, ADDACTIVITY, REMOVEADMIN, CHOSEPAGE,
 
     /*client commands*/
     STARTTIME, STOPTIME, FINISH, REMOVE, ADD;
@@ -61,6 +61,8 @@ public enum CommandType {
                 return new StopTimeCommand();
             case FINISH:
                 return new FinishCommand();
+            case CHOSEPAGE:
+                return new ChosePageCommand();
             case REMOVE:
                 return new RemoveCommand();
             case ADD:

@@ -10,13 +10,13 @@ public class Parameters {
     public static final String USER = "user";
     public static final String USERNAME = "userName";
     public static final String ADMIN_USER = "adminUser";
-    public static final String NUMBERSPAGES = "numberSPages";
+    public static final String NUMBERSPAGES = "numbersPages";
     public static final String USER_LIST = "userList";
     public static final String USER_ID = "userId";
     public static final String PAGE = "page";
-    public static final String USER_FIRST_NAME = "firstName";
+    public static final String CURRENTPAGE = "currentPage";
     public static final String CHOSENLANGUAGE = "chosenLanguage";
-    public static final String USER_SUR_NAME = "surName";
+    public static final String ITEMSPERPAGE = "itemsPerPage";
     public static final String TRACKING_ID = "trackingId";
     public static final String TRACKING_LIST = "trackingList";
     public static final String LANGUAGE = "language";
@@ -29,7 +29,7 @@ public class Parameters {
     public static final String ACTIVITY_ID = "activityId";
     public static final String COMMAND = "command";
     public static final String LOGIN = "login";
-    public static final String STATUS = "status";
+    public static final String LASTPAGE = "lastPage";
     public static final String USER_REQUEST_ID = "user_request_id";
     public static final String STATUS_ID = "statusId";
     public static final String PASSWORD = "password";

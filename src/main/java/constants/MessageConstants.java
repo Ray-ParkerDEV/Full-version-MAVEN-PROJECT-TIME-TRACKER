@@ -14,12 +14,12 @@ public class MessageConstants {
     public static final String SUCCESS_OVERVIEW_CLIENT_COMMAND = "Overview client command executed successfully.";
     public static final String SUCCESS_SET_LANGUAGE = "Set up language command executed successfully.";
     public static final String SUCCESS_ADDING_ACTIVITY = "Adding activity to user has been executed successfully.";
-    public static final String SUCCESS_ADD_REQUEST = "Adding request has been executed successfully..";
+    public static final String SUCCESS_ADD_REQUEST = "Adding request has been executed successfully.";
     public static final String PAGE_NOT_FOUND = "Page not found. Business logic error was occurred.";
     public static final String WRONG_COMMAND = "An invalid command was sent to the servlet.";
     public static final String TRANSACTION_SUCCEEDED = "Transaction succeeded.";
     public static final String TRANSACTION_FAILED = "Transaction failed.";
-    public static final String CLASS_FOR_NAME_ERROR = "Description according to Class.forName() was not found.";
+    public static final String SUCCESS_CHOOSING_PAGE = "Next page choosing has been executed successfully.";
     public static final String STATEMENT_ERROR = "Statement object is null.";
     public static final String RESULTSET_ERROR = "ResultSet object is empty.";
     public static final String CONNECTION_ERROR = "Connection object is null.";

@@ -40,96 +40,119 @@
                     <th><fmt:message key="REQUEST_FROM_CLIENT"/></th>
                     <th align="left"><fmt:message key="NOTICE"/></th>
                 </tr>
+                <c:set var="countPage" value="${1}" scope="page"/>
+                <c:set var="countItem" value="${0}" scope="page"/>
                 <c:forEach items="${sessionScope.userList}" var="user">
                     <c:if test="${user.userType.userType=='client'}">
-                        <tr>
-                            <td>
-                                <c:out value="${user.firstName} ${user.surName}"/>
-                            </td>
-                            <td>
-                                <form class="formElement" name="actionForm" method="POST"
-                                      action="controller">
-                                    <div class="wrapperButtons">
-                                        <input type="hidden" name="userId" value="${user.userId}"/>
-                                        <input type="hidden" name="command" value="overviewClient"/>
-                                        <input class="buttonElement" type="submit" value="<fmt:message key="overview"/>"
-                                               style="height:20px; width:70px"/>
-                                    </div>
-                                </form>
-                            </td>
+                        <%--<c:set var="countItem" value="${countItem + 1}"/>--%>
+                        <%--<c:if test="${countItem%sessionScope.itemsPerPage==0}">--%>
+                            <%--<c:set var="countPage" value="${countPage + 1}"/>--%>
+                        <%--</c:if>--%>
+                        <c:if test="${countPage == sessionScope.currentPage}">
+                            <tr>
+                                <td>
+                                    <c:out value="${user.firstName} ${user.surName}"/>
+                                </td>
+                                <td>
+                                    <form class="formElement" name="actionForm" method="POST"
+                                          action="controller">
+                                        <div class="wrapperButtons">
+                                            <input type="hidden" name="userId" value="${user.userId}"/>
+                                            <input type="hidden" name="command" value="overviewClient"/>
+                                            <input class="buttonElement" type="submit"
+                                                   value="<fmt:message key="overview"/>"
+                                                   style="height:20px; width:70px"/>
+                                        </div>
+                                    </form>
+                                </td>
 
-                            <td>
-                                <table>
-                                    <tr>
-                                        <td>
-                                            <c:set var="flag" value="false"/>
-                                            <c:if test="${user.requestAdd=='true'}">
-                                                <button class="mockButton red"><fmt:message key="add_new_activity"/></button>
-                                                <c:set var="flag" value="true"/>
-                                            </c:if>
-                                            <c:if test="${flag == 'false'}">
-                                                <button class="mockButton blue"><fmt:message key="add_new_activity"/></button>
-                                            </c:if>
-                                        </td>
-                                        <td>
-                                            <c:set var="flag" value="false"/>
-                                            <c:forEach items="${sessionScope.trackingList}" var="tracking">
-                                                <c:if test="${tracking.user.userId==user.userId &&
-                                                 tracking.userRequest == 'REMOVE'}">
+                                <td>
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <c:set var="flag" value="false"/>
+                                                <c:if test="${user.requestAdd=='true'}">
+                                                    <button class="mockButton red"><fmt:message
+                                                            key="add_new_activity"/></button>
                                                     <c:set var="flag" value="true"/>
                                                 </c:if>
-                                            </c:forEach>
-                                            <c:choose>
-                                                <c:when test="${flag == 'true'}">
-                                                    <button class="mockButton red"><fmt:message key="remove_finished_activity"/></button>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <button class="mockButton blue"><fmt:message key="remove_finished_activity"/></button>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                            <td>
-                                <c:set var="flag" value="false"/>
-                                <c:forEach items="${sessionScope.trackingList}" var="tracking">
-                                    <c:if test="${tracking.user.userId==user.userId && (tracking.userRequest == 'REMOVE'||
+                                                <c:if test="${flag == 'false'}">
+                                                    <button class="mockButton blue"><fmt:message
+                                                            key="add_new_activity"/></button>
+                                                </c:if>
+                                            </td>
+                                            <td>
+                                                <c:set var="flag" value="false"/>
+                                                <c:forEach items="${sessionScope.trackingList}" var="tracking">
+                                                    <c:if test="${tracking.user.userId==user.userId &&
+                                                 tracking.userRequest == 'REMOVE'}">
+                                                        <c:set var="flag" value="true"/>
+                                                    </c:if>
+                                                </c:forEach>
+                                                <c:choose>
+                                                    <c:when test="${flag == 'true'}">
+                                                        <button class="mockButton red"><fmt:message
+                                                                key="remove_finished_activity"/></button>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <button class="mockButton blue"><fmt:message
+                                                                key="remove_finished_activity"/></button>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td>
+                                    <c:set var="flag" value="false"/>
+                                    <c:forEach items="${sessionScope.trackingList}" var="tracking">
+                                        <c:if test="${tracking.user.userId==user.userId && (tracking.userRequest == 'REMOVE'||
                                     tracking.userRequest == 'ADD' || user.requestAdd == 'true')}">
-                                        <c:set var="flag" value="true"/>
-                                    </c:if>
-                                </c:forEach>
-                                <c:choose>
-                                    <c:when test="${flag == 'true'}">
-                                        <fmt:message key="waiting"/>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <fmt:message key="no_request"/>
-                                    </c:otherwise>
-                                </c:choose>
-                            </td>
-                        </tr>
+                                            <c:set var="flag" value="true"/>
+                                        </c:if>
+                                    </c:forEach>
+                                    <c:choose>
+                                        <c:when test="${flag == 'true'}">
+                                            <fmt:message key="waiting"/>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <fmt:message key="no_request"/>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
+                            </tr>
+                        </c:if>
+                        <c:set var="countItem" value="${countItem + 1}"/>
+                        <c:if test="${countItem%sessionScope.itemsPerPage==0}">
+                            <c:set var="countPage" value="${countPage + 1}"/>
+                        </c:if>
                     </c:if>
                 </c:forEach>
             </table>
             <table align="center">
-                <tr >
-                    <td >
-                        <div class="pagination"  >
-                            <c:set var="count" value="1"/>
+                <tr>
+                    <td>
+                        <div class="pagination">
+                            <c:if test="${sessionScope.currentPage>'1'}">
+                                <c:set var="count" value="${sessionScope.currentPage - 1}" scope="page"/>
+                                <a href="controller?command=chosePage&currentPage=${count}">&laquo;</a>
+                            </c:if>
                             <c:forEach items="${sessionScope.numbersPages}" var="page">
-                                <c:if test="${page>1}">
-
-                                </c:if>
+                                <c:choose>
+                                    <c:when test="${page == sessionScope.currentPage}">
+                                        <a href="controller?command=chosePage&currentPage=${page}" class="active">
+                                            <c:out value="${page}"/></a>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="controller?command=chosePage&currentPage=${page}">
+                                            <c:out value="${page}"/></a>
+                                    </c:otherwise>
+                                </c:choose>
                             </c:forEach>
-                            <a href="#">&laquo;</a>
-                            <a href="Controller?pageNumber=login">1</a>
-                            <a href="#" class="active">2</a>
-                            <a href="#">3</a>
-                            <a href="#">4</a>
-                            <a href="#">5</a>
-                            <a href="#">6</a>
-                            <a href="#">&raquo;</a>
+                            <c:if test="${sessionScope.currentPage<sessionScope.lastPage}">
+                                <c:set var="count" value="${sessionScope.currentPage + 1}" scope="page"/>
+                                <a href="controller?command=chosePage&currentPage=${count}">&raquo;</a>
+                            </c:if>
                         </div>
                     </td>
                 </tr>
