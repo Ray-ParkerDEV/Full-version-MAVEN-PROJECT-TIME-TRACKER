@@ -20,7 +20,7 @@ public class ChosePageCommand implements BasicCommand {
     /**
      * itemsPerPage variable sets the amount of displayed items per page.
      */
-    public static int itemsPerPage =2;
+    public static int itemsPerPage =4;
 
     /**
      * This method describes pagination logic and allowed us to chose page.

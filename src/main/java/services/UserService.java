@@ -130,6 +130,35 @@ public class UserService {
                 userDAO.add(user, connection)
         );
     }
+    /**
+     * This method receives all Users from database. This method implements work with transaction support.
+     *
+     * @return - a list of activities from the database.
+     * @throws SQLException
+     */
+    public List<User> getAllUser() throws SQLException {
+        final List<User>[] userList = new List[1];
+        TransactionHandler.runInTransaction(connection ->
+                userList[0] = userDAO.getAll(connection)
+        );
+        return userList[0];
+    }
+
+    /**
+     * This method divides an array of clients per each page.
+     *
+     * @return - a amount of pages for pagination.
+     */
+    public List<String> getNumbersPages(List<User> userList, int itemsPerPage) {
+        List<String> pagesList = new ArrayList<>();
+        int fullPage = (userList.size()-1) / itemsPerPage; // -1 admin
+        int partPage = (userList.size()-1) % itemsPerPage == 0 ? 0 : 1; // -1 admin
+        int numbersPages = fullPage + partPage;
+        for (int i = 1; i <= numbersPages; i++) {
+            pagesList.add(String.valueOf(i));
+        }
+        return pagesList;
+    }
 
     /**
      * An additional accessory method that provides work with some attributes of the object of http session.
@@ -219,35 +248,4 @@ public class UserService {
     public void setCurrentPageToSession(String currentPage, HttpSession session) {
         session.setAttribute(Parameters.CURRENTPAGE, currentPage);
     }
-
-    /**
-     * This method receives all Users from database. This method implements work with transaction support.
-     *
-     * @return - a list of activities from the database.
-     * @throws SQLException
-     */
-    public List<User> getAllUser() throws SQLException {
-        final List<User>[] userList = new List[1];
-        TransactionHandler.runInTransaction(connection ->
-                userList[0] = userDAO.getAll(connection)
-        );
-        return userList[0];
-    }
-
-    /**
-     * This method divides an array of clients per each page.
-     *
-     * @return - a amount of pages for pagination.
-     */
-    public List<String> getNumbersPages(List<User> userList, int itemsPerPage) {
-        List<String> pagesList = new ArrayList<>();
-        int fullPage = (userList.size()-1) / itemsPerPage; // -1 admin
-        int partPage = (userList.size()-1) % itemsPerPage == 0 ? 0 : 1; // -1 admin
-        int numbersPages = fullPage + partPage;
-        for (int i = 1; i <= numbersPages; i++) {
-            pagesList.add(String.valueOf(i));
-        }
-        return pagesList;
-    }
-
 }

@@ -15,13 +15,13 @@ public class User extends BaseEntity implements Serializable {
     private String login;
     private String password;
     private UserType userType;
-    private boolean requestAdd;
+    private Boolean requestAdd;
 
     public User() {
     }
 
     public User(Integer userId, String firstName, String surName, String login, String password,
-                UserType userType, boolean requestAdd) {
+                UserType userType, Boolean requestAdd) {
         this.userId = userId;
         this.firstName = firstName;
         this.surName = surName;
@@ -79,7 +79,7 @@ public class User extends BaseEntity implements Serializable {
         this.userType = userType;
     }
 
-    public boolean isRequestAdd() {
+    public Boolean isRequestAdd() {
         return requestAdd;
     }
 

@@ -1,10 +1,12 @@
 package services;
 
 import connection.ConnectionPool;
+import dao.daofactory.DaoFactory;
 import dao.interfacesdao.UserDAO;
 import entities.User;
 import entities.UserType;
 import exceptions.DAOException;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Connection;
@@ -21,16 +23,16 @@ public class UserServiceTest {
 
     private UserService userService;
     private UserDAO userDAOMock;
+    private DaoFactory mySqlFactoryMock;
     private ConnectionPool connectionPoolMock;
 
-//    @Before
-//    public void setUp() {
-//        userDAOMock = mock(UserDAO.class);
-//        userService = AdminService.getInstance();
-//        userService.setUserDao(userDAOMock);
-//        connectionPoolMock = mock(ConnectionPool.class);
-//        userService.setConnectionPool(connectionPoolMock);
-//    }
+    @Before
+    public void setUp() {
+        userService = UserService.getInstance();
+        userDAOMock = mock(UserDAO.class);
+        mySqlFactoryMock = mock(DaoFactory.class);
+        connectionPoolMock = mock(ConnectionPool.class);
+    }
 
     @Test
     public void checkUserAuthorizationSuccess() throws SQLException, DAOException {
