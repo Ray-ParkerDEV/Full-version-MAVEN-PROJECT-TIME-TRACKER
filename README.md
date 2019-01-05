@@ -21,10 +21,9 @@ To run the project you need installed (according to the documentation):
 ### Installation and running
 To install and run the project on localhost:
  * Clone/fork or download the project [time tracker project](https://github.com/Ray-ParkerDEV/Servlet_login_origin) from the GitHub 
- * Create database **timetracker** on MySQL server from folder resources timetracker.sql. Password for access and connect mySQL server root, user - root. By default sql queries creates admin user. You can log in into app as admin using pass: admin, login: admin. You can change parameters of admin by editing corresponding data in file timetracker.sql and to assigne administrator your own credentials.
- * Run maven command clean install, than copy project_file.war into the /TOMCAT/webapps folder. 
- The Application will be available by web-address: http:\\localhost:8080
-
+ * Create database **timetracker** on MySQL server from folder resources timetracker.sql. By default sql queries creates admin user. You can log in into app as admin using pass: admin, login: admin. You can change parameters of admin by editing corresponding data in file timetracker.sql and to assigne administrator your own credentials.
+Install JDK, JRE, set parameters for environment variables. Install Apache Tomcat, install Apache Maven. 
+GO ON!!! Nothing gonna stop you from tracking the Activities:)))
 ## Author
 Bodyak Iaroslav (e-mail: [4456602@gmail.com](mailto:4456602@gmail.com))
 
