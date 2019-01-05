@@ -45,9 +45,6 @@ public class LoginCommand implements BasicCommand {
         String page = null;
         User user = RequestParameterIdentifier.getUserLoginPasswordFromRequest(request);
         HttpSession session = request.getSession(false);
-//        String language = session.getAttribute("language").toString();
-//        session.invalidate();
-//        session = request.getSession(true);
         try {
             if (UserService.getInstance().checkUserAuthorization(user.getLogin(), user.getPassword())) {
                 List<Activity> activityAdminList = ActivityService.getInstance().getAllActivities();

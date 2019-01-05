@@ -167,10 +167,10 @@
                 <td>
                     <input type="hidden" name="command" value="setLanguage"/>
                     <input type="hidden" name="page" value="clientPage"/>
-                    <input type="submit" value="<fmt:message key="language"/>"/>
+                    <%--<input type="submit" value="<fmt:message key="language"/>"/>--%>
                 </td>
                 <td>
-                    <select name="chosenLanguage">
+                    <select name="chosenLanguage"   onchange="this.form.submit()">
                         <c:choose>
                             <c:when test="${current == 'en_EN'}">
                                 <option value="en_EN"><fmt:message key="en"/></option>

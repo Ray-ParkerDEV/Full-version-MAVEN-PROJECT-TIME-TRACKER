@@ -20,9 +20,8 @@ public class User extends BaseEntity implements Serializable {
     public User() {
     }
 
-    public User(Integer userId, String firstName, String surName, String login, String password,
+    public User(String firstName, String surName, String login, String password,
                 UserType userType, Boolean requestAdd) {
-        this.userId = userId;
         this.firstName = firstName;
         this.surName = surName;
         this.login = login;
@@ -79,11 +78,11 @@ public class User extends BaseEntity implements Serializable {
         this.userType = userType;
     }
 
-    public Boolean isRequestAdd() {
+    public Boolean getRequestAdd() {
         return requestAdd;
     }
 
-    public void setRequestAdd(boolean requestAdd) {
+    public void setRequestAdd(Boolean requestAdd) {
         this.requestAdd = requestAdd;
     }
 
@@ -94,13 +93,13 @@ public class User extends BaseEntity implements Serializable {
 
         User user = (User) o;
 
-        if (requestAdd != user.requestAdd) return false;
         if (userId != null ? !userId.equals(user.userId) : user.userId != null) return false;
         if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) return false;
         if (surName != null ? !surName.equals(user.surName) : user.surName != null) return false;
         if (login != null ? !login.equals(user.login) : user.login != null) return false;
         if (password != null ? !password.equals(user.password) : user.password != null) return false;
-        return userType != null ? userType.equals(user.userType) : user.userType == null;
+        if (userType != null ? !userType.equals(user.userType) : user.userType != null) return false;
+        return requestAdd != null ? requestAdd.equals(user.requestAdd) : user.requestAdd == null;
     }
 
     @Override
@@ -111,7 +110,7 @@ public class User extends BaseEntity implements Serializable {
         result = 31 * result + (login != null ? login.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (userType != null ? userType.hashCode() : 0);
-        result = 31 * result + (requestAdd ? 1 : 0);
+        result = 31 * result + (requestAdd != null ? requestAdd.hashCode() : 0);
         return result;
     }
 

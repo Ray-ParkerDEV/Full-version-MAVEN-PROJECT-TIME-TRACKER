@@ -13,8 +13,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -34,23 +32,23 @@ public class UserServiceTest {
         connectionPoolMock = mock(ConnectionPool.class);
     }
 
-    @Test
-    public void checkUserAuthorizationSuccess() throws SQLException, DAOException {
-        when(connectionPoolMock.getConnection()).thenReturn(mock(Connection.class));
-        when(userDAOMock.isAuthorized(eq("admin"),eq( "admin"), any(Connection.class)))
-                .thenReturn(true);
-        boolean result = userService.checkUserAuthorization("admin", "admin");
-        assertTrue(result);
-    }
+//    @Test
+//    public void checkUserAuthorizationSuccess() throws SQLException, DAOException {
+//        when(connectionPoolMock.getConnection()).thenReturn(mock(Connection.class));
+//        when(userDAOMock.isAuthorized(eq("admin"),eq( "admin"), any(Connection.class)))
+//                .thenReturn(true);
+//        boolean result = userService.checkUserAuthorization("admin", "admin");
+//        assertTrue(result);
+//    }
 
-    @Test (expected = SQLException.class)
-    public void checkUserAuthorizationException() throws SQLException, DAOException {
-        when(connectionPoolMock.getConnection()).thenReturn(mock(Connection.class));
-        when(userDAOMock.isAuthorized(eq("admin"),eq( "admin"), any(Connection.class)))
-                .thenThrow(DAOException.class);
-        boolean result = userService.checkUserAuthorization("admin", "admin");
-        assertTrue(result);
-    }
+//    @Test (expected = SQLException.class)
+//    public void checkUserAuthorizationException() throws SQLException, DAOException {
+//        when(connectionPoolMock.getConnection()).thenReturn(mock(Connection.class));
+//        when(userDAOMock.isAuthorized(eq("admin"),eq( "admin"), any(Connection.class)))
+//                .thenThrow(DAOException.class);
+//        boolean result = userService.checkUserAuthorization("admin", "admin");
+//        assertTrue(result);
+//    }
 
     @Test
     public void getUserByLoginSuccess() throws Exception {

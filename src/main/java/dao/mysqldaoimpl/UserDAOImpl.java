@@ -62,7 +62,7 @@ public class UserDAOImpl implements UserDAO {
             statement.setString(3, user.getLogin());
             statement.setString(4, user.getPassword());
             statement.setInt(5, 2);
-            statement.setBoolean(6, user.isRequestAdd());
+            statement.setBoolean(6, user.getRequestAdd());
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
@@ -121,7 +121,7 @@ public class UserDAOImpl implements UserDAO {
             statement.setString(3, user.getLogin());
             statement.setString(4, user.getPassword());
             statement.setInt(5, 2);
-            statement.setBoolean(6, user.isRequestAdd());
+            statement.setBoolean(6, user.getRequestAdd());
             statement.setInt(7, user.getUserId());
             statement.executeUpdate();
         } catch (SQLException e) {
