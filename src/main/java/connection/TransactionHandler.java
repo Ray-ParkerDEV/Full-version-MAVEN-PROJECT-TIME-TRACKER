@@ -23,8 +23,6 @@ public class TransactionHandler {
             }
             logger.error(MessageConstants.TRANSACTION_FAILED, e);
             throw new SQLException(e);
-        } catch (NullPointerException e) {
-            System.out.println("fuck");
         } finally {
             ConnectionPool.getInstance().closeConnection(connection);
         }
