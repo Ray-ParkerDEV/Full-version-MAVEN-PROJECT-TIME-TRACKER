@@ -3,7 +3,7 @@ package commands.implementations;
 import commands.BasicCommand;
 import constants.PathPageConstants;
 import manager.ConfigManagerPages;
-import servlet.Controller;
+import session.SessionLogic;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,7 +24,7 @@ public class DefaultCommand implements BasicCommand {
      */
     @Override
     public String execute(HttpServletRequest request) {
-        Controller.flag = true;
+        SessionLogic.flag = true;
         return ConfigManagerPages.getInstance().getProperty(PathPageConstants.INDEX_PAGE_PATH);
     }
 }

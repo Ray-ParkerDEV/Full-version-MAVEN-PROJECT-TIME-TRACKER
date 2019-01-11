@@ -21,7 +21,6 @@ import java.io.IOException;
  * Created by Yaroslav Bodyak on 11.12.2018.
  */
 public class Controller extends HttpServlet {
-    public static boolean flag = true;
 
     public Controller() {
     }
@@ -62,7 +61,7 @@ public class Controller extends HttpServlet {
             } else {
                 page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.INDEX_PAGE_PATH);
                 response.sendRedirect(request.getContextPath() + page);
-                flag = true;
+                SessionLogic.flag = true;
             }
         }
 

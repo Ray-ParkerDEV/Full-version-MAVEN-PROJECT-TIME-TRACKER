@@ -5,7 +5,7 @@ import constants.MessageConstants;
 import constants.PathPageConstants;
 import manager.ConfigManagerPages;
 import org.apache.log4j.Logger;
-import servlet.Controller;
+import session.SessionLogic;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,7 +25,7 @@ public class LogoutCommand implements BasicCommand {
     @Override
     public String execute(HttpServletRequest request) {
         request.getSession().invalidate();
-        Controller.flag = true;
+        SessionLogic.flag = true;
         logger.info(MessageConstants.SUCCESS_LOGOUT);
         return ConfigManagerPages.getInstance().getProperty(PathPageConstants.INDEX_PAGE_PATH);
     }

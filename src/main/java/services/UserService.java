@@ -1,5 +1,6 @@
 package services;
 
+import connection.ConnectionPool;
 import connection.TransactionHandler;
 import constants.Parameters;
 import dao.daofactory.DaoFactory;
@@ -7,9 +8,9 @@ import dao.interfacesdao.UserDAO;
 import entities.Activity;
 import entities.Tracking;
 import entities.User;
-import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,15 +22,21 @@ import java.util.List;
  * Created by Yaroslav Bodyak on 11.12.2018.
  */
 public class UserService {
-
-    private final static Logger logger = Logger.getLogger(UserService.class);
     private volatile static UserService instance;
     private DaoFactory mySqlFactory;
     private UserDAO userDAO;
+    private Connection connection = ConnectionPool.getInstance().getConnection();
 
-    private UserService() {
+    private UserService() throws SQLException {
         mySqlFactory = DaoFactory.getDaoFactory(DaoFactory.MYSQL);
         userDAO = mySqlFactory.getUserDao();
+    }
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
+    }
+    public void setUserDAO(UserDAO userDAO) {
+        this.userDAO = userDAO;
     }
 
     /**
@@ -37,7 +44,7 @@ public class UserService {
      *
      * @return - an instance of the class.
      */
-    public static UserService getInstance() {
+    public static UserService getInstance() throws SQLException {
         if (instance == null) {
             synchronized (UserService.class) {
                 if (instance == null) {
@@ -59,7 +66,7 @@ public class UserService {
     public boolean checkUserAuthorization(String login, String password) throws SQLException {
         final boolean[] isAuthorized = new boolean[1];
         TransactionHandler.runInTransaction(connection ->
-                isAuthorized[0] = userDAO.isAuthorized(login, password, connection)
+                isAuthorized[0] = userDAO.isAuthorized(login, password, connection), connection
         );
         return isAuthorized[0];
     }
@@ -73,7 +80,8 @@ public class UserService {
     public User getUserByLogin(String login) throws SQLException {
         final User[] user = new User[1];
         TransactionHandler.runInTransaction(connection ->
-                user[0] = userDAO.getByLogin(login, connection)
+                user[0] = userDAO.getByLogin(login, connection),
+                ConnectionPool.getInstance().getConnection()
         );
         return user[0];
     }
@@ -87,7 +95,8 @@ public class UserService {
     public User getUserById(String overviewUserId) throws SQLException {
         final User[] user = new User[1];
         TransactionHandler.runInTransaction(connection ->
-                user[0] = userDAO.getById(overviewUserId, connection)
+                user[0] = userDAO.getById(overviewUserId, connection),
+                ConnectionPool.getInstance().getConnection()
         );
         return user[0];
     }
@@ -100,7 +109,8 @@ public class UserService {
      */
     public void updateUser(User user) throws SQLException {
         TransactionHandler.runInTransaction(connection ->
-                userDAO.update(user, connection)
+                userDAO.update(user, connection),
+                ConnectionPool.getInstance().getConnection()
         );
     }
 
@@ -114,7 +124,8 @@ public class UserService {
     public boolean isUniqueUser(User user) throws SQLException {
         final boolean[] isUnique = new boolean[1];
         TransactionHandler.runInTransaction(connection ->
-                isUnique[0] = userDAO.checkUniqueUser(user.getLogin(), connection)
+                isUnique[0] = userDAO.checkUniqueUser(user.getLogin(), connection),
+                ConnectionPool.getInstance().getConnection()
         );
         return isUnique[0];
     }
@@ -127,7 +138,8 @@ public class UserService {
      */
     public void registerUser(User user) throws SQLException {
         TransactionHandler.runInTransaction(connection ->
-                userDAO.add(user, connection)
+                userDAO.add(user, connection),
+                ConnectionPool.getInstance().getConnection()
         );
     }
     /**
@@ -139,7 +151,8 @@ public class UserService {
     public List<User> getAllUser() throws SQLException {
         final List<User>[] userList = new List[1];
         TransactionHandler.runInTransaction(connection ->
-                userList[0] = userDAO.getAll(connection)
+                userList[0] = userDAO.getAll(connection),
+                ConnectionPool.getInstance().getConnection()
         );
         return userList[0];
     }
@@ -221,31 +234,11 @@ public class UserService {
      *
      * @param session - an object of the current session.
      */
-    public void setactivityAdminListToSession(List<Activity> activityAdminList, HttpSession session) {
-        session.setAttribute(Parameters.ACTIVITY_ADMIN_LIST, activityAdminList);
-    }
-
-    /**
-     * An additional overloaded method that provides work with some attributes of the object of http session.
-     * This method sets user's parameters to the session.
-     *
-     * @param session - an object of the current session.
-     */
     public void setPaginationAttributeToSession(List<String> numbersPages, String lastPage, String currentPage,
                                                 int itemsPerPage, HttpSession session) {
         session.setAttribute(Parameters.NUMBERSPAGES, numbersPages);
         session.setAttribute(Parameters.LASTPAGE, lastPage);
         session.setAttribute(Parameters.CURRENTPAGE, currentPage);
         session.setAttribute(Parameters.ITEMSPERPAGE, itemsPerPage);
-    }
-
-    /**
-     * An additional overloaded method that provides work with some attributes of the object of http session.
-     * This method sets user's parameters to the session.
-     *
-     * @param session - an object of the current session.
-     */
-    public void setCurrentPageToSession(String currentPage, HttpSession session) {
-        session.setAttribute(Parameters.CURRENTPAGE, currentPage);
     }
 }

@@ -63,7 +63,8 @@ public class ActivityService {
      */
     public void createActivityDB(Activity activity) throws SQLException {
         TransactionHandler.runInTransaction(connection ->
-                activityDAO.add(activity, connection)
+                activityDAO.add(activity, connection),
+                ConnectionPool.getInstance().getConnection()
         );
     }
 
@@ -76,7 +77,8 @@ public class ActivityService {
     public Activity getActivityById(String id) throws SQLException {
         final Activity[] activity = new Activity[1];
         TransactionHandler.runInTransaction(connection ->
-                activity[0] = activityDAO.getById(id, connection)
+                activity[0] = activityDAO.getById(id, connection),
+                ConnectionPool.getInstance().getConnection()
         );
         return activity[0];
     }
@@ -89,7 +91,8 @@ public class ActivityService {
      */
     public void updateActivity(Activity activity) throws SQLException {
         TransactionHandler.runInTransaction(connection ->
-                activityDAO.update(activity, connection)
+                activityDAO.update(activity, connection),
+                ConnectionPool.getInstance().getConnection()
         );
     }
 
@@ -102,7 +105,8 @@ public class ActivityService {
     public List<Activity> getAllActivities() throws SQLException {
         final List<Activity>[] activityList = new List[1];
         TransactionHandler.runInTransaction(connection ->
-                activityList[0] = activityDAO.getAll(connection)
+                activityList[0] = activityDAO.getAll(connection),
+                ConnectionPool.getInstance().getConnection()
         );
         return activityList[0];
     }
@@ -116,7 +120,8 @@ public class ActivityService {
     public List<String> getAllActivityNames() throws SQLException {
         final List<String>[] activityNameList = new List[1];
         TransactionHandler.runInTransaction(connection ->
-                activityNameList[0] = getAllNames(connection)
+                activityNameList[0] = getAllNames(connection),
+                ConnectionPool.getInstance().getConnection()
         );
         return activityNameList[0];
     }
@@ -162,7 +167,8 @@ public class ActivityService {
     public boolean isUniqueActivity(Activity activity) throws SQLException {
         final boolean[] isUnique = new boolean[1];
         TransactionHandler.runInTransaction(connection ->
-                isUnique[0] = activityDAO.checkUniqueActivity(activity.getActivityName(), connection)
+                isUnique[0] = activityDAO.checkUniqueActivity(activity.getActivityName(), connection),
+                ConnectionPool.getInstance().getConnection()
         );
         return isUnique[0];
     }
@@ -178,7 +184,8 @@ public class ActivityService {
     public boolean isUniqueClientActivity(String id, String userId) throws SQLException {
         final boolean[] isUnique = new boolean[1];
         TransactionHandler.runInTransaction(connection ->
-                isUnique[0] = activityDAO.checkUniqueActivityByUser(id, userId, connection)
+                isUnique[0] = activityDAO.checkUniqueActivityByUser(id, userId, connection),
+                ConnectionPool.getInstance().getConnection()
         );
         return isUnique[0];
     }

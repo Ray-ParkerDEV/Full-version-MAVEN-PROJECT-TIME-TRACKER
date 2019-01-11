@@ -10,8 +10,8 @@ import java.sql.SQLException;
 public class TransactionHandler {
     private final static Logger logger = Logger.getLogger(TransactionHandler.class);
 
-    public static void runInTransaction(Transaction transaction) throws SQLException {
-        Connection connection = ConnectionPool.getInstance().getConnection();
+    public static void runInTransaction(Transaction transaction, Connection connection) throws SQLException {
+//        Connection connection = ConnectionPool.getInstance().getConnection();
         connection.setAutoCommit(false);
         try {
             transaction.execute(connection);
@@ -24,7 +24,11 @@ public class TransactionHandler {
             logger.error(MessageConstants.TRANSACTION_FAILED, e);
             throw new SQLException(e);
         } finally {
-            ConnectionPool.getInstance().closeConnection(connection);
+//            ConnectionPool.getInstance().closeConnection(connection);
+            if(connection != null){
+                connection.close();
+            }
         }
     }
+
 }

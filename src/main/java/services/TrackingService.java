@@ -53,7 +53,8 @@ public class TrackingService {
      */
     public void registerTracking(Tracking tracking) throws SQLException {
         TransactionHandler.runInTransaction(connection ->
-                trackingDAO.add(tracking, connection)
+                trackingDAO.add(tracking, connection),
+                ConnectionPool.getInstance().getConnection()
         );
     }
 
@@ -67,7 +68,8 @@ public class TrackingService {
     public List<Tracking> getTrackingByClientId(User user) throws SQLException {
         final List<Tracking>[] trackingList = new List[1];
         TransactionHandler.runInTransaction(connection ->
-                trackingList[0] = trackingDAO.getTrackingByClientId(user, connection)
+                trackingList[0] = trackingDAO.getTrackingByClientId(user, connection),
+                ConnectionPool.getInstance().getConnection()
         );
         return trackingList[0];
     }
@@ -82,7 +84,8 @@ public class TrackingService {
     public Tracking getTrackingById(String trackingId) throws SQLException {
         final Tracking [] tracking = new Tracking[1];
         TransactionHandler.runInTransaction(connection ->
-                tracking[0] = trackingDAO.getTrackingById(trackingId, connection)
+                tracking[0] = trackingDAO.getTrackingById(trackingId, connection),
+                ConnectionPool.getInstance().getConnection()
         );
         return tracking[0];
     }
@@ -96,7 +99,8 @@ public class TrackingService {
      */
     public void deleteTrackingById(Integer trackingId) throws SQLException {
         TransactionHandler.runInTransaction(connection ->
-                trackingDAO.deleteTrackingById(trackingId, connection)
+                trackingDAO.deleteTrackingById(trackingId, connection),
+                ConnectionPool.getInstance().getConnection()
         );
     }
 
@@ -109,7 +113,8 @@ public class TrackingService {
     public List<Tracking> getAllTracking() throws SQLException {
         final List<Tracking>[] trackingList = new List[1];
         TransactionHandler.runInTransaction(connection ->
-                trackingList[0] = trackingDAO.getAll(connection)
+                trackingList[0] = trackingDAO.getAll(connection),
+                ConnectionPool.getInstance().getConnection()
         );
         return trackingList[0];
     }
@@ -133,7 +138,8 @@ public class TrackingService {
 
     public void setStatusTracking(String id, String status) throws SQLException {
         TransactionHandler.runInTransaction(connection ->
-                setStatus(id, status, connection)
+                setStatus(id, status, connection),
+                ConnectionPool.getInstance().getConnection()
         );
     }
 
@@ -168,7 +174,8 @@ public class TrackingService {
      */
     public void setStatusAndTimeAndTimeStopTracking(String id, String status, String time) throws SQLException {
         TransactionHandler.runInTransaction(connection ->
-                setStatusAndTime(id, status, time, connection)
+                setStatusAndTime(id, status, time, connection),
+                ConnectionPool.getInstance().getConnection()
         );
     }
     /**
@@ -179,7 +186,8 @@ public class TrackingService {
      */
     public void updateTracking(String id, Tracking tracking) throws SQLException {
         TransactionHandler.runInTransaction(connection ->
-                trackingDAO.updateTrackingById(id ,tracking, connection)
+                trackingDAO.updateTrackingById(id ,tracking, connection),
+                ConnectionPool.getInstance().getConnection()
         );
     }
 
@@ -192,7 +200,8 @@ public class TrackingService {
      */
     public void setStatusAndTimeStartTracking(String id, String status, Long startTime) throws SQLException {
         TransactionHandler.runInTransaction(connection ->
-                setStatusAndStartTime(id, status, startTime, connection)
+                setStatusAndStartTime(id, status, startTime, connection),
+                ConnectionPool.getInstance().getConnection()
         );
     }
     /**

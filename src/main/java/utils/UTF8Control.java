@@ -9,6 +9,15 @@ import java.util.Locale;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
+/**
+ * This class supposed to prevent code from converting into stream different then UTF-8,
+ * that code will be passed to render on jsp page. That allowed us don't use charset UTF-16 for representing information
+ * in Resource Bundle file properties. For example: instead of using UTF-16 charset \u0073\u0074\u0072\u0069\u006e\u0067
+ * we just use word "string".
+ * But i couldn't to implement this stuff.
+ *
+ */
+
 public class UTF8Control extends ResourceBundle.Control {
     public ResourceBundle newBundle
             (String baseName, Locale locale, String format, ClassLoader loader, boolean reload)

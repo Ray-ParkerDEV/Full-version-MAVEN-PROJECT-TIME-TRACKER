@@ -8,7 +8,7 @@ import entities.User;
 import manager.ConfigManagerPages;
 import org.apache.log4j.Logger;
 import services.UserService;
-import servlet.Controller;
+import session.SessionLogic;
 import utils.RequestParameterIdentifier;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +39,7 @@ public class RegistrationCommand implements BasicCommand {
                     request.setAttribute(Parameters.OPERATION_MESSAGE, MessageConstants.SUCCESS_REGISTRATION);
                     page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.LOGIN_PAGE_PATH);
                     logger.info(MessageConstants.SUCCESS_REGISTRATION);
-                    Controller.flag = true;
+                    SessionLogic.flag = true;
                 } else {
                     request.setAttribute(Parameters.OPERATION_MESSAGE, MessageConstants.USER_EXISTS);
                     page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.REGISTRATION_PAGE_PATH);

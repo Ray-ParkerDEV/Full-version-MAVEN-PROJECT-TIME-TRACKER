@@ -4,7 +4,7 @@ import commands.BasicCommand;
 import constants.Parameters;
 import constants.PathPageConstants;
 import manager.ConfigManagerPages;
-import servlet.Controller;
+import session.SessionLogic;
 import utils.RequestParameterIdentifier;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +27,7 @@ public class BackCommand implements BasicCommand {
         String pageFromRequest = RequestParameterIdentifier.getPageFromRequest(request);
         String page = null;
         if (pageFromRequest != null && pageFromRequest.equals(Parameters.LOGIN)) {
-            Controller.flag = true;
+            SessionLogic.flag = true;
             page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.LOGIN_PAGE_PATH);
         } else if (pageFromRequest != null && pageFromRequest.equals(Parameters.CLIENT)){
             page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.CLIENT_PAGE_PATH);

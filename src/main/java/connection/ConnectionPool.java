@@ -47,16 +47,7 @@ public class ConnectionPool {
         Connection connection = pool.getConnection();
         return connection;
     }
-    
-    public void closeConnection(Connection connection){
-        try{
-            if(connection != null){
-                connection.close();
-            }
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
-    }
+
     /**
      * This method closes Statement after the queries have been executed.
      *
