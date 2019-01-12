@@ -10,7 +10,6 @@ import entities.Tracking;
 import entities.User;
 
 import javax.servlet.http.HttpSession;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,18 +24,10 @@ public class UserService {
     private volatile static UserService instance;
     private DaoFactory mySqlFactory;
     private UserDAO userDAO;
-    private Connection connection = ConnectionPool.getInstance().getConnection();
 
-    private UserService() throws SQLException {
+    private UserService(){
         mySqlFactory = DaoFactory.getDaoFactory(DaoFactory.MYSQL);
         userDAO = mySqlFactory.getUserDao();
-    }
-
-    public void setConnection(Connection connection) {
-        this.connection = connection;
-    }
-    public void setUserDAO(UserDAO userDAO) {
-        this.userDAO = userDAO;
     }
 
     /**
@@ -66,7 +57,8 @@ public class UserService {
     public boolean checkUserAuthorization(String login, String password) throws SQLException {
         final boolean[] isAuthorized = new boolean[1];
         TransactionHandler.runInTransaction(connection ->
-                isAuthorized[0] = userDAO.isAuthorized(login, password, connection), connection
+                isAuthorized[0] = userDAO.isAuthorized(login, password, connection),
+                ConnectionPool.getInstance().getConnection()
         );
         return isAuthorized[0];
     }

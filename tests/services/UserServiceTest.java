@@ -1,6 +1,5 @@
 package services;
 
-import connection.ConnectionPool;
 import connection.TransactionHandler;
 import dao.daofactory.DaoFactory;
 import dao.interfacesdao.UserDAO;
@@ -10,8 +9,6 @@ import exceptions.DAOException;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.naming.NamingException;
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -25,8 +22,7 @@ import static org.mockito.Mockito.when;
 public class UserServiceTest {
     private UserService userService;
     private UserDAO userDAOMock;
-    private DaoFactory mySqlFactoryMock ;
-//    private UserDAO userDAO = mySqlFactory.getUserDao();
+    private DaoFactory mySqlFactoryMock;
     private Connection connectionMock;
     private User expectedUser;
 
@@ -40,37 +36,13 @@ public class UserServiceTest {
                 new UserType(), null);
     }
 
-//    @Test
-//    public void checkUserAuthorizationSuccess() throws SQLException, DAOException {
-//        final boolean[] isAuthorized = new boolean[1];
-//        when(userDAOMock.isAuthorized(eq("admin"), eq("admin"), any(Connection.class))).thenReturn(true);
-//        TransactionHandler.runInTransaction(connection ->
-//                isAuthorized[0] = userDAOMock.isAuthorized("admin", "admin", connection), connectionMock);
-//        boolean result = isAuthorized[0];
-//        assertTrue(result);
-//    }
-
-//    @Test
-//    public void checkUserAuthorizationSuccess() throws SQLException, DAOException {
-//        userService.setConnection(connectionMock);
-//        userService.setUserDAO(userDAOMock);
-//        when(userDAOMock.isAuthorized(eq("admin"), eq("admin"), any(Connection.class))).thenReturn(true);
-//        boolean result = userService.checkUserAuthorization("admin", "admin");
-//        assertTrue(result);
-//    }
-
     @Test
-   // @RunWith(PowerMockito)
-    public void checkUserAuthorizationSuccess() throws SQLException, DAOException, NamingException {
-
-//        userService.setConnection(connectionMock);
-//        userService.setUserDAO(userDAOMock);
-        when(DaoFactory.getDaoFactory(DaoFactory.MYSQL)).thenReturn(mySqlFactoryMock);
-        when(any(DaoFactory.class).getUserDao()).thenReturn(userDAOMock);
-        when(ConnectionPool.getInstance().getConnection()).thenReturn(connectionMock);
-        when(any(DataSource.class).getConnection()).thenReturn(connectionMock);
+    public void checkUserAuthorizationSuccess() throws SQLException, DAOException {
+        final boolean[] isAuthorized = new boolean[1];
         when(userDAOMock.isAuthorized(eq("admin"), eq("admin"), any(Connection.class))).thenReturn(true);
-        boolean result = userService.checkUserAuthorization("admin", "admin");
+        TransactionHandler.runInTransaction(connection ->
+                isAuthorized[0] = userDAOMock.isAuthorized("admin", "admin", connection), connectionMock);
+        boolean result = isAuthorized[0];
         assertTrue(result);
     }
 
