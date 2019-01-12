@@ -30,7 +30,7 @@ public class StopTimeCommand implements BasicCommand {
         try {
             Tracking tracking = TrackingService.getInstance().getTrackingById(trackingId);
             if (tracking.getStatus() == ActivityStatus.IN_PROGRESS) {
-                tracking=ClientService.getInstance().setUpTime(tracking);
+                tracking = ClientService.getInstance().setUpTime(tracking);
                 tracking.setTimeSwitch(false);
             }
             tracking.setStatus(ActivityStatus.PAUSE);

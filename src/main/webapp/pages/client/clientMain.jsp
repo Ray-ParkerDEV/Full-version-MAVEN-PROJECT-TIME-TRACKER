@@ -120,9 +120,17 @@
                         </td>
                         <td>
                             <c:set var="request" value="${tracking.userRequest}"/>
-                            <c:if test="${request=='REMOVE'}">
-                                <fmt:message key="approval"/>
-                            </c:if>
+                            <c:choose>
+                                <c:when test="${request=='REMOVE'}">
+                                    <fmt:message key="approval"/>
+                                </c:when>
+                                <c:otherwise>
+                                    <c:if test="${requestScope.duplicateStart == 'true' &&
+                                     requestScope.trackingId == tracking.trackingId}">
+                                        <fmt:message key="warning_duplicate_start"/>
+                                    </c:if>
+                                </c:otherwise>
+                            </c:choose>
                         </td>
                         </tr>
                     </c:if>

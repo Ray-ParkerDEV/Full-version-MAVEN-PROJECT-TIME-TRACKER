@@ -6,9 +6,11 @@ import constants.Parameters;
 import constants.PathPageConstants;
 import entities.ActivityStatus;
 import entities.Tracking;
+import entities.User;
 import manager.ConfigManagerPages;
-import timer.Time;
+import services.ClientService;
 import services.TrackingService;
+import timer.Time;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -30,19 +32,33 @@ public class StartTimeCommand implements BasicCommand {
      */
     @Override
     public String execute(HttpServletRequest request) {
-        String page = null;
+        String page;
         HttpSession session = request.getSession(false);
         String trackingId = request.getParameter(Parameters.TRACKING_ID);
         try {
-            Time.getInstance().start();
             Tracking tracking = TrackingService.getInstance().getTrackingById(trackingId);
-            tracking.setTimeSwitch(true);
-            TrackingService.getInstance().updateTracking(trackingId, tracking);
-            TrackingService.getInstance().setStatusAndTimeStartTracking(trackingId, ActivityStatus.IN_PROGRESS.toString(),
-                    Time.getInstance().getStartTime());
+            User trackingUser = tracking.getUser();
             List<Tracking> trackingList = TrackingService.getInstance().getAllTracking();
-            TrackingService.getInstance().setAttributeTrackingListToSession(trackingList, session);
-            page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.CLIENT_PAGE_PATH);
+            if (ClientService.getInstance().ifUserHasNoOpenActivity(trackingUser, trackingList)) {
+                Time.getInstance().start();
+                tracking = TrackingService.getInstance().getTrackingById(trackingId);
+                tracking.setTimeSwitch(true);
+                TrackingService.getInstance().updateTracking(trackingId, tracking);
+                TrackingService.getInstance().setStatusAndTimeStartTracking(trackingId,
+                        ActivityStatus.IN_PROGRESS.toString(), Time.getInstance().getStartTime());
+                trackingList = TrackingService.getInstance().getAllTracking();
+                TrackingService.getInstance().setAttributeTrackingListToSession(trackingList, session);
+                page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.CLIENT_PAGE_PATH);
+            } else {
+                Tracking activeTracking = ClientService.getInstance().getActiveTracking(trackingList);
+                activeTracking = ClientService.getInstance().setUpDifferenceTime(activeTracking);
+                TrackingService.getInstance().updateTracking(activeTracking.getTrackingId().toString(), activeTracking);
+                trackingList = TrackingService.getInstance().getAllTracking();
+                TrackingService.getInstance().setAttributeTrackingListToSession(trackingList, session);
+                request.setAttribute("duplicateStart", "true");
+                request.setAttribute("trackingId", trackingId);
+                page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.CLIENT_PAGE_PATH);
+            }
         } catch (SQLException e) {
             page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ERROR_PAGE_PATH);
             request.setAttribute(Parameters.ERROR_DATABASE, MessageConstants.DATABASE_ACCESS_ERROR);

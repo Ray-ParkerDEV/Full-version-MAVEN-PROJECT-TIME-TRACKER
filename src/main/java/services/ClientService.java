@@ -1,10 +1,11 @@
 package services;
 
-import constants.Parameters;
+import entities.ActivityStatus;
 import entities.Tracking;
+import entities.User;
 import timer.Time;
 
-import javax.servlet.http.HttpSession;
+import java.util.List;
 
 public class ClientService {
     private volatile static ClientService instance;
@@ -31,11 +32,11 @@ public class ClientService {
 
     /**
      * Method for setting parameters to Time Tracking.
-     * @param tracking - the tracking entity which will be updated.
      *
+     * @param tracking - the tracking entity which will be updated.
      * @return - an instance of the class.
      */
-    public Tracking setUpTime(Tracking tracking){
+    public Tracking setUpTime(Tracking tracking) {
         Time.getInstance().setStartTime(tracking.getTimeStart());
         Time.getInstance().setDifference(tracking.getDifferenceTime());
         Time.getInstance().stop();
@@ -46,22 +47,54 @@ public class ClientService {
     }
 
     /**
-     * This method sets user's parameters on Add new activity button to the session. It's like a flag, that prevents
-     * duplicating request during updating page.
+     * Method for setting difference Time Tracking.
      *
-     * @param session - an object of the current session.
+     * @param tracking - the tracking entity which will be updated.
+     * @return - an instance of the class.
      */
-    public void setAttributeUserRequestAddToSessionTrue(HttpSession session) {
-        session.setAttribute(Parameters.USER_REQUEST_ADD, "true");
+    public Tracking setUpDifferenceTime(Tracking tracking) {
+        Time.getInstance().setStartTime(tracking.getTimeStart());
+        Time.getInstance().setDifference(tracking.getDifferenceTime());
+        Time.getInstance().stop();
+        tracking.setTimeStop(Time.getInstance().getStopTime());
+        tracking.setTimeStart(tracking.getTimeStart()+(Time.getInstance().getDifference()-tracking.getDifferenceTime()));
+        tracking.setDifferenceTime(Time.getInstance().getDifference());
+
+        return tracking;
     }
 
     /**
-     * This method sets user's parameters on Add new activity button to the session. It's like a flag, that prevents
-     * duplicating request during updating page.
+     * The method for checking duplication status of tracking user.
      *
-     * @param session - an object of the current session.
+     * @param trackingUser - the user that we tracking.
+     * @param trackingList - the tracking list which we have to check for duplication status.
+     * @return - boolean  check value.
      */
-    public void setAttributeUserRequestAddToSessionFalse(HttpSession session) {
-        session.setAttribute(Parameters.USER_REQUEST_ADD, "false");
+    public boolean ifUserHasNoOpenActivity(User trackingUser, List<Tracking> trackingList) {
+        boolean flag = true;
+        for (Tracking tracking : trackingList) {
+            if (trackingUser.equals(tracking.getUser())) {
+                if (tracking.getStatus() == ActivityStatus.IN_PROGRESS) {
+                    flag = false;
+                }
+            }
+        }
+        return flag;
+    }
+
+    /**
+     * This method return the tracking with status "in progress".
+     *
+     * @param trackingList - the tracking list which we have to check for status "in progress".
+     * @return - tracking object.
+     */
+    public Tracking getActiveTracking(List<Tracking> trackingList) {
+        Tracking activeTracking = null;
+        for (Tracking tracking : trackingList) {
+            if (tracking.getStatus() == ActivityStatus.IN_PROGRESS) {
+                activeTracking = tracking;
+            }
+        }
+        return activeTracking;
     }
 }
