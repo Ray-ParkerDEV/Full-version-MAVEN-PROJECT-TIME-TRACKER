@@ -106,6 +106,7 @@ public class RequestParameterIdentifier {
             user.setSurName(surName);
             user.setLogin(login);
             user.setPassword(password);
+            user.setRequestAdd(false);
         }
         return user;
     }

@@ -13,7 +13,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset = UTF-8">
     <link rel="stylesheet" type="text/css" href="<spec:url value="/css/clientMain.css"/>"/>
     <title>Client account page</title>
-    <%--<script type="text/javascript" src="/js/time.js"></script>--%>
+    <%--<script type="text/javascript" src="${pageContext.request.contextPath}/js/time.js"></script>--%>
 </head>
 <body>
 <div class="wrapperWelcomeInfo">
@@ -104,14 +104,19 @@
                             </table>
                         </td>
                         <td>
-                                <%--<c:choose>--%>
-                                <%--<c:when test="${tracking.timeSwitch == 'true'}">--%>
-                                <%--<label id="hours"></label>:<label id="minutes"></label>:<label id="seconds"></label>--%>
-                                <%--</c:when>--%>
-                                <%--<c:otherwise>--%>
-                            <c:out value="${tracking.elapsedTime}"/>
-                                <%--</c:otherwise>--%>
-                                <%--</c:choose>--%>
+                            <c:choose>
+                                <c:when test="${tracking.timeSwitch == 'true'}">
+                                    <script type="text/javascript">
+                                      var  countSecond = parseInt(${tracking.differenceTime/1000%60});
+                                      var countMinutes = parseInt(${tracking.differenceTime/1000/60%60});
+                                      var countHours = parseInt(${tracking.differenceTime/1000/60/60%60});
+                                    </script>
+                                    <label id="hours"></label>:<label id="minutes"></label>:<label id="seconds"></label>
+                                </c:when>
+                                <c:otherwise>
+                                    <c:out value="${tracking.elapsedTime}"/>
+                                </c:otherwise>
+                            </c:choose>
                         </td>
                         <td>
                             <c:set var="request" value="${tracking.userRequest}"/>
@@ -170,7 +175,7 @@
                     <%--<input type="submit" value="<fmt:message key="language"/>"/>--%>
                 </td>
                 <td>
-                    <select name="chosenLanguage"   onchange="this.form.submit()">
+                    <select name="chosenLanguage" onchange="this.form.submit()">
                         <c:choose>
                             <c:when test="${current == 'en_EN'}">
                                 <option value="en_EN"><fmt:message key="en"/></option>
@@ -187,5 +192,78 @@
         </tr>
     </table>
 </div>
+<script>
+    <%---------------------------------------------seconds--------------------------------------------------------%>
+    if (countSecond > 0 && countSecond < 10) {
+        document.getElementById("seconds").innerHTML = "0" + countSecond;
+    } else if (countSecond == 0 || countSecond == 60) {
+        document.getElementById("seconds").innerHTML = "00";
+    } else {
+        document.getElementById("seconds").innerHTML = countSecond;
+    }
+
+    setInterval(function () {
+        myTimerSec()
+    }, 1000);
+
+    function myTimerSec() {
+        if (countSecond == 59) {
+            document.getElementById("seconds").innerHTML = "00";
+            countSecond = 0;
+            myTimerMin();
+        } else if (countSecond < 9) {
+            countSecond = countSecond + 1;
+            document.getElementById("seconds").innerHTML = "0" + countSecond;
+        } else if (countSecond < 59 && countSecond > 0) {
+            countSecond = countSecond + 1;
+            document.getElementById("seconds").innerHTML = countSecond;
+        }
+    }
+
+    <%---------------------------------------------minutes--------------------------------------------------------%>
+    if (countMinutes > 0 && countMinutes < 10) {
+        document.getElementById("minutes").innerHTML = "0" + countMinutes;
+    } else if (countMinutes == 0 || countMinutes == 60) {
+        document.getElementById("minutes").innerHTML = "00";
+    } else {
+        document.getElementById("minutes").innerHTML = countMinutes;
+    }
+
+    function myTimerMin() {
+        if (countMinutes == 59) {
+            document.getElementById("minutes").innerHTML = "00";
+            countMinutes = 0;
+            myTimerHour();
+        } else if (countMinutes < 9) {
+            countMinutes = countMinutes + 1;
+            document.getElementById("minutes").innerHTML = "0" + countMinutes;
+        } else if (countMinutes < 59 && countMinutes > 0) {
+            countMinutes = countMinutes + 1;
+            document.getElementById("minutes").innerHTML = countMinutes;
+        }
+    }
+
+    <%---------------------------------------------hours--------------------------------------------------------%>
+    if (countHours > 0 && countHours < 10) {
+        document.getElementById("hours").innerHTML = "0" + countHours;
+    } else if (countHours == 0 || countHours == 60) {
+        document.getElementById("hours").innerHTML = "00";
+    } else {
+        document.getElementById("hours").innerHTML = countHours;
+    }
+
+    function myTimerHour() {
+        if (countHours == 59) {
+            document.getElementById("hours").innerHTML = "00";
+            countHours = 0;
+        } else if (countHours < 9) {
+            countHours = countHours + 1;
+            document.getElementById("hours").innerHTML = "0" + countHours;
+        } else if (countHours < 59 && countHours > 0) {
+            countHours = countHours + 1;
+            document.getElementById("hours").innerHTML = countHours;
+        }
+    }
+</script>
 </body>
 </html>
