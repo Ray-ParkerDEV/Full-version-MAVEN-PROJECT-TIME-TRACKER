@@ -16,7 +16,6 @@ public class SetLanguageCommand implements BasicCommand {
 
     /**
      * This method describes set up language logic.
-     * The method uses methods of the RequestParameterIdentifier and AdminService.
      *
      * @param request - request which will be processed.
      * @return - a page which user will be directed to.

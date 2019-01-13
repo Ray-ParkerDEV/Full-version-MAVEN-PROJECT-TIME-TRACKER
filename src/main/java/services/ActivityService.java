@@ -2,24 +2,11 @@ package services;
 
 import connection.ConnectionPool;
 import connection.TransactionHandler;
-import constants.MessageConstants;
-import constants.Parameters;
-import constants.QueriesDB;
-import dao.daofactory.DaoFactory;
 import dao.interfacesdao.ActivityDAO;
 import entities.Activity;
-import exceptions.DAOException;
-import org.apache.log4j.Logger;
 
-import javax.servlet.http.HttpSession;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-
-import static entities.Activity.activityNameList;
 
 /**
  * Description: This class describes actions on the user object.
@@ -29,14 +16,11 @@ import static entities.Activity.activityNameList;
  */
 public class ActivityService {
 
-    private final static Logger logger = Logger.getLogger(UserService.class);
     private volatile static ActivityService instance;
-    private DaoFactory mySqlFactory;
-    private ActivityDAO activityDAO;
+    private ActivityDAO activityDao;
+    private ConnectionPool connectionPool;
 
     private ActivityService() {
-        mySqlFactory = DaoFactory.getDaoFactory(DaoFactory.MYSQL);
-        activityDAO = mySqlFactory.getActivityDao();
     }
 
     /**
@@ -55,6 +39,14 @@ public class ActivityService {
         return instance;
     }
 
+    public void setActivityDao(ActivityDAO activityDao) {
+        this.activityDao = activityDao;
+    }
+
+    public void setConnectionPool(ConnectionPool connectionPool) {
+        this.connectionPool = connectionPool;
+    }
+
     /**
      * This method add new activity in DB. This method implements work with transaction support.
      *
@@ -63,8 +55,7 @@ public class ActivityService {
      */
     public void createActivityDB(Activity activity) throws SQLException {
         TransactionHandler.runInTransaction(connection ->
-                activityDAO.add(activity, connection),
-                ConnectionPool.getInstance().getConnection()
+                activityDao.add(activity, connection),connectionPool.getConnection()
         );
     }
 
@@ -77,8 +68,7 @@ public class ActivityService {
     public Activity getActivityById(String id) throws SQLException {
         final Activity[] activity = new Activity[1];
         TransactionHandler.runInTransaction(connection ->
-                activity[0] = activityDAO.getById(id, connection),
-                ConnectionPool.getInstance().getConnection()
+                activity[0] = activityDao.getById(id, connection),connectionPool.getConnection()
         );
         return activity[0];
     }
@@ -91,8 +81,7 @@ public class ActivityService {
      */
     public void updateActivity(Activity activity) throws SQLException {
         TransactionHandler.runInTransaction(connection ->
-                activityDAO.update(activity, connection),
-                ConnectionPool.getInstance().getConnection()
+                activityDao.update(activity, connection),connectionPool.getConnection()
         );
     }
 
@@ -105,56 +94,9 @@ public class ActivityService {
     public List<Activity> getAllActivities() throws SQLException {
         final List<Activity>[] activityList = new List[1];
         TransactionHandler.runInTransaction(connection ->
-                activityList[0] = activityDAO.getAll(connection),
-                ConnectionPool.getInstance().getConnection()
+                activityList[0] = activityDao.getAll(connection),connectionPool.getConnection()
         );
         return activityList[0];
-    }
-
-    /**
-     * This method receives all activity names from database. This method implements work with transaction support.
-     *
-     * @return - a list of activity names from the database.
-     * @throws SQLException
-     */
-    public List<String> getAllActivityNames() throws SQLException {
-        final List<String>[] activityNameList = new List[1];
-        TransactionHandler.runInTransaction(connection ->
-                activityNameList[0] = getAllNames(connection),
-                ConnectionPool.getInstance().getConnection()
-        );
-        return activityNameList[0];
-    }
-
-    /**
-     * An additional accessory method that provides work with some attributes of the object of http session.
-     * This methods sets activities's parameters to the session.
-     *
-     * @param session - an object of the current session.
-     */
-    public void setActivityToSession(Activity activity, HttpSession session) {
-        session.setAttribute(Parameters.ACTIVITY, activity);
-
-    }
-
-    public void setActivityNameListToSession(List<String> activityList, HttpSession session) {
-        session.setAttribute(Parameters.ACTIVITY_LIST, activityList);
-
-    }
-
-    /**
-     * This method add activity names in array for further output in jsp page.
-     *
-     * @param activity - the current user which has been created.     *
-     */
-    public void addIfNewInListName(Activity activity) {
-        if(activity.getActivityName()=="") return;
-        for (int i = 0; i < activityNameList.size(); i++) {
-            if (activity.getActivityName().equals(activityNameList.get(i))) {
-                return;
-            }
-        }
-        activityNameList.add(activity.getActivityName());
     }
 
       /**
@@ -167,8 +109,8 @@ public class ActivityService {
     public boolean isUniqueActivity(Activity activity) throws SQLException {
         final boolean[] isUnique = new boolean[1];
         TransactionHandler.runInTransaction(connection ->
-                isUnique[0] = activityDAO.checkUniqueActivity(activity.getActivityName(), connection),
-                ConnectionPool.getInstance().getConnection()
+                isUnique[0] = activityDao.checkUniqueActivity(activity.getActivityName(), connection),
+                connectionPool.getConnection()
         );
         return isUnique[0];
     }
@@ -184,64 +126,10 @@ public class ActivityService {
     public boolean isUniqueClientActivity(String id, String userId) throws SQLException {
         final boolean[] isUnique = new boolean[1];
         TransactionHandler.runInTransaction(connection ->
-                isUnique[0] = activityDAO.checkUniqueActivityByUser(id, userId, connection),
-                ConnectionPool.getInstance().getConnection()
+                isUnique[0] = activityDao.checkUniqueActivityByUser(id, userId, connection),
+                connectionPool.getConnection()
         );
         return isUnique[0];
-    }
-
-    /**
-     * This method checks the uniqueness of the activity name in user list. This method implements work with transaction support.
-     *
-     * @param activityName - an activity name with fields will be checked.
-     * @param activityNameList - an activities names array with all names.
-     * @return - boolean value of the condition.
-     * @throws SQLException
-     */
-    public boolean isUniqueActivityName(String activityName, List<String> activityNameList) {
-        for (int i = 0; i < activityNameList.size(); i++) {
-            if (activityName.equals(activityNameList.get(i))) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-
-    /**
-     * This method reads and returns information from all records (rows) of a database table.
-     *
-     * @param connection - the current connection to a database. Transmitted from the service module to provide transactions.
-     * @return - list of all entities from a database table.
-     */
-    public List<String> getAllNames(Connection connection) throws DAOException {
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        List<Activity> activities = new ArrayList<>();
-        List<String> activityNames;
-        try {
-            statement = connection.prepareStatement(QueriesDB.GET_ALL_ACTIVITIES);
-            resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                activities.add(activityDAO.createActivity(resultSet, new Activity()));
-            }
-            activityNames = activitiesArrayGetNames(activities);
-        } catch (SQLException e) {
-            logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
-            throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
-        } finally {
-            ConnectionPool.closeResultSet(resultSet);
-            ConnectionPool.closeStatement(statement);
-        }
-        return activityNames;
-    }
-
-    List<String> activitiesArrayGetNames(List<Activity> activities) {
-        List<String> activityNames = new ArrayList<>();
-        for (int i = 0; i < activities.size(); i++) {
-            activityNames.add(activities.get(i).getActivityName());
-        }
-        return activityNames;
     }
 
 }

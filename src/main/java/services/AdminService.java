@@ -1,8 +1,6 @@
 package services;
 
 import constants.Parameters;
-import dao.daofactory.DaoFactory;
-import dao.interfacesdao.UserDAO;
 import entities.Activity;
 import org.apache.log4j.Logger;
 
@@ -18,12 +16,8 @@ public class AdminService {
 
     private final static Logger logger = Logger.getLogger(AdminService.class);
     private volatile static AdminService instance;
-    private DaoFactory mySqlFactory;
-    private UserDAO userDAO;
 
     private AdminService() {
-        mySqlFactory = DaoFactory.getDaoFactory(DaoFactory.MYSQL);
-        userDAO = mySqlFactory.getUserDao();
     }
 
     /**
@@ -55,6 +49,7 @@ public class AdminService {
         String activityName = request.getParameter(Parameters.ACTIVITY_NAME);
         if (activityName != null && !activityName.isEmpty()) {
             activity.setActivityName(activityName);
+            logger.info("Success execute retrieving activity from request.");
         }
         return activity;
     }

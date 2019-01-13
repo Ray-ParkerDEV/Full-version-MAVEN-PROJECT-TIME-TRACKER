@@ -9,10 +9,7 @@ import entities.Tracking;
 import entities.User;
 import manager.ConfigManagerPages;
 import org.apache.log4j.Logger;
-import services.ActivityService;
-import services.AdminService;
-import services.TrackingService;
-import services.UserService;
+import services.*;
 import tag.MyTag;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +24,9 @@ import java.util.List;
  */
 public class CreateActivityCommand implements BasicCommand {
     private static final Logger logger = Logger.getLogger(CreateActivityCommand.class);
+    private ActivityService activityService = (ActivityService) ServiceHelper.getInstance().getService("activityService");
+    private UserService userService = (UserService)ServiceHelper.getInstance().getService("userService");
+    private TrackingService trackingService = (TrackingService)ServiceHelper.getInstance().getService("trackingService");
 
     /**
      * This method describes the adding new activities logic.
@@ -42,29 +42,29 @@ public class CreateActivityCommand implements BasicCommand {
         Activity activity = AdminService.getInstance().geActivityFromRequest(request);
         try {
             if (AdminService.getInstance().areFieldsFilled(request)) {
-                if (ActivityService.getInstance().isUniqueActivity(activity)) {
-                    ActivityService.getInstance().createActivityDB(activity);
-                    List<Activity> activityAdminList = ActivityService.getInstance().getAllActivities();
+                if (activityService.isUniqueActivity(activity)) {
+                    activityService.createActivityDB(activity);
+                    List<Activity> activityAdminList = activityService.getAllActivities();
                     MyTag.activityList = activityAdminList;
-                    List<Tracking> trackingList = TrackingService.getInstance().getAllTracking();
-                    List<User> userList = UserService.getInstance().getAllUser();
-                    UserService.getInstance().setAttributeToSession(activityAdminList, trackingList, userList, session);
+                    List<Tracking> trackingList = trackingService.getAllTracking();
+                    List<User> userList = userService.getAllUser();
+                    userService.setAttributeToSession(activityAdminList, trackingList, userList, session);
                     page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH);
                     logger.info(MessageConstants.SUCCESS_CREATION);
                 } else {
                     request.setAttribute(Parameters.OPERATION_MESSAGE, MessageConstants.ACTIVITY_EXISTS);
-                    List<Activity> activityAdminList = ActivityService.getInstance().getAllActivities();
-                    List<Tracking> trackingList = TrackingService.getInstance().getAllTracking();
-                    List<User> userList = UserService.getInstance().getAllUser();
+                    List<Activity> activityAdminList = activityService.getAllActivities();
+                    List<Tracking> trackingList = trackingService.getAllTracking();
+                    List<User> userList = userService.getAllUser();
                     UserService.getInstance().setAttributeToSession(activityAdminList, trackingList, userList, session);
                     page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH);
                 }
             } else {
                 request.setAttribute(Parameters.OPERATION_MESSAGE, MessageConstants.EMPTY_FIELDS_ACTIVITY);
-                List<Activity> activityAdminList = ActivityService.getInstance().getAllActivities();
-                List<Tracking> trackingList = TrackingService.getInstance().getAllTracking();
-                List<User> userList = UserService.getInstance().getAllUser();
-                UserService.getInstance().setAttributeToSession(activityAdminList, trackingList, userList, session);
+                List<Activity> activityAdminList = activityService.getAllActivities();
+                List<Tracking> trackingList = trackingService.getAllTracking();
+                List<User> userList = userService.getAllUser();
+                userService.setAttributeToSession(activityAdminList, trackingList, userList, session);
                 page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH);
             }
         } catch (SQLException e) {

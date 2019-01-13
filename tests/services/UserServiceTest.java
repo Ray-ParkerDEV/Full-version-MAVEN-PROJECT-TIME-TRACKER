@@ -1,25 +1,17 @@
 package services;
 
 import connection.ConnectionPool;
-import connection.TransactionHandler;
-import dao.daofactory.DaoFactory;
 import dao.interfacesdao.UserDAO;
 import entities.User;
 import entities.UserType;
 import exceptions.DAOException;
-import org.apache.tomcat.dbcp.dbcp2.ConnectionFactory;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.naming.spi.InitialContextFactory;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -30,125 +22,94 @@ import static org.mockito.Mockito.when;
 
 public class UserServiceTest {
     private UserService userService;
-    private UserDAO userDAOMock;
-    private DaoFactory mySqlFactoryMock;
-    private Context contextMock;
+    private UserDAO userDaoMock;
+    private ConnectionPool connectionPoolMock;
     private Connection connectionMock;
-    private User expectedUser;
+    private User user;
 
     @Before
     public void setUp() throws SQLException {
-        contextMock = mock(Context.class);
+        userDaoMock = mock(UserDAO.class);
         userService = UserService.getInstance();
-        mySqlFactoryMock = mock(DaoFactory.class);
-        userDAOMock = mock(UserDAO.class);
+        userService.setUserDao(userDaoMock);
+        connectionPoolMock = mock(ConnectionPool.class);
+        userService.setConnectionPool(connectionPoolMock);
         connectionMock = mock(Connection.class);
-        expectedUser = new User("Ray", "Parker", "admin", "admin",
-                new UserType(), null);
-        MockitoAnnotations.initMocks(this);
-        System.setProperty("java.naming.factory.initial",
-                this.getClass().getCanonicalName() + "$MyContextFactory");
-
-    }
-
-    @Mock
-    InitialContextFactory ctx;
-    public static class MyContextFactory implements InitialContextFactory
-    {
-        @Override
-        public Context getInitialContext(Hashtable<?, ?> environment) throws NamingException {
-            ConnectionFactory mockConnFact = mock(ConnectionFactory.class);
-            InitialContext mockCtx = mock(InitialContext.class);
-            when(mockCtx.lookup("jms1")).thenReturn(mockConnFact);
-            return mockCtx;
-        }
+        user = new User( "Ievgen", "Kopachev", "admin", "admin",
+                new UserType(2, "admin"), null);
+        when(connectionPoolMock.getConnection()).thenReturn(connectionMock);
     }
 
     @Test
-    public void checkUserAuthorizationSuccess() throws SQLException, DAOException, NamingException {
-//        userService.setConnection(connectionMock);
-//        userService.setUserDAO(userDAOMock);
-//        when(any(Context.class).lookup("java:comp/env")).thenReturn(contextMock);
-//        when(DaoFactory.getDaoFactory(DaoFactory.MYSQL)).thenReturn(mySqlFactoryMock);
-//        when(any(DaoFactory.class).getUserDao()).thenReturn(userDAOMock);
-        when(ConnectionPool.getInstance().getConnection()).thenReturn(connectionMock);
-//        when(any(DataSource.class).getConnection()).thenReturn(connectionMock);
-        when(userDAOMock.isAuthorized(eq("admin"), eq("admin"), any(Connection.class))).thenReturn(true);
+    public void checkUserAuthorizationSuccess() throws SQLException, DAOException {
+        when(userDaoMock.isAuthorized(eq("admin"),eq( "admin"), any(Connection.class)))
+                .thenReturn(true);
         boolean result = userService.checkUserAuthorization("admin", "admin");
         assertTrue(result);
     }
 
-//    @Before
-//    public void setupClass() throws IOException
-//    {
-//        MockitoAnnotations.initMocks(this);
-//        System.setProperty("java.naming.factory.initial",
-//                this.getClass().getCanonicalName() + "$SetMyContextFactory");
-//    }
-
-
-//    @Test
-//    public void checkUserAuthorizationSuccess() throws SQLException, DAOException {
-//        final boolean[] isAuthorized = new boolean[1];
-//        when(userDAOMock.isAuthorized(eq("admin"), eq("admin"), any(Connection.class))).thenReturn(true);
-//        TransactionHandler.runInTransaction(connection ->
-//                isAuthorized[0] = userDAOMock.isAuthorized("admin", "admin", connection), connectionMock);
-//        boolean result = isAuthorized[0];
-//        assertTrue(result);
-//    }
-
-    //    @Test
-//    public void checkUserAuthorizationSuccess() throws SQLException, DAOException {
-//        userService.setConnection(connectionMock);
-//        userService.setUserDAO(userDAOMock);
-//        when(userDAOMock.isAuthorized(eq("admin"), eq("admin"), any(Connection.class))).thenReturn(true);
-//        boolean result = userService.checkUserAuthorization("admin", "admin");
-//        assertTrue(result);
-//    }
-
-//    @Rule
-//    public MockInitialContextRule mockInitialContextRule = new MockInitialContextRule(contextMock);
-
-
-    @Test(expected = SQLException.class)
+    @Test (expected = SQLException.class)
     public void checkUserAuthorizationException() throws SQLException, DAOException {
-        when(userDAOMock.isAuthorized(eq("admin"), eq("admin"), any(Connection.class)))
+        when(userDaoMock.isAuthorized(eq("admin"),eq( "admin"), any(Connection.class)))
                 .thenThrow(DAOException.class);
-        TransactionHandler.runInTransaction(connection ->
-                userDAOMock.isAuthorized("admin", "admin", connection), connectionMock);
+        boolean result = userService.checkUserAuthorization("admin", "admin");
+        assertTrue(result);
     }
 
     @Test
     public void getUserByLoginSuccess() throws Exception {
-        when(userDAOMock.getByLogin(eq("admin"), any(Connection.class))).thenReturn(expectedUser);
-        final User[] user = new User[1];
-        TransactionHandler.runInTransaction(connection ->
-                user[0] = userDAOMock.getByLogin("admin", connection), connectionMock
-        );
-        User actualUser = user[0];
-        assertEquals(expectedUser, actualUser);
+        when(userDaoMock.getByLogin(eq("admin"), eq(connectionMock)))
+                .thenReturn(user);
+        User result = userService.getUserByLogin("admin");
+        assertEquals(user, result);
+    }
+
+    @Test (expected = SQLException.class)
+    public void getUserByLoginFailed() throws Exception {
+        when(userDaoMock.getByLogin(eq("admin"), eq(connectionMock)))
+                .thenThrow(DAOException.class);
+        User result = userService.getUserByLogin("admin");
     }
 
     @Test
     public void getUserByIdSuccess() throws SQLException, DAOException {
-        expectedUser.setUserId(1);
-        final User[] user = new User[1];
-        when(userDAOMock.getById(eq(expectedUser.getUserId().toString()), any(Connection.class))).thenReturn(expectedUser);
-        TransactionHandler.runInTransaction(connection ->
-                user[0] = userDAOMock.getById(expectedUser.getUserId().toString(), connection), connectionMock
-        );
-        User actualUser = user[0];
-        assertEquals(expectedUser, actualUser);
+        user.setUserId(2);
+        when(userDaoMock.getById(eq(user.getUserId().toString()), eq(connectionMock)))
+                .thenReturn(user);
+        User result = userService.getUserById(user.getUserId().toString());
+        assertEquals(user, result);
     }
 
     @Test
-    public void isUniqueUserSuccess() throws SQLException, DAOException {
-        when(userDAOMock.checkUniqueUser(eq("admin"), any(Connection.class))).thenReturn(true);
-        final boolean[] isUnique = new boolean[1];
-        TransactionHandler.runInTransaction(connection ->
-                isUnique[0] = userDAOMock.checkUniqueUser(expectedUser.getLogin(), connection), connectionMock
-        );
-        assertTrue(isUnique[0]);
+    public void isUniqueUserSuccess() throws DAOException, SQLException {
+        when(userDaoMock.checkUniqueUser(eq(user.getLogin()), any(Connection.class)))
+                .thenReturn(true);
+        boolean result = userService.isUniqueUser(user);
+        assertTrue(result);
     }
 
+    @Test
+    public void getAllUserSuccess() throws DAOException, SQLException {
+        List<User> expectedUserList = new ArrayList<>();
+        expectedUserList.add(user);
+        when(userDaoMock.getAll(eq(connectionMock))).thenReturn(expectedUserList);
+        List<User> actualUserList = userService.getAllUser();
+        assertEquals(expectedUserList, actualUserList);
+    }
+
+    @Test
+    public void getNumbersPagesSuccess() {
+        List<User> userList = new ArrayList<>(10);
+        for (int i =0; i<11; i++){
+            userList.add(user);
+        }
+        int itemsPerPage = 3;
+        List<String> expectedPagesList = new ArrayList<>();
+        expectedPagesList.add("1");
+        expectedPagesList.add("2");
+        expectedPagesList.add("3");
+        expectedPagesList.add("4");
+        List<String> actualPagesList = userService.getNumbersPages(userList,itemsPerPage);
+        assertEquals(expectedPagesList,actualPagesList);
+    }
 }

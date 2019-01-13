@@ -7,6 +7,7 @@ import constants.PathPageConstants;
 import entities.User;
 import manager.ConfigManagerPages;
 import org.apache.log4j.Logger;
+import services.ServiceHelper;
 import services.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,7 @@ import java.util.List;
 
 public class ChosePageCommand implements BasicCommand {
     private static final Logger logger = Logger.getLogger(CreateActivityCommand.class);
+    private UserService userService = (UserService)ServiceHelper.getInstance().getService("userService");
 
     /**
      * itemsPerPage variable sets the amount of displayed items per page.
@@ -33,11 +35,11 @@ public class ChosePageCommand implements BasicCommand {
         String page;
         HttpSession session = request.getSession(false);
         try {
-            List<User> userList = UserService.getInstance().getAllUser();
-            List<String> numbersPages = UserService.getInstance().getNumbersPages(userList, itemsPerPage);
+            List<User> userList = userService.getAllUser();
+            List<String> numbersPages = userService.getNumbersPages(userList, itemsPerPage);
             String lasPage = String.valueOf(numbersPages.size());
             String currentPage = request.getParameter("currentPage");
-            UserService.getInstance().setPaginationAttributeToSession(numbersPages, lasPage, currentPage,itemsPerPage,
+            userService.setPaginationAttributeToSession(numbersPages, lasPage, currentPage,itemsPerPage,
                     session);
             page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH);
             logger.info(MessageConstants.SUCCESS_CHOOSING_PAGE);

@@ -11,6 +11,7 @@ import entities.User;
 import manager.ConfigManagerPages;
 import org.apache.log4j.Logger;
 import services.ActivityService;
+import services.ServiceHelper;
 import services.TrackingService;
 import services.UserService;
 import utils.RequestParameterIdentifier;
@@ -27,6 +28,9 @@ import java.util.List;
  */
 public class LoginCommand implements BasicCommand {
     private final static Logger logger = Logger.getLogger(LoginCommand.class);
+    private ActivityService activityService = (ActivityService) ServiceHelper.getInstance().getService("activityService");
+    private UserService userService = (UserService) ServiceHelper.getInstance().getService("userService");
+    private TrackingService trackingService = (TrackingService) ServiceHelper.getInstance().getService("trackingService");
 
     /**
      * This method describes the logon logic. The method uses methods of the RequestParameterIdentifier and AdminService
@@ -42,31 +46,31 @@ public class LoginCommand implements BasicCommand {
      */
     @Override
     public String execute(HttpServletRequest request) {
-        String page = null;
+        String page ;
         User user = RequestParameterIdentifier.getUserLoginPasswordFromRequest(request);
         HttpSession session = request.getSession(false);
         try {
-            if (UserService.getInstance().checkUserAuthorization(user.getLogin(), user.getPassword())) {
-                List<Activity> activityAdminList = ActivityService.getInstance().getAllActivities();
-                List<Tracking> trackingList = TrackingService.getInstance().getAllTracking();
-                List<User> userList = UserService.getInstance().getAllUser();
+            if (userService.checkUserAuthorization(user.getLogin(), user.getPassword())) {
+                List<Activity> activityAdminList = activityService.getAllActivities();
+                List<Tracking> trackingList = trackingService.getAllTracking();
+                List<User> userList = userService.getAllUser();
                 int itemsPerPage = ChosePageCommand.itemsPerPage;
-                List<String> numbersPages = UserService.getInstance().getNumbersPages(userList, itemsPerPage);
+                List<String> numbersPages = userService.getNumbersPages(userList, itemsPerPage);
                 String lastPage = String.valueOf(numbersPages.size());
                 String currentPage = "1";
-                UserService.getInstance().setPaginationAttributeToSession(numbersPages, lastPage, currentPage,
+                userService.setPaginationAttributeToSession(numbersPages, lastPage, currentPage,
                         itemsPerPage, session);
-                user = UserService.getInstance().getUserByLogin(user.getLogin());
-                UserService.getInstance().setAttributeToSession(activityAdminList, trackingList, userList, session);
+                user = userService.getUserByLogin(user.getLogin());
+                userService.setAttributeToSession(activityAdminList, trackingList, userList, session);
                 switch (user.getUserType().getUserType()) {
                     case "admin":
                         User adminUser = user;
-                        UserService.getInstance().setAttributeAdminToSession(adminUser, session);
+                        userService.setAttributeAdminToSession(adminUser, session);
                         page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH);
                         break;
                     case "client":
                         User clientUser = user;
-                        UserService.getInstance().setAttributeClientToSession(clientUser, session);
+                        userService.setAttributeClientToSession(clientUser, session);
                         page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.CLIENT_PAGE_PATH);
                         break;
                     default:

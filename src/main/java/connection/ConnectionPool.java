@@ -17,13 +17,13 @@ public class ConnectionPool {
     private final static Logger logger = Logger.getLogger(ConnectionPool.class);
 
     private static ConnectionPool instance = null;
-    private static final String TOMCAT_JNDI_NAME="java:comp/env";
+    private static final String TOMCAT_JNDI_NAME = "java:comp/env";
     private DataSource pool;
     private final String DATASOURCE;
-    
+
     public ConnectionPool() {
-     DATASOURCE = Config.getInstance().getProperty(Config.DATASOURCE);
-     initialPool();     
+        DATASOURCE = Config.getInstance().getProperty(Config.DATASOURCE);
+        initialPool();
     }
 
     public static synchronized ConnectionPool getInstance() {
@@ -32,19 +32,24 @@ public class ConnectionPool {
         }
         return instance;
     }
-    
-    private void initialPool(){
-        try{
+
+    private void initialPool() {
+        try {
             Context initContext = new InitialContext();
             Context envContext = (Context) initContext.lookup(TOMCAT_JNDI_NAME);
-            pool = (DataSource)envContext.lookup(DATASOURCE);
-        }catch(NamingException e){
+//            if (envContext != null) {
+            pool = (DataSource) envContext.lookup(DATASOURCE);
+//            }
+        } catch (NamingException e) {
             e.printStackTrace();
         }
     }
-    
-    public synchronized Connection getConnection() throws SQLException{
+
+    public synchronized Connection getConnection() throws SQLException {
+//        Connection connection = null;
+//        if(pool!=null) {
         Connection connection = pool.getConnection();
+//        }
         return connection;
     }
 

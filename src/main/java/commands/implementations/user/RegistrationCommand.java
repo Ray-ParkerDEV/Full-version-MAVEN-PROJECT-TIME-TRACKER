@@ -7,6 +7,7 @@ import constants.PathPageConstants;
 import entities.User;
 import manager.ConfigManagerPages;
 import org.apache.log4j.Logger;
+import services.ServiceHelper;
 import services.UserService;
 import session.SessionLogic;
 import utils.RequestParameterIdentifier;
@@ -21,6 +22,7 @@ import java.sql.SQLException;
  */
 public class RegistrationCommand implements BasicCommand {
     private static final Logger logger = Logger.getLogger(RegistrationCommand.class);
+    private UserService userService = (UserService) ServiceHelper.getInstance().getService("userService");
 
     /**
      * This method describes the registration logic. The method uses methods of the RequestParameterIdentifier and AdminService.
@@ -30,12 +32,12 @@ public class RegistrationCommand implements BasicCommand {
      */
     @Override
     public String execute(HttpServletRequest request) {
-        String page = null;
+        String page ;
         User user = RequestParameterIdentifier.getUserFromRequest(request);
         try {
             if (RequestParameterIdentifier.areFieldsFilled(request)) {
-                if (UserService.getInstance().isUniqueUser(user)) {
-                    UserService.getInstance().registerUser(user);
+                if (userService.isUniqueUser(user)) {
+                    userService.registerUser(user);
                     request.setAttribute(Parameters.OPERATION_MESSAGE, MessageConstants.SUCCESS_REGISTRATION);
                     page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.LOGIN_PAGE_PATH);
                     logger.info(MessageConstants.SUCCESS_REGISTRATION);

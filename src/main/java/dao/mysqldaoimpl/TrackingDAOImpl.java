@@ -351,4 +351,87 @@ public class TrackingDAOImpl implements TrackingDAO {
         }
         return trackingList;
     }
+
+    /**
+     * This method updates an existing record (row) in a database table.
+     *
+     * @param id         - the id number of tracking which will be updated.
+     * @param status     - the status of tracking which will be updated.
+     * @param startTime  - the start time of tracking which will be updated.
+     * @param connection - the current connection to a database. Transmitted from the service module to provide transactions.
+     */
+    public void setStatusAndStartTime(String id, String status, Long startTime, Connection connection) throws DAOException {
+        PreparedStatement statement = null;
+        Integer statusId = defineStatus(status);
+        try {
+            statement = connection.prepareStatement(QueriesDB.UPDATE_TRACKING_STATUS_AND_START_TIME_BY_ID);
+            statement.setInt(1, statusId);// status_id
+            statement.setLong(2, startTime);// time_start
+            statement.setString(3, id);// tracking_id
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
+            throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
+        } finally {
+            ConnectionPool.closeStatement(statement);
+        }
+    }
+
+    /**
+     * Auxiliary method that returns status.
+     *
+     * @param status     - status that we choose.
+     * @return  statusId - defined status.
+     */
+    Integer defineStatus(String status) {
+        Integer statusId = null;
+        switch (status) {
+            case "NEW_ACTIVITY": {
+                statusId = 1;
+                break;
+            }
+            case "IN_PROGRESS": {
+                statusId = 2;
+                break;
+            }
+            case "PAUSE": {
+                statusId = 3;
+                break;
+            }
+            case "FINISHED": {
+                statusId = 4;
+                break;
+            }
+            case "STOP": {
+                statusId = 5;
+                break;
+            }
+        }
+        return statusId;
+    }
+
+    /**
+     * This method updates an existing record (row) in a database table.
+     *
+     * @param id         - the id number of tracking which will be updated.
+     * @param status     - the status of tracking which will be updated.
+     * @param time       - the time of tracking which will be updated.
+     * @param connection - the current connection to a database. Transmitted from the service module to provide transactions.
+     */
+    public void setStatusAndTime(String id, String status, String time, Connection connection) throws DAOException {
+        PreparedStatement statement = null;
+        Integer statusId = defineStatus(status);
+        try {
+            statement = connection.prepareStatement(QueriesDB.UPDATE_TRACKING_STATUS_AND_TIME_BY_ID);
+            statement.setInt(1, statusId);// status_id
+            statement.setString(2, time);// time
+            statement.setString(3, id);// tracking_id
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
+            throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
+        } finally {
+            ConnectionPool.closeStatement(statement);
+        }
+    }
 }

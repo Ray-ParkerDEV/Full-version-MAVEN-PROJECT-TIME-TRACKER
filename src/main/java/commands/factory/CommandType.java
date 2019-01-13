@@ -8,13 +8,13 @@ import commands.implementations.user.*;
 
 /**
  * Description: This class describes all type of using commands.
- *
+ * <p>
  * Created by Yaroslav Bodyak on 11.12.2018.
  */
 public enum CommandType {
 
     /*user commands*/
-    LOGIN, LOGOUT, REGISTRATION, GOTOREGISTRATION, UPDATECLIENT, BACK, DEFAULT, SETLANGUAGE,
+    LOGIN, LOGOUT, REGISTRATION, GOTOREGISTRATION, BACK, DEFAULT, SETLANGUAGE,
 
     /*admin commands*/
     CREATEACTIVITY, OVERVIEWCLIENT, BACKADMIN, ADDACTIVITY, REMOVEADMIN, CHOSEPAGE,
@@ -27,7 +27,7 @@ public enum CommandType {
      * is carried out by determining the value of the parameter "command" from request. The current request is generated
      * from the "form" placed on the jsp page.
      *
-     * @return      - the current class will be processed.
+     * @return - the current class will be processed.
      */
     public BasicCommand getCurrentCommand() {
         switch (this) {
@@ -41,8 +41,6 @@ public enum CommandType {
                 return new RegistrationCommand();
             case GOTOREGISTRATION:
                 return new GotoRegistrationCommand();
-            case UPDATECLIENT:
-                return new UpdateClientCommand();
             case BACK:
                 return new BackCommand();
             case CREATEACTIVITY:

@@ -3,7 +3,6 @@ package services;
 import connection.ConnectionPool;
 import connection.TransactionHandler;
 import constants.Parameters;
-import dao.daofactory.DaoFactory;
 import dao.interfacesdao.UserDAO;
 import entities.Activity;
 import entities.Tracking;
@@ -22,12 +21,18 @@ import java.util.List;
  */
 public class UserService {
     private volatile static UserService instance;
-    private DaoFactory mySqlFactory;
-    private UserDAO userDAO;
+    private UserDAO userDao;
+    private ConnectionPool connectionPool;
 
-    private UserService(){
-        mySqlFactory = DaoFactory.getDaoFactory(DaoFactory.MYSQL);
-        userDAO = mySqlFactory.getUserDao();
+    private UserService() {
+    }
+
+    public void setUserDao(UserDAO userDao) {
+        this.userDao = userDao;
+    }
+
+    public void setConnectionPool(ConnectionPool connectionPool) {
+        this.connectionPool = connectionPool;
     }
 
     /**
@@ -35,7 +40,7 @@ public class UserService {
      *
      * @return - an instance of the class.
      */
-    public static UserService getInstance() throws SQLException {
+    public static UserService getInstance(){
         if (instance == null) {
             synchronized (UserService.class) {
                 if (instance == null) {
@@ -57,8 +62,8 @@ public class UserService {
     public boolean checkUserAuthorization(String login, String password) throws SQLException {
         final boolean[] isAuthorized = new boolean[1];
         TransactionHandler.runInTransaction(connection ->
-                isAuthorized[0] = userDAO.isAuthorized(login, password, connection),
-                ConnectionPool.getInstance().getConnection()
+                        isAuthorized[0] = userDao.isAuthorized(login, password, connection),
+                connectionPool.getConnection()
         );
         return isAuthorized[0];
     }
@@ -72,8 +77,7 @@ public class UserService {
     public User getUserByLogin(String login) throws SQLException {
         final User[] user = new User[1];
         TransactionHandler.runInTransaction(connection ->
-                user[0] = userDAO.getByLogin(login, connection),
-                ConnectionPool.getInstance().getConnection()
+                        user[0] = userDao.getByLogin(login, connection), connectionPool.getConnection()
         );
         return user[0];
     }
@@ -87,8 +91,7 @@ public class UserService {
     public User getUserById(String overviewUserId) throws SQLException {
         final User[] user = new User[1];
         TransactionHandler.runInTransaction(connection ->
-                user[0] = userDAO.getById(overviewUserId, connection),
-                ConnectionPool.getInstance().getConnection()
+                        user[0] = userDao.getById(overviewUserId, connection), connectionPool.getConnection()
         );
         return user[0];
     }
@@ -101,8 +104,7 @@ public class UserService {
      */
     public void updateUser(User user) throws SQLException {
         TransactionHandler.runInTransaction(connection ->
-                userDAO.update(user, connection),
-                ConnectionPool.getInstance().getConnection()
+                        userDao.update(user, connection), connectionPool.getConnection()
         );
     }
 
@@ -116,8 +118,8 @@ public class UserService {
     public boolean isUniqueUser(User user) throws SQLException {
         final boolean[] isUnique = new boolean[1];
         TransactionHandler.runInTransaction(connection ->
-                isUnique[0] = userDAO.checkUniqueUser(user.getLogin(), connection),
-                ConnectionPool.getInstance().getConnection()
+                        isUnique[0] = userDao.checkUniqueUser(user.getLogin(), connection),
+                connectionPool.getConnection()
         );
         return isUnique[0];
     }
@@ -130,10 +132,10 @@ public class UserService {
      */
     public void registerUser(User user) throws SQLException {
         TransactionHandler.runInTransaction(connection ->
-                userDAO.add(user, connection),
-                ConnectionPool.getInstance().getConnection()
+                        userDao.add(user, connection), connectionPool.getConnection()
         );
     }
+
     /**
      * This method receives all Users from database. This method implements work with transaction support.
      *
@@ -143,14 +145,13 @@ public class UserService {
     public List<User> getAllUser() throws SQLException {
         final List<User>[] userList = new List[1];
         TransactionHandler.runInTransaction(connection ->
-                userList[0] = userDAO.getAll(connection),
-                ConnectionPool.getInstance().getConnection()
+                        userList[0] = userDao.getAll(connection), connectionPool.getConnection()
         );
         return userList[0];
     }
 
     /**
-     * This method divides an array of clients per each page.
+     * This method divides an array of clients per each page and returns list of pages with their serial numbers.
      *
      * @return - a amount of pages for pagination.
      */

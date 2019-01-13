@@ -17,7 +17,7 @@ public class LogoutCommand implements BasicCommand {
     private final static Logger logger = Logger.getLogger(LogoutCommand.class);
 
     /**
-     * This method describes the logon logic.
+     * This method describes the logout logic.
      *
      * @param request - request which will be processed.
      * @return - a page which user will be directed to.

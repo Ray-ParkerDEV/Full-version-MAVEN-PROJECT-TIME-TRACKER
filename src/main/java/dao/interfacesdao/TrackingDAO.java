@@ -71,4 +71,24 @@ public interface TrackingDAO extends AbstractDAO<Tracking> {
      * @return - list of all entities from a database table.
      */
     List<Tracking> getTrackingByClientId(User user, Connection connection) throws DAOException;
+
+    /**
+     * This method updates an existing record (row) in a database table.
+     *
+     * @param id         - the id number of tracking which will be updated.
+     * @param status     - the status of tracking which will be updated.
+     * @param startTime  - the start time of tracking which will be updated.
+     * @param connection - the current connection to a database. Transmitted from the service module to provide transactions.
+     */
+    void setStatusAndStartTime(String id, String status, Long startTime, Connection connection) throws DAOException;
+
+    /**
+     * This method updates an existing record (row) in a database table.
+     *
+     * @param id         - the id number of tracking which will be updated.
+     * @param status     - the status of tracking which will be updated.
+     * @param time       - the time of tracking which will be updated.
+     * @param connection - the current connection to a database. Transmitted from the service module to provide transactions.
+     */
+    void setStatusAndTime(String id, String status, String time, Connection connection) throws DAOException;
 }

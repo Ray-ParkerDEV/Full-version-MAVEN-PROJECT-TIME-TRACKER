@@ -11,6 +11,7 @@ import entities.User;
 import manager.ConfigManagerPages;
 import org.apache.log4j.Logger;
 import services.ActivityService;
+import services.ServiceHelper;
 import services.TrackingService;
 import services.UserService;
 
@@ -26,6 +27,9 @@ import java.util.List;
  */
 public class AddActivityToUserCommand implements BasicCommand {
     private static final Logger logger = Logger.getLogger(CreateActivityCommand.class);
+    private ActivityService activityService = (ActivityService)ServiceHelper.getInstance().getService("activityService");
+    private UserService userService = (UserService)ServiceHelper.getInstance().getService("userService");
+    private TrackingService trackingService = (TrackingService)ServiceHelper.getInstance().getService("trackingService");
 
     /**
      * This method describes the adding new activities logic.
@@ -41,27 +45,27 @@ public class AddActivityToUserCommand implements BasicCommand {
         String activityId = request.getParameter(Parameters.ACTIVITY_ID);
         String overviewUserId = request.getParameter(Parameters.USER_ID);
         try {
-            if (ActivityService.getInstance().isUniqueClientActivity(activityId, overviewUserId)) {
-                User clientUser = UserService.getInstance().getUserById(overviewUserId);
+            if (activityService.isUniqueClientActivity(activityId, overviewUserId)) {
+                User clientUser = userService.getUserById(overviewUserId);
                 clientUser.setRequestAdd(false);
-                UserService.getInstance().updateUser(clientUser);
-                List<User> userList = UserService.getInstance().getAllUser();
-                UserService.getInstance().setAttributeClientToSession(clientUser, session);
-                Activity addActivityToUser = ActivityService.getInstance().getActivityById(activityId);
+                userService.updateUser(clientUser);
+                List<User> userList = userService.getAllUser();
+                userService.setAttributeClientToSession(clientUser, session);
+                Activity addActivityToUser = activityService.getActivityById(activityId);
                 Tracking tracking = new Tracking(clientUser, addActivityToUser, ActivityStatus.NEW_ACTIVITY,
                         null, "00:00:00", 0L, 0L, 0L, false);
-                TrackingService.getInstance().registerTracking(tracking);
-                List<Tracking> trackingList = TrackingService.getInstance().getAllTracking();
-                List<Activity> activityAdminList = ActivityService.getInstance().getAllActivities();
-                UserService.getInstance().setAttributeToSession(activityAdminList, trackingList, userList, session);
+                trackingService.registerTracking(tracking);
+                List<Tracking> trackingList = trackingService.getAllTracking();
+                List<Activity> activityAdminList = activityService.getAllActivities();
+                userService.setAttributeToSession(activityAdminList, trackingList, userList, session);
                 page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH_CLIENT_OVERVIEW);
                 logger.info(MessageConstants.SUCCESS_ADDING_ACTIVITY);
             } else {
                 request.setAttribute(Parameters.OPERATION_MESSAGE, MessageConstants.ACTIVITY_HAS_BEEN_ADDED);
-                List<Activity> activityAdminList = ActivityService.getInstance().getAllActivities();
-                List<Tracking> trackingList = TrackingService.getInstance().getAllTracking();
-                List<User> userList = UserService.getInstance().getAllUser();
-                UserService.getInstance().setAttributeToSession(activityAdminList, trackingList, userList, session);
+                List<Activity> activityAdminList = activityService.getAllActivities();
+                List<Tracking> trackingList = trackingService.getAllTracking();
+                List<User> userList = userService.getAllUser();
+                userService.setAttributeToSession(activityAdminList, trackingList, userList, session);
                 page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH_CLIENT_OVERVIEW);
             }
         } catch (SQLException e) {

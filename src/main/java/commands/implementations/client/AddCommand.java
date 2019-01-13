@@ -9,6 +9,8 @@ import entities.Tracking;
 import entities.User;
 import manager.ConfigManagerPages;
 import org.apache.log4j.Logger;
+import services.ActivityService;
+import services.ServiceHelper;
 import services.TrackingService;
 import services.UserService;
 
@@ -20,20 +22,29 @@ import java.util.List;
 
 public class AddCommand implements BasicCommand {
     private static final Logger logger = Logger.getLogger(CreateActivityCommand.class);
+    private ActivityService activityService = (ActivityService) ServiceHelper.getInstance().getService("activityService");
+    private UserService userService = (UserService) ServiceHelper.getInstance().getService("userService");
+    private TrackingService trackingService = (TrackingService) ServiceHelper.getInstance().getService("trackingService");
 
+    /**
+     * This method describes the adding activities logic for client.
+     *
+     * @param request - request which will be processed.
+     * @return - a page which user will be directed to.
+     */
     @Override
     public String execute(HttpServletRequest request) {
         String page;
         HttpSession session = request.getSession(false);
         String userId = request.getParameter(Parameters.USER_ID);
         try {
-            User clientUser = UserService.getInstance().getUserById(userId);
+            User clientUser = userService.getUserById(userId);
             clientUser.setRequestAdd(true);
-            UserService.getInstance().updateUser(clientUser);
-            List<User> userList = UserService.getInstance().getAllUser();
-            List<Tracking> trackingList = TrackingService.getInstance().getAllTracking();
-            UserService.getInstance().setAttributeClientToSession(clientUser, session);
-            UserService.getInstance().setAttributeToSession(trackingList, userList, session);
+            userService.updateUser(clientUser);
+            List<User> userList = userService.getAllUser();
+            List<Tracking> trackingList = trackingService.getAllTracking();
+            userService.setAttributeClientToSession(clientUser, session);
+            userService.setAttributeToSession(trackingList, userList, session);
             page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.CLIENT_PAGE_PATH);
             logger.info(MessageConstants.SUCCESS_ADD_REQUEST);
         } catch (SQLException e) {

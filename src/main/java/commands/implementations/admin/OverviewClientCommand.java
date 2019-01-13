@@ -10,6 +10,7 @@ import entities.User;
 import manager.ConfigManagerPages;
 import org.apache.log4j.Logger;
 import services.ActivityService;
+import services.ServiceHelper;
 import services.TrackingService;
 import services.UserService;
 
@@ -20,6 +21,9 @@ import java.util.List;
 
 public class OverviewClientCommand implements BasicCommand {
     private static final Logger logger = Logger.getLogger(OverviewClientCommand.class);
+    private ActivityService activityService = (ActivityService) ServiceHelper.getInstance().getService("activityService");
+    private UserService userService = (UserService)ServiceHelper.getInstance().getService("userService");
+    private TrackingService trackingService = (TrackingService)ServiceHelper.getInstance().getService("trackingService");
 
     /**
      * This method describes overview user logic.
@@ -35,12 +39,12 @@ public class OverviewClientCommand implements BasicCommand {
         String overviewUserId = request.getParameter(Parameters.USER_ID);
 
         try {
-            User overviewUser = UserService.getInstance().getUserById(overviewUserId);
-            UserService.getInstance().setAttributeOverviewUserToSession(overviewUser, session);
-            List<Tracking> trackingList = TrackingService.getInstance().getAllTracking();
-            List<Activity> activityAdminList = ActivityService.getInstance().getAllActivities();
-            List<User> userList = UserService.getInstance().getAllUser();
-            UserService.getInstance().setAttributeToSession(activityAdminList, trackingList, userList, session);
+            User overviewUser = userService.getUserById(overviewUserId);
+            userService.setAttributeOverviewUserToSession(overviewUser, session);
+            List<Tracking> trackingList = trackingService.getAllTracking();
+            List<Activity> activityAdminList = activityService.getAllActivities();
+            List<User> userList = userService.getAllUser();
+            userService.setAttributeToSession(activityAdminList, trackingList, userList, session);
             page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.ADMIN_PAGE_PATH_CLIENT_OVERVIEW);
             logger.info(MessageConstants.SUCCESS_OVERVIEW_CLIENT_COMMAND);
         } catch (SQLException e) {
