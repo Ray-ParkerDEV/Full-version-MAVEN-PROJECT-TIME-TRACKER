@@ -49,13 +49,7 @@ To install and run the project on localhost:
 Install JDK, JRE, set parameters for environment variables. Install Apache Tomcat, install Apache Maven. 
 GO ON!!! Nothing gonna stop you from tracking the Activities:)))
 
-## Author
-Bodyak Iaroslav (e-mail: [4456602@gmail.com](mailto:4456602@gmail.com))
-
-
-
-###Общие требования по проекту: 
-
+## Общие требования по проекту:
 Необходимо построить веб-приложение, поддерживающую следующую функциональность:
 На основе сущностей предметной области создать классы их описывающие.
 Классы и методы должны иметь отражающую их функциональность названия и должны быть грамотно структурированы по пакетам
@@ -69,6 +63,9 @@ Bodyak Iaroslav (e-mail: [4456602@gmail.com](mailto:4456602@gmail.com))
     В страницах JSP применять библиотеку JSTL.
 Приложение должно корректно реагировать на ошибки и исключения разного рода (Пользователь никогда не должен видеть stack-trace на стороне front-end).
 В приложении должна быть реализована система Авторизации и Аутентификации.
+
+## Author
+Bodyak Iaroslav (e-mail: [4456602@gmail.com](mailto:4456602@gmail.com))
 
 
 ![alt text](https://github.com/Ray-ParkerDEV/Servlet_login_origin/blob/master/src/main/webapp/images/clock.jpg)
