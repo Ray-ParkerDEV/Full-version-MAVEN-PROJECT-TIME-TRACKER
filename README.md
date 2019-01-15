@@ -12,7 +12,7 @@ Time tracking system. The administrator assigns activity to the user. A user can
 * [Prerequisites](#prerequisites)
 * [Installation and running](#installation-and-running)
 * [Authors](#author)
-* [Общие требования по проекту](#Общие требования по проекту)
+* [Общие требования по проекту](#Общие требования по проекту:)
 
 ### Technologies
 * Maven
