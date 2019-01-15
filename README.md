@@ -2,14 +2,37 @@
 ### TIME TRACKER
 
 ## Description
-Time tracking system. The administrator assigns activity to the user. A user can have one or several activities. The user notes the amount of time spent on each activity. The user can send a request to add / delete activity.
+Time tracking system. The administrator assigns activity to the user. A user can have one or several activities.
+ The user notes the amount of time spent on each activity. The user can send a request to add / delete activity.
 
 ## Table of Contents
 * [Project name](#project-name)
 * [Description](#description)
+* [Technologies](#technologies)
 * [Prerequisites](#prerequisites)
 * [Installation and running](#installation-and-running)
 * [Authors](#author)
+
+### Technologies
+* Maven
+* Tomcat
+* MySql Data Base
+* JDBC
+* JSP + JSTL
+* Servlets
+* Log4J
+* JUnit
+* Mockito
+* JavaScript
+* HTML
+* CSS
+* Custom tag, UseBean
+* Localisation
+* Connection Pool
+* Transaction 
+* Sessions, Filters
+* Pagination
+* Authorisation, Authentication system
 
 ### Prerequisites
 To run the project you need installed (according to the documentation): 
