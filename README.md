@@ -11,9 +11,9 @@ Time tracking system. The administrator assigns activity to the user. A user can
 * [Technologies](#technologies)
 * [Prerequisites](#prerequisites)
 * [Installation and running](#installation-and-running)
-* [General project requirements:](#general-project-requirements:)
-* [EERD scheme](#EERD-scheme:)
-* [Architecture](#architecture:)
+* [General project requirements](#general-project-requirements)
+* [EERD scheme](#EERD-scheme)
+* [Architecture](#architecture)
 * [Authors](#author)
 
 ### Technologies
@@ -51,7 +51,7 @@ To install and run the project on localhost:
 Install JDK, JRE, set parameters for environment variables. Install Apache Tomcat, install Apache Maven. 
 GO ON!!! Nothing gonna stop you from tracking the Activities:)))
 
-### General project requirements:
+### General project requirements
 You need to build a web application that supports the following functionality:
 Based on the entities create classes that describe them.
 Classes and methods must have a name reflecting their functionality and must be properly structured by package.
@@ -68,13 +68,13 @@ The application should react correctly when errors and exceptions occurs of vari
 the stack-trace on the front-end side).
 The application must have an Authorization and Authentication system.
 
-###EERD scheme:
+### EERD scheme
 
 ![alt text](https://github.com/Ray-ParkerDEV/Servlet_login_origin/blob/master/src/main/webapp/images/EERD.jpg)
 
-###Architecture:
+### Architecture
 
-![alt text](https://github.com/Ray-ParkerDEV/Servlet_login_origin/tree/master/src/main/webapp/images/architecture.jpg)
+![alt text](https://github.com/Ray-ParkerDEV/Servlet_login_origin/blob/master/src/main/webapp/images/architecture.jpg)
 
 ## Author
 Bodyak Iaroslav (e-mail: [4456602@gmail.com](mailto:4456602@gmail.com))
