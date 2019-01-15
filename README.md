@@ -50,6 +50,7 @@ GO ON!!! Nothing gonna stop you from tracking the Activities:)))
 ## Author
 Bodyak Iaroslav (e-mail: [4456602@gmail.com](mailto:4456602@gmail.com))
 
+![alt text](https://github.com/Ray-ParkerDEV/Servlet_login_origin/blob/master/src/main/webapp/images/clock.jpg)
 
 
 
