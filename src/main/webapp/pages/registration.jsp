@@ -50,9 +50,11 @@
         </div>
         <div >
             <div class="operationMessageElement" style = "position:absolute; left:100px; top:370px;">
-                <c:if test="${requestScope.errorLoginOrPassword!= null}">
-                    <fmt:message key="${requestScope.errorLoginOrPassword}"/>
-                </c:if>
+                <%--<c:if test="${requestScope.errorLoginOrPassword!= null}">--%>
+                    <%--<fmt:message key="${requestScope.errorLoginOrPassword}"/> operationMessage--%>
+                <%--</c:if>--%>
+                    <%--<fmt:message key="${requestScope.operationMessage}"/>--%>
+                    <c:out value="${requestScope.operationMessage}"/>
             </div>
         </div>
         <!--LANGUAGE-->

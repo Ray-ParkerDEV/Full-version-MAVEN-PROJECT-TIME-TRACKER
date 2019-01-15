@@ -37,19 +37,14 @@ public class ConnectionPool {
         try {
             Context initContext = new InitialContext();
             Context envContext = (Context) initContext.lookup(TOMCAT_JNDI_NAME);
-//            if (envContext != null) {
             pool = (DataSource) envContext.lookup(DATASOURCE);
-//            }
         } catch (NamingException e) {
             e.printStackTrace();
         }
     }
 
     public synchronized Connection getConnection() throws SQLException {
-//        Connection connection = null;
-//        if(pool!=null) {
         Connection connection = pool.getConnection();
-//        }
         return connection;
     }
 

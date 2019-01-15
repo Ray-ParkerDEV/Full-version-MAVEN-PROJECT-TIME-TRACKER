@@ -24,7 +24,6 @@ public class TransactionHandler {
             logger.error(MessageConstants.TRANSACTION_FAILED, e);
             throw new SQLException(e);
         } finally {
-//            ConnectionPool.getInstance().closeConnection(connection);
             if(connection != null){
                 connection.close();
             }
