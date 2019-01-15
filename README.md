@@ -69,8 +69,10 @@ the stack-trace on the front-end side).
 The application must have an Authorization and Authentication system.
 
 ###EERD scheme:
+![alt text](https://github.com/Ray-ParkerDEV/Servlet_login_origin/tree/master/src/main/webapp/images/EERD.bmp)
 
 ###Architecture:
+![alt text](https://github.com/Ray-ParkerDEV/Servlet_login_origin/tree/master/src/main/webapp/images/architecture.bmp)
 
 ## Author
 Bodyak Iaroslav (e-mail: [4456602@gmail.com](mailto:4456602@gmail.com))
