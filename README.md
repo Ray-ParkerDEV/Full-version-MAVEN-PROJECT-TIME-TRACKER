@@ -29,6 +29,7 @@ Time tracking system. The administrator assigns activity to the user. A user can
 * JavaScript
 * HTML
 * CSS
+FUNCTIONAL:
 * Custom tag, UseBean
 * Localisation
 * Connection Pool
