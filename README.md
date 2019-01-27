@@ -9,6 +9,7 @@ Time tracking system. The administrator assigns activity to the user. A user can
 * [Project name](#project-name)
 * [Description](#description)
 * [Technologies](#technologies)
+* [Functional](#functional)
 * [Prerequisites](#prerequisites)
 * [Installation and running](#installation-and-running)
 * [General project requirements](#general-project-requirements)
@@ -29,6 +30,7 @@ Time tracking system. The administrator assigns activity to the user. A user can
 * JavaScript
 * HTML
 * CSS
+### Functional
 * Custom tag, UseBean
 * Localisation
 * Connection Pool
