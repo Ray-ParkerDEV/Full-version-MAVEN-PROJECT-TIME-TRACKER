@@ -78,7 +78,7 @@ The application must have an Authorization and Authentication system.
 
 ![alt text](https://github.com/Ray-ParkerDEV/Servlet_login_origin/blob/master/src/main/webapp/images/architecture.jpg)
 
-![alt text](https://github.com/Ray-ParkerDEV/Servlet_login_origin/blob/master/src/main/webapp/images/architecture.jpg)
+![alt text](https://github.com/Ray-ParkerDEV/TIME-TRACKER/blob/master/src/main/webapp/images/ex.jpg)
 ## Author
 Bodyak Iaroslav (e-mail: [4456602@gmail.com](mailto:4456602@gmail.com))
 
